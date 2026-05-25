@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>सेवा सेतू | तक्रार नोंदवा</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="report-complaint.css">
+</head>
+<body>
+  <main class="complaint-shell">
+    <section class="complaint-card">
+      <header class="complaint-topbar">
+        <a class="back-btn" href="index.html#dashboard" aria-label="मागे जा">
+          <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <h1>तक्रार नोंदवा</h1>
+        <a class="help-link" href="#help">
+          <i class="fa-regular fa-circle-question"></i>
+          <span>मदत हवी आहे?</span>
+        </a>
+      </header>
+
+      <section class="intro-banner">
+        <div class="banner-icon">
+          <i class="fa-solid fa-bullhorn"></i>
+        </div>
+        <div class="banner-copy">
+          <h2>चला, मालवण एकत्र सुधारूया 🤝</h2>
+          <p>आपल्या परिसरातील समस्या नोंदवा.<br>आम्ही ती सोडवण्यासाठी येथे आहोत.</p>
+        </div>
+        <img src="https://i.postimg.cc/G3Yf7mTR/Whats-App-Image-2026-05-11-at-2-57-02-PM.jpg" alt="मालवण समुद्र आणि शिवाजी महाराज पुतळा">
+      </section>
+
+      <form id="complaintForm" class="complaint-form">
+        <section class="form-section">
+          <div class="section-title">
+            <i class="fa-solid fa-table-cells-large"></i>
+            <h2>तक्रार विभाग निवडा</h2>
+          </div>
+
+          <div class="category-grid" role="radiogroup" aria-label="तक्रार विभाग">
+            <button class="category-card is-selected water" type="button" data-category="water" aria-pressed="true">
+              <span class="check"><i class="fa-solid fa-check"></i></span>
+              <i class="fa-solid fa-droplet"></i>
+              <strong>पाणी</strong>
+            </button>
+            <button class="category-card garbage" type="button" data-category="garbage" aria-pressed="false">
+              <span class="check"><i class="fa-solid fa-check"></i></span>
+              <i class="fa-solid fa-trash-can"></i>
+              <strong>कचरा</strong>
+            </button>
+            <button class="category-card lights" type="button" data-category="street-lights" aria-pressed="false">
+              <span class="check"><i class="fa-solid fa-check"></i></span>
+              <i class="fa-solid fa-lightbulb"></i>
+              <strong>रस्त्यावरील दिवे</strong>
+            </button>
+            <button class="category-card road" type="button" data-category="road" aria-pressed="false">
+              <span class="check"><i class="fa-solid fa-check"></i></span>
+              <i class="fa-solid fa-road"></i>
+              <strong>रस्ता</strong>
+            </button>
+            <button class="category-card gutter" type="button" data-category="gutter" aria-pressed="false">
+              <span class="check"><i class="fa-solid fa-check"></i></span>
+              <i class="fa-solid fa-water"></i>
+              <strong>गटार</strong>
+            </button>
+            <button class="category-card animals" type="button" data-category="animals" aria-pressed="false">
+              <span class="check"><i class="fa-solid fa-check"></i></span>
+              <i class="fa-solid fa-dog"></i>
+              <strong>भटकी जनावरे</strong>
+            </button>
+            <button class="category-card traffic" type="button" data-category="traffic" aria-pressed="false">
+              <span class="check"><i class="fa-solid fa-check"></i></span>
+              <i class="fa-solid fa-traffic-light"></i>
+              <strong>वाहतूक समस्या</strong>
+            </button>
+            <button class="category-card drainage" type="button" data-category="drainage" aria-pressed="false">
+              <span class="check"><i class="fa-solid fa-check"></i></span>
+              <i class="fa-solid fa-person-digging"></i>
+              <strong>नाले / पाणी साचणे</strong>
+            </button>
+            <button class="category-card tree" type="button" data-category="tree" aria-pressed="false">
+              <span class="check"><i class="fa-solid fa-check"></i></span>
+              <i class="fa-solid fa-tree"></i>
+              <strong>झाड समस्या</strong>
+            </button>
+            <button class="category-card other" type="button" data-category="other" aria-pressed="false">
+              <span class="check"><i class="fa-solid fa-check"></i></span>
+              <i class="fa-solid fa-circle-plus"></i>
+              <strong>इतर</strong>
+            </button>
+          </div>
+          <input id="selectedCategory" name="category" type="hidden" value="water">
+        </section>
+
+        <section class="form-section">
+          <label class="section-title" for="issueDescription">
+            <i class="fa-regular fa-comment-dots"></i>
+            <h2>समस्येचे वर्णन</h2>
+          </label>
+          <div class="textarea-wrap">
+            <textarea id="issueDescription" name="description" maxlength="500" placeholder="समस्येबद्दल माहिती लिहा..." required></textarea>
+            <span id="charCounter">0 / 500</span>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <div class="section-title">
+            <i class="fa-solid fa-camera"></i>
+            <h2>फोटो जोडा <span>(ऐच्छिक)</span></h2>
+          </div>
+          <label class="upload-box" for="complaintPhoto" id="uploadBox">
+            <input id="complaintPhoto" name="photo" type="file" accept="image/png,image/jpeg">
+            <img id="photoPreview" alt="अपलोड केलेल्या फोटोचा पूर्वावलोकन">
+            <span class="upload-placeholder">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <strong>फोटो अपलोड करण्यासाठी येथे क्लिक करा</strong>
+              <small>JPG, PNG (कमाल 5MB)</small>
+            </span>
+          </label>
+        </section>
+
+        <button class="submit-btn" type="submit">
+          <i class="fa-solid fa-paper-plane"></i>
+          <span>तक्रार सबमिट करा</span>
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="report-complaint.js"></script>
+</body>
+</html>

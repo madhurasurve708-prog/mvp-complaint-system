@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>सेवा सेतू | माझ्या तक्रारी</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="my-complaints.css">
+</head>
+<body>
+  <main class="complaints-shell">
+    <section class="complaints-card">
+      <header class="complaints-topbar">
+        <a class="back-btn" href="index.html#dashboard" aria-label="मागे जा">
+          <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <h1>माझ्या तक्रारी</h1>
+        <button class="bell-btn" type="button" aria-label="सूचना">
+          <i class="fa-regular fa-bell"></i>
+          <span></span>
+        </button>
+      </header>
+
+      <section class="voice-banner">
+        <div>
+          <h2>तुमचा आवाज महत्त्वाचा आहे 💙</h2>
+          <p>तुमच्या सर्व तक्रारींची स्थिती येथे पाहा.</p>
+        </div>
+        <img src="https://i.postimg.cc/G3Yf7mTR/Whats-App-Image-2026-05-11-at-2-57-02-PM.jpg" alt="">
+      </section>
+
+      <nav class="status-tabs" aria-label="तक्रार फिल्टर">
+        <button class="active" type="button" data-filter="all">सर्व</button>
+        <button type="button" data-filter="pending">प्रलंबित <span class="dot orange"></span></button>
+        <button type="button" data-filter="progress">प्रगतीत <span class="dot blue"></span></button>
+        <button type="button" data-filter="resolved">निकाली <span class="dot green"></span></button>
+      </nav>
+
+      <section class="complaints-list" id="complaintsList" aria-label="तक्रारींची यादी">
+        <article class="complaint-item" data-status="pending">
+          <div class="item-icon water"><i class="fa-solid fa-droplet"></i></div>
+          <div class="item-body">
+            <div class="item-head">
+              <h3>पाणी गळती</h3>
+              <span class="badge pending">प्रलंबित</span>
+            </div>
+            <p>मालवण बस स्थानकाजवळ पाणी गळती होत आहे.</p>
+            <div class="meta-row">
+              <span><i class="fa-regular fa-calendar"></i> 01 मे 2025</span>
+              <span>#MC1025</span>
+              <span><i class="fa-solid fa-location-dot"></i> वॉर्ड 2</span>
+            </div>
+          </div>
+          <button class="open-btn" type="button" aria-label="तक्रार तपशील"><i class="fa-solid fa-chevron-right"></i></button>
+        </article>
+
+        <article class="complaint-item" data-status="progress">
+          <div class="item-icon garbage"><i class="fa-solid fa-trash-can"></i></div>
+          <div class="item-body">
+            <div class="item-head">
+              <h3>कचरा उचलला नाही</h3>
+              <span class="badge progress">प्रगतीत</span>
+            </div>
+            <p>आमच्या परिसरातील कचरा 3 दिवसांपासून उचललेला नाही.</p>
+            <div class="meta-row">
+              <span><i class="fa-regular fa-calendar"></i> 30 एप्रिल 2025</span>
+              <span>#MC1024</span>
+              <span><i class="fa-solid fa-location-dot"></i> वॉर्ड 3</span>
+            </div>
+          </div>
+          <button class="open-btn" type="button" aria-label="तक्रार तपशील"><i class="fa-solid fa-chevron-right"></i></button>
+        </article>
+
+        <article class="complaint-item" data-status="resolved">
+          <div class="item-icon lights"><i class="fa-solid fa-lightbulb"></i></div>
+          <div class="item-body">
+            <div class="item-head">
+              <h3>रस्त्यावरील दिवा बंद</h3>
+              <span class="badge resolved">निकाली</span>
+            </div>
+            <p>हनुमान मंदिराजवळील रस्त्यावरील दिवा चालू नाही.</p>
+            <div class="meta-row">
+              <span><i class="fa-regular fa-calendar"></i> 28 एप्रिल 2025</span>
+              <span>#MC1023</span>
+              <span><i class="fa-solid fa-location-dot"></i> वॉर्ड 1</span>
+            </div>
+          </div>
+          <button class="open-btn" type="button" aria-label="तक्रार तपशील"><i class="fa-solid fa-chevron-right"></i></button>
+        </article>
+
+        <article class="complaint-item" data-status="pending">
+          <div class="item-icon road"><i class="fa-solid fa-road"></i></div>
+          <div class="item-body">
+            <div class="item-head">
+              <h3>रस्त्याचे नुकसान</h3>
+              <span class="badge pending">प्रलंबित</span>
+            </div>
+            <p>तारकर्ली नाक्याजवळ रस्त्यावर मोठे खड्डे आहेत.</p>
+            <div class="meta-row">
+              <span><i class="fa-regular fa-calendar"></i> 25 एप्रिल 2025</span>
+              <span>#MC1022</span>
+              <span><i class="fa-solid fa-location-dot"></i> वॉर्ड 4</span>
+            </div>
+          </div>
+          <button class="open-btn" type="button" aria-label="तक्रार तपशील"><i class="fa-solid fa-chevron-right"></i></button>
+        </article>
+
+        <article class="complaint-item" data-status="progress">
+          <div class="item-icon traffic"><i class="fa-solid fa-traffic-light"></i></div>
+          <div class="item-body">
+            <div class="item-head">
+              <h3>वाहतूक समस्या</h3>
+              <span class="badge progress">प्रगतीत</span>
+            </div>
+            <p>मुख्य बाजारपेठेत वाहतूक कोंडी होत आहे.</p>
+            <div class="meta-row">
+              <span><i class="fa-regular fa-calendar"></i> 22 एप्रिल 2025</span>
+              <span>#MC1021</span>
+              <span><i class="fa-solid fa-location-dot"></i> वॉर्ड 2</span>
+            </div>
+          </div>
+          <button class="open-btn" type="button" aria-label="तक्रार तपशील"><i class="fa-solid fa-chevron-right"></i></button>
+        </article>
+      </section>
+    </section>
+
+    <nav class="bottom-nav" aria-label="तळ मेनू">
+      <a href="report-complaint.html"><i class="fa-solid fa-bullhorn"></i><span>तक्रार नोंदवा</span></a>
+      <a class="active" href="my-complaints.html"><i class="fa-solid fa-clipboard-list"></i><span>माझ्या तक्रारी</span></a>
+      <a href="#helpline"><i class="fa-solid fa-phone"></i><span>मदत केंद्र</span></a>
+    </nav>
+  </main>
+
+  <script src="my-complaints.js"></script>
+</body>
+</html>
