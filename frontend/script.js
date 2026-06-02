@@ -24,6 +24,7 @@ const feedbackCount = document.getElementById("feedbackCount");
 const feedbackStars = document.getElementById("feedbackStars");
 const submitFeedback = document.getElementById("submitFeedback");
 
+const OFFICIAL_LOGIN_URL = "nagarsevak/nagarsevak.html";
 const initialSettingsContent = settingsContent?.innerHTML ?? "";
 
 const authCopy = {
@@ -238,7 +239,9 @@ function renderSettings(tabName) {
   });
 }
 
-showLoginButton.addEventListener("click", () => switchAuthMode("login"));
+showLoginButton.addEventListener("click", () => {
+  window.location.href = OFFICIAL_LOGIN_URL;
+});
 showRegisterButton.addEventListener("click", () => switchAuthMode("register"));
 
 mobileNumber.addEventListener("input", (event) => {
