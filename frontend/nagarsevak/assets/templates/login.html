@@ -1,0 +1,68 @@
+<!-- Login page template (fragment, no <html>/<body>) -->
+<main class="login-page" id="loginPage">
+  <section class="login-visual" aria-label="सेवा सेतू नगरसेवक पोर्टल">
+    <img src="https://i.postimg.cc/G3Yf7mTR/Whats-App-Image-2026-05-11-at-2-57-02-PM.jpg" alt="मालवण समुद्र आणि छत्रपती शिवाजी महाराज पुतळा">
+    <div class="login-overlay"></div>
+    <div class="brand-card">
+      <div class="brand-icon"><i class="fa-solid fa-people-roof"></i></div>
+      <strong>सेवा <span>सेतू</span></strong>
+    </div>
+    <div class="login-copy">
+      <p data-i18n="portalLabel">नगरसेवक पोर्टल</p>
+      <h1 data-i18n="heroTitle">वॉर्डनुसार तक्रारी, स्पष्ट कारवाई.</h1>
+      <span data-i18n="heroSubtitle">प्रत्येक नगरसेवकाला फक्त त्याच्या वॉर्डमधील तक्रारी दिसतील.</span>
+    </div>
+  </section>
+
+  <section class="login-panel" aria-label="नगरसेवक लॉगिन">
+    <div class="language-switch" aria-label="भाषा निवडा">
+      <button class="active" type="button" data-lang="mr">मराठी</button>
+      <button type="button" data-lang="en">English</button>
+    </div>
+
+    <form class="login-card" id="loginForm">
+      <div class="login-heading">
+        <p data-i18n="welcome">आपले स्वागत आहे!</p>
+        <h2 data-i18n="loginTitle">नगरसेवक लॉगिन</h2>
+        <span data-i18n="loginSubtitle">तुमचा वॉर्ड निवडा आणि तक्रारी पहा.</span>
+      </div>
+
+      <label class="field">
+        <i class="fa-regular fa-user"></i>
+        <input id="representativeName" type="text" value="मधुरा पाटील" required>
+      </label>
+
+      <label class="field">
+        <i class="fa-solid fa-phone"></i>
+        <input id="representativeMobile" type="tel" value="9876543210" maxlength="10" required>
+      </label>
+
+      <label class="field select-field">
+        <i class="fa-solid fa-building-columns"></i>
+        <select id="wardSelect" required>
+          <option value="1">Ward 1 - Bazaar Peth</option>
+          <option value="2">Ward 2 - Kinara Patti</option>
+          <option value="3">Ward 3 - Malvan Madhya</option>
+          <option value="4">Ward 4 - Deulwada</option>
+          <option value="5">Ward 5 - Dandi</option>
+          <option value="6">Ward 6 - Chivla</option>
+          <option value="7">Ward 7 - Revtale</option>
+          <option value="8">Ward 8 - Medha</option>
+          <option value="9">Ward 9 - Kumbharmath</option>
+          <option value="10">Ward 10 - Tarkarli Road</option>
+        </select>
+        <i class="fa-solid fa-chevron-down chevron"></i>
+      </label>
+
+      <label class="field">
+        <i class="fa-solid fa-lock"></i>
+        <input id="password" type="password" value="123456" required>
+      </label>
+
+      <button class="primary-btn" type="submit">
+        <span data-i18n="openDashboard">डॅशबोर्ड उघडा</span>
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </form>
+  </section>
+</main>
