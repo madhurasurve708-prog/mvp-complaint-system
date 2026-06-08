@@ -1,0 +1,59 @@
+<!-- Overview view template -->
+<section class="view active" id="overviewView" data-view-panel="overview">
+  <article class="hero-card">
+    <div>
+      <p class="eyebrow" data-i18n="wardOnly">फक्त निवडलेल्या वॉर्डच्या तक्रारी</p>
+      <h2 id="heroGreeting">नमस्कार, मधुरा!</h2>
+      <p data-i18n="overviewText">तुमच्या वॉर्डमधील तक्रारी, प्राधान्य आणि कारवाई एका ठिकाणी.</p>
+      <div class="hero-actions">
+        <button class="primary-btn" type="button" data-open-view="complaints"><span data-i18n="seeComplaints">तक्रारी पहा</span><i class="fa-solid fa-arrow-right"></i></button>
+        <!-- <button class="secondary-btn" type="button" data-open-view="ward"><span data-i18n="seeWard">वॉर्ड स्थिती</span></button> -->
+      </div>
+    </div>
+  </article>
+
+  <section class="stats-grid">
+    <article><span data-i18n="statTotal">एकूण तक्रारी</span><strong id="totalCount">0</strong></article>
+    <article><span data-i18n="statPending">प्रलंबित</span><strong id="pendingCount">0</strong></article>
+    <article><span data-i18n="statProgress">कारवाई सुरू</span><strong id="progressCount">0</strong></article>
+    <article><span data-i18n="statResolved">पूर्ण</span><strong id="resolvedCount">0</strong></article>
+  </section>
+
+  <section class="panel category-panel">
+    <div class="panel-head">
+      <div>
+        <h3 data-i18n="categoryTitle">तक्रार विभाग</h3>
+        <p data-i18n="categorySub">आयकॉनवर क्लिक केल्यावर त्या विभागाच्या तक्रारी दिसतील.</p>
+      </div>
+      <!-- <button class="text-btn" type="button" id="clearCategoryButton" data-i18n="clearCategory">सर्व विभाग</button> -->
+    </div>
+    <div class="category-grid" id="categoryGrid" aria-label="तक्रार विभाग"></div>
+  </section>
+
+  <section class="content-grid">
+    <article class="panel">
+      <div class="panel-head">
+        <div>
+          <h3 data-i18n="priorityTitle">तातडीच्या तक्रारी</h3>
+          <p data-i18n="prioritySub">पहिले लक्ष देण्यासारख्या तक्रारी.</p>
+        </div>
+        <button class="text-btn" type="button" data-open-view="complaints" data-i18n="viewAll">सर्व पहा</button>
+      </div>
+      <div class="compact-list" id="priorityList"></div>
+    </article>
+
+    <article class="panel soft-panel">
+      <div class="panel-head">
+        <div>
+          <h3 data-i18n="announcementsTitle">घोषणा</h3>
+          <p data-i18n="announcementsSub">वॉर्ड नागरिकांसाठी महत्वाचे अपडेट.</p>
+        </div>
+      </div>
+      <div class="action-list">
+        <div><i class="fa-solid fa-broom"></i><span data-i18n="announceOne">शनिवारी सकाळी बाजारपेठ स्वच्छता मोहीम.</span></div>
+        <div><i class="fa-solid fa-droplet"></i><span data-i18n="announceTwo">उद्या पाणीपुरवठा वेळेत बदल.</span></div>
+        <div><i class="fa-solid fa-road"></i><span data-i18n="announceThree">मुख्य रस्त्यावर दुरुस्ती काम सुरू.</span></div>
+      </div>
+    </article>
+  </section>
+</section>

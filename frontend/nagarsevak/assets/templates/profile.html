@@ -1,0 +1,78 @@
+<!-- Profile view template -->
+<section class="view active" id="profileView" data-view-panel="profile">
+  <div class="page-heading">
+    <div>
+      <p data-i18n="profileSub">खाते माहिती</p>
+      <h2 data-i18n="profileTitle">प्रोफाइल</h2>
+    </div>
+  </div>
+
+  <!-- Profile Header Card -->
+  <section class="profile-card">
+    <div class="profile-card-inner">
+      <!-- Left: Avatar -->
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar" id="bigAvatar">म</div>
+        <span class="profile-status-dot" aria-hidden="true"></span>
+      </div>
+
+      <!-- Center: User Details -->
+      <div class="profile-info">
+        <h3 class="profile-name" id="profilePanelName">मधुरा पाटील</h3>
+        <p class="profile-role" id="profilePanelWard">Ward 1 Nagarsevak</p>
+
+        <ul class="profile-meta">
+          <li>
+            <span class="profile-meta-icon profile-meta-icon--phone" aria-hidden="true">
+              <i class="fa-solid fa-phone"></i>
+            </span>
+            <span class="profile-meta-label" data-i18n="profileMobile">Mobile</span>
+            <span class="profile-meta-value" id="profilePanelMobile">9876543210</span>
+          </li>
+          <li>
+            <span class="profile-meta-icon profile-meta-icon--email" aria-hidden="true">
+              <i class="fa-solid fa-envelope"></i>
+            </span>
+            <span class="profile-meta-label" data-i18n="profileEmail">Email</span>
+            <span class="profile-meta-value" id="profilePanelEmail">akhil@gmail.com</span>
+          </li>
+          <li>
+            <span class="profile-meta-icon profile-meta-icon--calendar" aria-hidden="true">
+              <i class="fa-solid fa-calendar-days"></i>
+            </span>
+            <span class="profile-meta-label" data-i18n="profileJoined">Joined</span>
+            <span class="profile-meta-value" id="profilePanelJoined">Jan 2026</span>
+          </li>
+          <li>
+            <span class="profile-meta-icon profile-meta-icon--role" aria-hidden="true">
+              <i class="fa-solid fa-user-tie"></i>
+            </span>
+            <span class="profile-meta-label" data-i18n="profileRole">Role</span>
+            <span class="profile-meta-value" id="profilePanelRole">Ward 1 Nagarsevak</span>
+          </li>
+          <li>
+            <span class="profile-meta-icon profile-meta-icon--status" aria-hidden="true">
+              <i class="fa-solid fa-circle-check"></i>
+            </span>
+            <span class="profile-meta-label" data-i18n="profileStatus">Status</span>
+            <span class="profile-status-badge" id="profilePanelStatus">Active</span>
+          </li>
+        </ul>
+
+        <p class="profile-note" data-i18n="profileNote">ही भूमिका निवडलेल्या वॉर्डपुरती मर्यादित आहे.</p>
+      </div>
+
+      <!-- Right: Action Buttons -->
+      <div class="profile-actions">
+        <button type="button" class="profile-btn profile-btn--primary" id="profileEditBtn">
+          <i class="fa-solid fa-pen-to-square"></i>
+          <span data-i18n="profileEdit">Edit Profile</span>
+        </button>
+        <button type="button" class="profile-btn profile-btn--secondary" id="profilePasswordBtn">
+          <i class="fa-solid fa-key"></i>
+          <span data-i18n="profileChangePassword">Change Password</span>
+        </button>
+      </div>
+    </div>
+  </section>
+</section>

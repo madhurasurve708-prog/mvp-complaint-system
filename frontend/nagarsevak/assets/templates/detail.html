@@ -1,0 +1,31 @@
+<!-- Complaint detail view template -->
+<section class="view active" id="detailView" data-view-panel="detail">
+  <div class="page-heading">
+    <div>
+      <p id="detailWardLabel">Ward 1</p>
+      <h2 data-i18n="detailTitle">तक्रार कारवाई</h2>
+    </div>
+    <button class="secondary-btn" type="button" data-open-view="complaints" data-i18n="backToList">यादीकडे परत</button>
+  </div>
+
+  <section class="detail-layout">
+    <article class="panel" id="detailPanel"></article>
+    <aside class="panel">
+      <h3 data-i18n="quickAction">जलद कारवाई</h3>
+      <label>
+        <span data-i18n="changeStatus">स्थिती बदला</span>
+        <select id="detailStatus">
+          <option value="Pending">Pending</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Resolved">Resolved</option>
+        </select>
+      </label>
+      <label>
+        <span data-i18n="noteLabel">टीप</span>
+        <textarea id="actionNote" data-i18n-placeholder="notePlaceholder" placeholder="आज कोणती कारवाई केली ते लिहा"></textarea>
+      </label>
+      <button class="primary-btn full" id="saveActionButton" type="button"><span data-i18n="saveAction">कारवाई सेव्ह करा</span></button>
+      <button class="secondary-btn full" type="button"><span data-i18n="sendSms">नागरिकाला SMS</span></button>
+    </aside>
+  </section>
+</section>

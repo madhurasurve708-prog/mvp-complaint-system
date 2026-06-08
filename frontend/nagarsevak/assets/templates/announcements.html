@@ -1,0 +1,27 @@
+<!-- Announcements view template -->
+<section class="view active" id="announcementsView" data-view-panel="announcements">
+  <div class="page-heading">
+    <div>
+      <p id="announcementsWardLabel">Ward 1</p>
+      <h2 data-i18n="announcementsTitle">घोषणा</h2>
+    </div>
+  </div>
+  <section class="announcements-layout">
+    <article class="panel">
+      <h3 data-i18n="newAnnouncement">नवीन घोषणा</h3>
+      <label>
+        <span data-i18n="announcementSubject">विषय</span>
+        <input class="panel-input" id="announcementSubject" value="वॉर्ड स्वच्छता मोहीम">
+      </label>
+      <label>
+        <span data-i18n="announcementMessage">संदेश</span>
+        <textarea id="announcementMessage">शनिवारी सकाळी ८ ते ११ या वेळेत स्वच्छता मोहीम होईल. कृपया सहकार्य करा.</textarea>
+      </label>
+      <button class="primary-btn full" type="button" id="sendAnnouncementButton"><span data-i18n="sendAnnouncement">घोषणा पाठवा</span></button>
+    </article>
+    <aside class="panel">
+      <h3 data-i18n="recentAnnouncements">अलीकडील घोषणा</h3>
+      <div class="action-list" id="announcementList"></div>
+    </aside>
+  </section>
+</section>
