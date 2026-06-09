@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>सेवा सेतू | नागरिक पोर्टल</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="citizen/style.css">
+</head>
+<body>
+  <main id="authView" class="auth-view">
+    <section class="auth-visual" aria-label="सेवा सेतू">
+      <img class="auth-bg-image" src="https://i.postimg.cc/G3Yf7mTR/Whats-App-Image-2026-05-11-at-2-57-02-PM.jpg" alt="छत्रपती शिवाजी महाराज पुतळा आणि सिंधुदुर्ग समुद्र दृश्य">
+      <div class="auth-visual-filter"></div>
+      <div class="auth-logo-card">
+        <div class="logo-symbol">
+          <i class="fa-solid fa-people-group"></i>
+          <span></span>
+        </div>
+        <strong>सेवा <em>सेतू</em></strong>
+      </div>
+
+      <div class="auth-brand-copy">
+        <h1>सेवा <span>सेतू</span></h1>
+        <h2>नोंदवा. पाठवा. सोडवा.</h2>
+        <p id="authTagline">आपला आवाज, चांगल्या मालवणासाठी आपली कृती.</p>
+
+        <div class="trust-points">
+          <div>
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>सुरक्षित</span>
+          </div>
+          <div>
+            <i class="fa-solid fa-bolt"></i>
+            <span>वेगवान</span>
+          </div>
+          <div>
+            <i class="fa-solid fa-users"></i>
+            <span>विश्वसनीय</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="auth-form-side" aria-label="नागरिक प्रवेश">
+      <div class="auth-card">
+        <div class="auth-heading">
+          <p id="welcomeText">आपले स्वागत आहे!</p>
+          <h2 id="formTitle">नागरिक नोंदणी</h2>
+          <span id="formSubtitle">पुढे जाण्यासाठी कृपया लॉगिन करा</span>
+        </div>
+
+        <form id="registerForm" class="portal-form is-active" data-form="register">
+          <label class="field" for="fullName">
+            <i class="fa-regular fa-user"></i>
+            <input id="fullName" name="fullName" type="text" placeholder="पूर्ण नाव" autocomplete="name" required>
+          </label>
+
+          <label class="field" for="mobileNumber">
+            <i class="fa-solid fa-phone-volume"></i>
+            <input id="mobileNumber" name="mobileNumber" type="tel" placeholder="मोबाईल क्रमांक" inputmode="numeric" maxlength="10" autocomplete="tel" required>
+          </label>
+
+          <label class="field select-field" for="registerWard">
+            <i class="fa-regular fa-building"></i>
+            <select id="registerWard" name="ward" required>
+              <option value="" selected disabled>आपला वॉर्ड निवडा</option>
+              <option value="ward-1">वॉर्ड क्र. १ - बाजारपेठ</option>
+              <option value="ward-2">वॉर्ड क्र. २ - किनारपट्टी</option>
+              <option value="ward-3">वॉर्ड क्र. ३ - मालवण मध्य</option>
+              <option value="ward-4">वॉर्ड क्र. ४ - देऊळवाडा</option>
+            </select>
+            <i class="fa-solid fa-chevron-down chevron"></i>
+          </label>
+
+          <label class="field" for="locality">
+            <i class="fa-solid fa-location-dot"></i>
+            <input id="locality" name="locality" type="text" placeholder="क्षेत्राचे नाव / स्थानिकता" autocomplete="address-level3" required>
+          </label>
+
+          <button class="gradient-btn" type="submit">
+            <span>OTP पाठवा</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+
+          <div class="form-divider"><span>किंवा</span></div>
+
+          <button class="outline-action" type="button" id="showLogin">
+            <i class="fa-solid fa-lock"></i>
+            <span>नगरसेवक / अधिकृत लॉगिन करा</span>
+          </button>
+
+          <a class="outline-action nagaradhyaksha-link" href="nagaradhyaksha/index.html">
+            <i class="fa-solid fa-building-columns"></i>
+            <span>नगराध्यक्ष पॅनेल</span>
+          </a>
+        </form>
+
+        <form id="loginForm" class="portal-form" data-form="login">
+          <label class="field" for="username">
+            <i class="fa-regular fa-user"></i>
+            <input id="username" name="username" type="text" placeholder="वापरकर्त्याचे नाव" autocomplete="username" required>
+          </label>
+
+          <label class="field password-field" for="password">
+            <i class="fa-solid fa-lock"></i>
+            <input id="password" name="password" type="password" placeholder="पासवर्ड" autocomplete="current-password" required>
+            <button class="ghost-icon" type="button" id="togglePassword" aria-label="पासवर्ड दाखवा">
+              <i class="fa-regular fa-eye-slash"></i>
+            </button>
+          </label>
+
+          <div class="form-options">
+            <label for="rememberMe">
+              <input id="rememberMe" name="rememberMe" type="checkbox">
+              <span>मला लक्षात ठेवा</span>
+            </label>
+            <a href="#" id="forgotPassword">पासवर्ड विसरलात?</a>
+          </div>
+
+          <label class="field select-field" for="loginWard">
+            <i class="fa-regular fa-building"></i>
+            <select id="loginWard" name="ward" required>
+              <option value="" selected disabled>आपला वॉर्ड निवडा</option>
+              <option value="ward-1">वॉर्ड क्र. १ - बाजारपेठ</option>
+              <option value="ward-2">वॉर्ड क्र. २ - किनारपट्टी</option>
+              <option value="ward-3">वॉर्ड क्र. ३ - मालवण मध्य</option>
+              <option value="ward-4">वॉर्ड क्र. ४ - देऊळवाडा</option>
+            </select>
+            <i class="fa-solid fa-chevron-down chevron"></i>
+          </label>
+
+          <button class="gradient-btn login-gradient" type="submit">
+            <span>लॉगिन करा</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+
+          <div class="form-divider"><span>किंवा</span></div>
+
+          <button class="outline-action blue" type="button" id="showRegister">
+            <i class="fa-solid fa-lock"></i>
+            <span>नवीन खाते तयार करा</span>
+          </button>
+        </form>
+
+        <p class="secure-note">
+          <i class="fa-solid fa-lock"></i>
+          <span>आपली माहिती सुरक्षित आहे</span>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <main id="dashboardView" class="dashboard-view" hidden>
+    <aside class="sidebar" id="sidebar">
+      <div class="side-logo">
+        <div class="app-logo">
+          <i class="fa-solid fa-mobile-screen-button"></i>
+          <span></span>
+        </div>
+        <h2>सेवा <span>सेतू</span></h2>
+        <p>मालवण अॅप</p>
+      </div>
+
+      <nav class="side-nav" aria-label="मुख्य मेनू">
+        <a class="active" href="#home" data-view-link="home"><i class="fa-solid fa-house"></i><span>मुख्यपृष्ठ</span></a>
+        <a href="#ward" data-view-link="ward"><i class="fa-regular fa-file-lines"></i><span>माझा वॉर्ड</span></a>
+        <a href="my-complaints.html"><i class="fa-regular fa-rectangle-list"></i><span>माझ्या तक्रारी</span></a>
+        <a href="#help" data-view-link="help"><i class="fa-solid fa-phone"></i><span>मदत केंद्र</span><b>3</b></a>
+        <a href="#feedback" data-view-link="feedback"><i class="fa-regular fa-comment-dots"></i><span>अभिप्राय द्या</span></a>
+        <a href="#profile"><i class="fa-regular fa-user"></i><span>प्रोफाइल</span></a>
+        <a href="#settings" data-view-link="settings"><i class="fa-solid fa-gear"></i><span>सेटिंग्ज</span></a>
+      </nav>
+
+      <div class="app-promo">
+        <h3>सेवा सेतू<br>मालवण अॅप</h3>
+        <p>आता आपल्या मोबाईलवर!</p>
+        <div class="store-badge"><i class="fa-brands fa-google-play"></i><span>Get it on<br>Google Play</span></div>
+        <div class="store-badge"><i class="fa-brands fa-apple"></i><span>Download on the<br>App Store</span></div>
+      </div>
+    </aside>
+
+    <section class="dashboard-main">
+      <header class="topbar">
+        <button class="menu-toggle" type="button" id="menuToggle" aria-label="मेनू उघडा">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="top-actions">
+          <button class="notification-btn" type="button" aria-label="सूचना">
+            <i class="fa-regular fa-bell"></i>
+            <span>3</span>
+          </button>
+          <div class="profile-chip">
+            <div class="avatar">म</div>
+            <div>
+              <strong>मधुरा पाटील</strong>
+              <span>नागरिक</span>
+            </div>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+        </div>
+      </header>
+
+      <div class="dashboard-panel is-active" id="homePanel" data-panel="home">
+        <section class="welcome-hero">
+          <img class="dashboard-hero-image" src="https://i.postimg.cc/G3Yf7mTR/Whats-App-Image-2026-05-11-at-2-57-02-PM.jpg" alt="">
+          <div class="welcome-copy">
+            <h1>नमस्कार, मधुरा! <span>👋</span></h1>
+            <p>स्वच्छ, सुंदर आणि स्मार्ट मालवणासाठी<br>एकत्र येऊया.</p>
+            <div class="hero-actions">
+              <button type="button" data-action="new-complaint">
+                <i class="fa-regular fa-file-lines"></i>
+                <span><strong>तक्रार नोंदवा</strong>नवीन तक्रार नोंदवा</span>
+              </button>
+              <button type="button" data-action="track-complaint">
+                <i class="fa-regular fa-file-lines"></i>
+                <span><strong>तक्रारीची स्थिती पहा</strong>तुमची तक्रार ट्रॅक करा</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="quick-actions" aria-label="त्वरित क्रिया">
+          <article class="quick-card blue-card">
+            <div class="quick-icon"><i class="fa-solid fa-file-pen"></i></div>
+            <div>
+              <h3>तक्रार नोंदवा</h3>
+              <p>नवीन तक्रार नोंदवा<br>फोटो आणि ठिकाणासह</p>
+            </div>
+            <button type="button" aria-label="तक्रार नोंदवा"><i class="fa-solid fa-arrow-right"></i></button>
+          </article>
+
+          <article class="quick-card green-card">
+            <div class="quick-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+            <div>
+              <h3>तक्रारीची स्थिती पहा</h3>
+              <p>तुमच्या तक्रारीची स्थिती<br>पहा आणि ट्रॅक करा</p>
+            </div>
+            <button type="button" aria-label="स्थिती पहा"><i class="fa-solid fa-arrow-right"></i></button>
+          </article>
+
+          <article class="quick-card orange-card">
+            <div class="quick-icon"><i class="fa-solid fa-phone"></i></div>
+            <div>
+              <h3>मदत केंद्र</h3>
+              <p>महत्वाचे संपर्क क्रमांक<br>आणि सहाय्य</p>
+            </div>
+            <button type="button" data-action="open-help" aria-label="मदत केंद्र"><i class="fa-solid fa-arrow-right"></i></button>
+          </article>
+        </section>
+
+        <section class="info-grid">
+          <article class="ward-card">
+            <h3>माझा वॉर्ड</h3>
+            <div class="ward-content">
+              <div class="ward-icon"><i class="fa-solid fa-building-columns"></i></div>
+              <div class="ward-stat"><span>प्रभाग क्रमांक</span><strong>3</strong></div>
+              <div class="ward-stat"><span>प्रभागाचे नाव</span><strong>मालवण बीच परिसर</strong></div>
+              <div class="ward-stat"><span>नगर सेवक</span><strong>सुरेश पाटील</strong><small>संपर्क क्रमांक<br>9876543210</small></div>
+              <div class="ward-photo" aria-hidden="true"></div>
+            </div>
+          </article>
+
+          <article class="feedback-card">
+            <h3>नागरिकसेवक अभिप्राय</h3>
+            <div class="feedback-body">
+              <div class="feedback-icon"><i class="fa-solid fa-comment-dots"></i></div>
+              <p>आपला अभिप्राय आम्हाला महत्वाचा आहे. आपल्या सूचना आणि प्रतिसादामुळे आम्ही मालवण अधिक चांगले बनवू शकतो.</p>
+            </div>
+            <button type="button" data-action="open-feedback">अभिप्राय द्या <i class="fa-solid fa-arrow-right"></i></button>
+          </article>
+        </section>
+      </div>
+
+      <div class="dashboard-panel" id="helpPanel" data-panel="help" hidden>
+        <section class="help-hero" aria-label="मदत केंद्र">
+          <div class="help-copy">
+            <h1>मदत केंद्र</h1>
+            <p>आम्ही तुम्हाला कशी मदत करू शकतो?</p>
+            <span>तुमच्या सर्व प्रश्नांची उत्तरे आणि सहाय्य येथे मिळेल.</span>
+          </div>
+          <div class="help-scenery" aria-hidden="true">
+            <i class="fa-solid fa-dove bird bird-one"></i>
+            <i class="fa-solid fa-dove bird bird-two"></i>
+          </div>
+        </section>
+
+        <section class="help-search" aria-label="मदत शोधा">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="search" placeholder="तक्रार, स्थिती, संपर्क किंवा सेवा शोधा">
+          <button type="button">शोधा</button>
+        </section>
+
+        <section class="help-grid" aria-label="मदत पर्याय">
+          <article class="help-card">
+            <i class="fa-solid fa-headset"></i>
+            <h3>तत्काळ सहाय्य</h3>
+            <p>नगरपालिका हेल्पलाईनशी थेट संपर्क साधा.</p>
+            <a href="tel:02365252111">02365 252111</a>
+          </article>
+
+          <article class="help-card">
+            <i class="fa-solid fa-circle-question"></i>
+            <h3>सामान्य प्रश्न</h3>
+            <p>तक्रार नोंदवणे, फोटो जोडणे आणि स्थिती पाहण्याची माहिती.</p>
+            <button type="button">प्रश्न पहा</button>
+          </article>
+
+          <article class="help-card">
+            <i class="fa-solid fa-location-dot"></i>
+            <h3>कार्यालय पत्ता</h3>
+            <p>मालवण नगरपरिषद, मुख्य बाजारपेठ, मालवण.</p>
+            <button type="button">नकाशा उघडा</button>
+          </article>
+        </section>
+
+        <section class="faq-list" aria-label="वारंवार विचारले जाणारे प्रश्न">
+          <h2>वारंवार विचारले जाणारे प्रश्न</h2>
+          <details open>
+            <summary>तक्रार नोंदवल्यावर पुढे काय होते?</summary>
+            <p>तक्रार संबंधित विभागाकडे पाठवली जाते आणि तुम्हाला स्थिती अपडेट मिळत राहतात.</p>
+          </details>
+          <details>
+            <summary>माझ्या तक्रारीची स्थिती कुठे पाहू?</summary>
+            <p>माझ्या तक्रारी या पेजवर तुमच्या सर्व तक्रारींची सद्यस्थिती पाहू शकता.</p>
+          </details>
+          <details>
+            <summary>तत्काळ समस्या असल्यास काय करावे?</summary>
+            <p>मदत केंद्रातील हेल्पलाईन क्रमांकावर कॉल करा किंवा जवळच्या नगरपरिषद कार्यालयात संपर्क साधा.</p>
+          </details>
+        </section>
+      </div>
+
+      <div class="dashboard-panel" id="wardPanel" data-panel="ward" hidden>
+        <section class="ward-hero" aria-label="माझा वॉर्ड">
+          <div class="ward-hero-copy">
+            <h1>माझा वॉर्ड <i class="fa-solid fa-location-dot"></i></h1>
+            <p>आपल्या वॉर्डशी संबंधित सर्व माहिती येथे पाहा.</p>
+          </div>
+        </section>
+
+        <section class="ward-stats" aria-label="वॉर्ड तक्रार आकडेवारी">
+          <article>
+            <div class="stat-icon blue"><i class="fa-solid fa-clipboard-list"></i></div>
+            <strong>12</strong>
+            <span>एकूण तक्रारी</span>
+          </article>
+          <article>
+            <div class="stat-icon green"><i class="fa-solid fa-check"></i></div>
+            <strong>7</strong>
+            <span>निकाली तक्रारी</span>
+          </article>
+          <article>
+            <div class="stat-icon orange"><i class="fa-solid fa-hourglass-half"></i></div>
+            <strong>5</strong>
+            <span>प्रलंबित तक्रारी</span>
+          </article>
+          <article>
+            <div class="stat-icon purple"><i class="fa-solid fa-chart-pie"></i></div>
+            <strong>85%</strong>
+            <span>निकाल दर</span>
+          </article>
+          <article class="ward-number">
+            <div class="stat-icon blue"><i class="fa-solid fa-location-dot"></i></div>
+            <span>वॉर्ड क्रमांक</span>
+            <strong>वॉर्ड क्र. ४ - मालवण</strong>
+          </article>
+        </section>
+
+        <section class="ward-dashboard-grid">
+          <article class="ward-details-card">
+            <h2>वॉर्ड माहिती</h2>
+            <div class="ward-details-layout">
+              <dl class="ward-details-list">
+                <div><dt><i class="fa-regular fa-id-card"></i> वॉर्ड क्रमांक</dt><dd>४</dd></div>
+                <div><dt><i class="fa-regular fa-calendar-check"></i> वॉर्ड नाव</dt><dd>मालवण</dd></div>
+                <div><dt><i class="fa-regular fa-user"></i> क्षेत्रफळ</dt><dd>2.45 चौ.कि.मी.</dd></div>
+                <div><dt><i class="fa-solid fa-users"></i> लोकसंख्या</dt><dd>12,450</dd></div>
+                <div><dt><i class="fa-solid fa-house"></i> घरे</dt><dd>3,120</dd></div>
+                <div><dt><i class="fa-regular fa-building"></i> प्रभाग कार्यालय</dt><dd>मालवण नगरपरिषद</dd></div>
+                <div><dt><i class="fa-regular fa-user"></i> प्रभाग अधिकारी</dt><dd>श्री. अमित पाटील</dd></div>
+                <div><dt><i class="fa-solid fa-phone-volume"></i> संपर्क क्रमांक</dt><dd><a href="tel:02365222104">02365-222104</a></dd></div>
+              </dl>
+
+              <div class="ward-map" aria-label="वॉर्ड ४ नकाशा">
+                <div class="map-water"></div>
+                <div class="map-land"></div>
+                <div class="map-roads"></div>
+                <div class="map-boundary"></div>
+                <strong>Ward 4</strong>
+                <span class="map-label beach">Malvan Beach</span>
+                <span class="map-label city">Malvan</span>
+                <span class="map-label market">Malvan Market</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="ward-services-card">
+            <h2>वॉर्डचा आढावा</h2>
+            <div class="service-tiles">
+              <div class="service-tile water">
+                <i class="fa-solid fa-droplet"></i>
+                <strong>पाणी पुरवठा</strong>
+                <span>7 ठिकाणी</span>
+              </div>
+              <div class="service-tile light">
+                <i class="fa-solid fa-street-view"></i>
+                <strong>रस्त्यावरील दिवे</strong>
+                <span>156 दिवे</span>
+              </div>
+              <div class="service-tile waste">
+                <i class="fa-regular fa-trash-can"></i>
+                <strong>कचरा संकलन</strong>
+                <span>8 ठिकाणी</span>
+              </div>
+              <div class="service-tile drain">
+                <i class="fa-solid fa-grip-lines-vertical"></i>
+                <strong>गटर व्यवस्था</strong>
+                <span>15 कि.मी.</span>
+              </div>
+              <div class="service-tile citizens">
+                <i class="fa-solid fa-people-group"></i>
+                <strong>नागरिक संख्या</strong>
+                <span>सक्रिय नागरिक: 2,340</span>
+              </div>
+            </div>
+          </article>
+        </section>
+      </div>
+
+      <div class="dashboard-panel" id="feedbackPanel" data-panel="feedback" hidden>
+        <section class="feedback-hero" aria-label="अभिप्राय द्या">
+          <div class="feedback-hero-copy">
+            <div class="feedback-bubble"><i class="fa-solid fa-ellipsis"></i></div>
+            <div>
+              <h1>अभिप्राय द्या</h1>
+              <p>आपल्या सूचनांमुळे आम्ही अधिक चांगल्या प्रकारे सेवा पुरवू शकतो.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="feedback-dashboard">
+          <article class="feedback-form-card">
+            <h2><i class="fa-regular fa-comment-dots"></i> तुमचा अभिप्राय आम्हाला सांगा</h2>
+
+            <div class="feedback-form-grid">
+              <label class="feedback-select">
+                <span>1. सेवा / विभाग निवडा</span>
+                <div>
+                  <i class="fa-solid fa-hand-holding-heart"></i>
+                  <select id="feedbackService">
+                    <option>तक्रार निवारण सेवा</option>
+                    <option>माझा वॉर्ड माहिती</option>
+                    <option>मदत केंद्र</option>
+                    <option>अॅप वापरण्याचा अनुभव</option>
+                  </select>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </div>
+              </label>
+
+              <div class="rating-box" aria-label="रेटिंग द्या">
+                <span>2. रेटिंग द्या</span>
+                <div class="stars" id="feedbackStars">
+                  <button class="active" type="button" data-rating="1"><i class="fa-solid fa-star"></i></button>
+                  <button class="active" type="button" data-rating="2"><i class="fa-solid fa-star"></i></button>
+                  <button class="active" type="button" data-rating="3"><i class="fa-solid fa-star"></i></button>
+                  <button class="active" type="button" data-rating="4"><i class="fa-solid fa-star"></i></button>
+                  <button type="button" data-rating="5"><i class="fa-regular fa-star"></i></button>
+                </div>
+              </div>
+            </div>
+
+            <label class="feedback-message">
+              <span>3. तुमचा अनुभव लिहा</span>
+              <textarea id="feedbackMessage" maxlength="500" placeholder="तुमचा अनुभव, सूचना किंवा अभिप्राय येथे लिहा..."></textarea>
+              <small><b id="feedbackCount">0</b>/500</small>
+            </label>
+
+            <div class="feedback-bottom-grid">
+              <div class="satisfaction-level">
+                <span>4. समाधान स्तर</span>
+                <div>
+                  <button class="active" type="button"><i class="fa-solid fa-face-smile"></i><strong>खूप समाधान</strong></button>
+                  <button type="button"><i class="fa-solid fa-face-smile"></i><strong>समाधान</strong></button>
+                  <button type="button"><i class="fa-solid fa-face-meh"></i><strong>सरासरी</strong></button>
+                  <button type="button"><i class="fa-solid fa-face-frown"></i><strong>असमाधानी</strong></button>
+                </div>
+              </div>
+
+              <label class="photo-upload">
+                <span>5. फोटो जोडा (ऐच्छिक)</span>
+                <input type="file" accept="image/png,image/jpeg">
+                <div>
+                  <i class="fa-solid fa-cloud-arrow-up"></i>
+                  <strong>फोटो अपलोड करा</strong>
+                  <small>(JPG, PNG - कमाल 5MB)</small>
+                </div>
+              </label>
+            </div>
+
+            <button class="submit-feedback" type="button" id="submitFeedback">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>अभिप्राय सबमिट करा</span>
+            </button>
+          </article>
+
+          <aside class="feedback-side">
+            <article class="previous-feedback">
+              <header>
+                <h2>पूर्वीचे नागरिक अभिप्राय</h2>
+                <button type="button">सर्व पहा <i class="fa-solid fa-arrow-right"></i></button>
+              </header>
+              <div class="review-item">
+                <div class="review-avatar green">S</div>
+                <div>
+                  <strong>सागर कदम</strong>
+                  <p>तक्रार नोंदवणे खूप सोपे झाले आहे. सेवा उत्तम आहे.</p>
+                </div>
+                <span>20 मे 2024</span>
+                <div class="review-stars">★★★★★</div>
+              </div>
+              <div class="review-item">
+                <div class="review-avatar purple">P</div>
+                <div>
+                  <strong>प्रिया पाटील</strong>
+                  <p>वेळेवर प्रतिसाद मिळाला. धन्यवाद!</p>
+                </div>
+                <span>18 मे 2024</span>
+                <div class="review-stars">★★★★☆</div>
+              </div>
+              <div class="review-item">
+                <div class="review-avatar orange">R</div>
+                <div>
+                  <strong>रोहित सावंत</strong>
+                  <p>अॅपची रचना सोपी आणि सोयीस्कर आहे.</p>
+                </div>
+                <span>15 मे 2024</span>
+                <div class="review-stars">★★★★★</div>
+              </div>
+            </article>
+
+            <article class="response-time">
+              <h2>आमचा प्रतिसाद वेळ <span>(सरासरी)</span></h2>
+              <div class="response-stats">
+                <div><i class="fa-solid fa-check"></i><strong>2.5 तास</strong><span>तक्रार स्वीकारणे</span></div>
+                <div><i class="fa-solid fa-comment-dots"></i><strong>24 तास</strong><span>प्राथमिक उत्तर</span></div>
+                <div><i class="fa-solid fa-shield-halved"></i><strong>3 दिवस</strong><span>निवारण वेळ</span></div>
+              </div>
+            </article>
+          </aside>
+        </section>
+
+        <section class="feedback-note">
+          <i class="fa-solid fa-bullhorn"></i>
+          <div>
+            <h2>तुमचा अभिप्राय आम्हाला महत्वाचा आहे!</h2>
+            <p>तुमच्या सूचनांमुळे मालवण शहर अधिक सुंदर, स्वच्छ आणि नागरिकांसाठी सोयीचे बनत आहे.</p>
+          </div>
+          <div class="note-pill"><i class="fa-solid fa-comments"></i><span>तुमचे मत सांगा</span></div>
+          <div class="note-pill"><i class="fa-solid fa-lightbulb"></i><span>आम्ही सुधारणा करू</span></div>
+          <div class="note-pill"><i class="fa-solid fa-handshake"></i><span>सेवा अधिक चांगली होईल</span></div>
+          <div class="note-pill"><i class="fa-solid fa-people-group"></i><span>स्मार्ट मालवण</span></div>
+        </section>
+      </div>
+
+      <div class="dashboard-panel" id="settingsPanel" data-panel="settings" hidden>
+        <section class="settings-heading" aria-label="सेटिंग्ज">
+          <i class="fa-solid fa-gear"></i>
+          <div>
+            <h1>सेटिंग्ज</h1>
+            <p>आपले खाते, सुरक्षा आणि अॅप आवश्यकतेनुसार व्यवस्थित करा.</p>
+          </div>
+        </section>
+
+        <section class="settings-layout">
+          <aside class="settings-menu" aria-label="सेटिंग्ज विभाग">
+            <button class="active" type="button" data-settings-tab="general"><i class="fa-solid fa-house"></i><span>सामान्य</span></button>
+            <button type="button" data-settings-tab="profile"><i class="fa-regular fa-user"></i><span>प्रोफाइल माहिती</span></button>
+            <button type="button" data-settings-tab="notifications"><i class="fa-regular fa-bell"></i><span>सूचना सेटिंग्ज</span></button>
+            <button type="button" data-settings-tab="privacy"><i class="fa-solid fa-shield-halved"></i><span>गोपनीयता आणि सुरक्षा</span></button>
+            <button type="button" data-settings-tab="language"><i class="fa-solid fa-globe"></i><span>भाषा</span></button>
+            <button type="button" data-settings-tab="password"><i class="fa-solid fa-lock"></i><span>पासवर्ड बदला</span></button>
+            <button type="button" data-settings-tab="data"><i class="fa-solid fa-database"></i><span>डेटा आणि परवानग्या</span></button>
+            <button type="button" data-settings-tab="about"><i class="fa-solid fa-circle-info"></i><span>अॅप माहिती</span></button>
+            <button class="logout" type="button" data-settings-tab="logout"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>लॉगआउट</span></button>
+          </aside>
+
+          <div class="settings-content" id="settingsContent">
+            <article class="settings-card">
+              <h2>सामान्य सेटिंग्ज</h2>
+
+              <div class="setting-row profile-photo-row">
+                <div class="setting-icon green"><i class="fa-regular fa-user"></i></div>
+                <div class="setting-copy">
+                  <strong>प्रोफाइल फोटो</strong>
+                  <span>आपला प्रोफाइल फोटो बदला.</span>
+                </div>
+                <div class="profile-preview"><i class="fa-solid fa-user"></i></div>
+                <button class="outline-small" type="button">बदला</button>
+              </div>
+
+              <button class="setting-row link-row" type="button">
+                <div class="setting-icon blue"><i class="fa-regular fa-user"></i></div>
+                <strong>पूर्ण नाव</strong>
+                <span>राहुल पाटील</span>
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+
+              <button class="setting-row link-row" type="button">
+                <div class="setting-icon purple"><i class="fa-regular fa-envelope"></i></div>
+                <strong>ईमेल आयडी</strong>
+                <span>rahulpatil@gmail.com</span>
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+
+              <button class="setting-row link-row" type="button">
+                <div class="setting-icon orange"><i class="fa-solid fa-phone"></i></div>
+                <strong>मोबाईल क्रमांक</strong>
+                <span>9876543210</span>
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+
+              <button class="setting-row link-row" type="button">
+                <div class="setting-icon green-soft"><i class="fa-solid fa-location-dot"></i></div>
+                <strong>पत्ता</strong>
+                <span>मालवण, सिंधुदुर्ग, महाराष्ट्र - 416606</span>
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+            </article>
+
+            <article class="settings-card preference-card">
+              <div class="setting-row toggle-row">
+                <div class="setting-icon red"><i class="fa-solid fa-bell"></i></div>
+                <div class="setting-copy">
+                  <strong>पुश सूचना</strong>
+                  <span>महत्त्वाच्या सूचना आणि अपडेट मिळवा.</span>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" checked>
+                  <span></span>
+                </label>
+              </div>
+
+              <div class="setting-row toggle-row">
+                <div class="setting-icon orange"><i class="fa-regular fa-envelope"></i></div>
+                <div class="setting-copy">
+                  <strong>ईमेल सूचना</strong>
+                  <span>तक्रार स्थिती आणि महत्त्वाच्या माहितीचे ईमेल मिळवा.</span>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" checked>
+                  <span></span>
+                </label>
+              </div>
+
+              <div class="setting-row toggle-row">
+                <div class="setting-icon blue"><i class="fa-solid fa-moon"></i></div>
+                <div class="setting-copy">
+                  <strong>डार्क मोड</strong>
+                  <span>अॅपचा डार्क मोड सक्षम किंवा अक्षम करा.</span>
+                </div>
+                <label class="switch">
+                  <input type="checkbox">
+                  <span></span>
+                </label>
+              </div>
+            </article>
+
+            <article class="settings-card danger-card">
+              <div class="setting-row danger-row">
+                <div class="setting-icon red"><i class="fa-regular fa-trash-can"></i></div>
+                <div class="setting-copy">
+                  <strong>खाते हटवा</strong>
+                  <span>आपले खाते आणि सर्व डेटा कायमचा हटवण्यासाठी येथे क्लिक करा.</span>
+                </div>
+                <button class="danger-btn" type="button">खाते हटवा</button>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="citizen/script.js"></script>
+</body>
+</html>

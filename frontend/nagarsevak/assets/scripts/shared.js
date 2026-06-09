@@ -93,19 +93,19 @@ const categories = [
 
 // # 6. DEMO DATA START
 const demoComplaints = [
-  { id: "D101", citizen_name: "Aarav Naik", ward: "1", category: "garbage", title: "Garbage not collected", description: "Bazaar Peth road has garbage near the shop line.", image: "", status: "Pending" },
-  { id: "D102", citizen_name: "Meera Sawant", ward: "1", category: "street-lights", title: "Street light off", description: "Street light near fish market is not working.", image: "", status: "In Progress" },
-  { id: "D103", citizen_name: "Rohan Parab", ward: "1", category: "road", title: "Road pothole", description: "Large pothole near main chowk.", image: "", status: "Resolved" },
-  { id: "D201", citizen_name: "Madhura Patil", ward: "2", category: "garbage", title: "Garbage", description: "Garbage not collected for 2 days.", image: "photo 1.jpeg", status: "Pending" },
-  { id: "D202", citizen_name: "Sagar Kadam", ward: "2", category: "water", title: "Water pressure low", description: "Water pressure is low in the morning.", image: "", status: "Pending" },
-  { id: "D301", citizen_name: "Priya Gavade", ward: "3", category: "drainage", title: "Drainage blocked", description: "Drainage water is overflowing near school.", image: "", status: "In Progress" },
-  { id: "D401", citizen_name: "Nilesh Chavan", ward: "4", category: "tree", title: "Tree branch issue", description: "Tree branch is touching electric line.", image: "", status: "Pending" },
-  { id: "D501", citizen_name: "Anaya More", ward: "5", category: "road", title: "Road cleaning", description: "Road cleaning required near Dandi area.", image: "", status: "Resolved" },
-  { id: "D601", citizen_name: "Omkar Khot", ward: "6", category: "water", title: "Water leakage", description: "Pipeline leakage near Chivla beach road.", image: "", status: "Pending" },
-  { id: "D701", citizen_name: "Sneha Redkar", ward: "7", category: "animals", title: "Street dog issue", description: "Street dogs creating problem at night.", image: "", status: "Pending" },
-  { id: "D801", citizen_name: "Vikram Pednekar", ward: "8", category: "traffic", title: "Traffic problem", description: "Traffic jam near Medha junction.", image: "", status: "In Progress" },
-  { id: "D901", citizen_name: "Neha Salgaonkar", ward: "9", category: "gutter", title: "Gutter cover broken", description: "Gutter cover is broken near temple.", image: "", status: "Pending" },
-  { id: "D1001", citizen_name: "Kiran Naik", ward: "10", category: "street-lights", title: "Street light repair", description: "Two street lights off on Tarkarli road.", image: "", status: "Resolved" }
+  { id: "D101", citizen_name: "Aarav Naik", mr_citizen_name: "आरव नाईक", ward: "1", category: "garbage", title: "Garbage not collected", mr_title: "कचरा उचललेला नाही", description: "Bazaar Peth road has garbage near the shop line.", mr_description: "बाजारपेठ रस्त्यावर दुकानांच्या ओळीजवळ कचरा साचला आहे.", image: "", status: "Pending" },
+  { id: "D102", citizen_name: "Meera Sawant", mr_citizen_name: "मीरा सावंत", ward: "1", category: "street-lights", title: "Street light off", mr_title: "रस्त्यावरील दिवा बंद", description: "Street light near fish market is not working.", mr_description: "मच्छी मार्केटजवळील रस्त्यावरील दिवा चालू नाही.", image: "", status: "In Progress" },
+  { id: "D103", citizen_name: "Rohan Parab", mr_citizen_name: "रोहन परब", ward: "1", category: "road", title: "Road pothole", mr_title: "रस्त्यावर खड्डा", description: "Large pothole near main chowk.", mr_description: "मुख्य चौकाजवळ मोठा खड्डा पडला आहे.", image: "", status: "Resolved" },
+  { id: "D201", citizen_name: "Madhura Patil", mr_citizen_name: "मधुरा पाटील", ward: "2", category: "garbage", title: "Garbage", mr_title: "कचऱ्याची समस्या", description: "Garbage not collected for 2 days.", mr_description: "दोन दिवसांपासून कचरा उचललेला नाही.", image: "photo 1.jpeg", status: "Pending" },
+  { id: "D202", citizen_name: "Sagar Kadam", mr_citizen_name: "सागर कदम", ward: "2", category: "water", title: "Water pressure low", mr_title: "पाण्याचा दाब कमी", description: "Water pressure is low in the morning.", mr_description: "सकाळी पाण्याचा दाब कमी असतो.", image: "", status: "Pending" },
+  { id: "D301", citizen_name: "Priya Gavade", mr_citizen_name: "प्रिया गावडे", ward: "3", category: "drainage", title: "Drainage blocked", mr_title: "नाला बंद झाला आहे", description: "Drainage water is overflowing near school.", mr_description: "शाळेजवळ नाल्याचे पाणी बाहेर येत आहे.", image: "", status: "In Progress" },
+  { id: "D401", citizen_name: "Nilesh Chavan", mr_citizen_name: "निलेश चव्हाण", ward: "4", category: "tree", title: "Tree branch issue", mr_title: "झाडाच्या फांदीची समस्या", description: "Tree branch is touching electric line.", mr_description: "झाडाची फांदी वीजवाहिनीला स्पर्श करत आहे.", image: "", status: "Pending" },
+  { id: "D501", citizen_name: "Anaya More", mr_citizen_name: "अनया मोरे", ward: "5", category: "road", title: "Road cleaning", mr_title: "रस्ता स्वच्छता", description: "Road cleaning required near Dandi area.", mr_description: "दांडी परिसरात रस्ता स्वच्छता आवश्यक आहे.", image: "", status: "Resolved" },
+  { id: "D601", citizen_name: "Omkar Khot", mr_citizen_name: "ओंकार खोत", ward: "6", category: "water", title: "Water leakage", mr_title: "पाणी गळती", description: "Pipeline leakage near Chivla beach road.", mr_description: "चिवला बीच रस्त्याजवळ पाईपलाईन गळती आहे.", image: "", status: "Pending" },
+  { id: "D701", citizen_name: "Sneha Redkar", mr_citizen_name: "स्नेहा रेडकर", ward: "7", category: "animals", title: "Street dog issue", mr_title: "भटक्या जनावरांची समस्या", description: "Street dogs creating problem at night.", mr_description: "रात्री भटके कुत्रे त्रास देत आहेत.", image: "", status: "Pending" },
+  { id: "D801", citizen_name: "Vikram Pednekar", mr_citizen_name: "विक्रम पेडणेकर", ward: "8", category: "traffic", title: "Traffic problem", mr_title: "वाहतुकीची समस्या", description: "Traffic jam near Medha junction.", mr_description: "मेढा जंक्शनजवळ वाहतूक कोंडी होते.", image: "", status: "In Progress" },
+  { id: "D901", citizen_name: "Neha Salgaonkar", mr_citizen_name: "नेहा साळगावकर", ward: "9", category: "gutter", title: "Gutter cover broken", mr_title: "गटाराचे झाकण तुटले", description: "Gutter cover is broken near temple.", mr_description: "मंदिराजवळ गटाराचे झाकण तुटले आहे.", image: "", status: "Pending" },
+  { id: "D1001", citizen_name: "Kiran Naik", mr_citizen_name: "किरण नाईक", ward: "10", category: "street-lights", title: "Street light repair", mr_title: "रस्त्यावरील दिवे दुरुस्ती", description: "Two street lights off on Tarkarli road.", mr_description: "तारकर्ली रस्त्यावर दोन दिवे बंद आहेत.", image: "", status: "Resolved" }
 ];
 // # DEMO DATA END
 
@@ -129,11 +129,23 @@ function statusLabel(status) {
 }
 
 function wardLabel() {
-  return `Ward ${state.selectedWard}`;
+  return getLanguage() === "mr" ? `वॉर्ड ${state.selectedWard}` : `Ward ${state.selectedWard}`;
 }
 
 function complaintId(complaint) {
   return String(complaint.id || complaint._id || "NA");
+}
+
+function localizedComplaintTitle(complaint) {
+  return getLanguage() === "mr" && complaint.mr_title ? complaint.mr_title : (complaint.title || "Complaint");
+}
+
+function localizedComplaintDescription(complaint) {
+  return getLanguage() === "mr" && complaint.mr_description ? complaint.mr_description : (complaint.description || "");
+}
+
+function localizedCitizenName(complaint) {
+  return getLanguage() === "mr" && complaint.mr_citizen_name ? complaint.mr_citizen_name : (complaint.citizen_name || complaint.citizenName || "Citizen");
 }
 
 function categoryLabel(categoryKey) {
@@ -287,6 +299,9 @@ export {
   statusLabel,
   wardLabel,
   complaintId,
+  localizedComplaintTitle,
+  localizedComplaintDescription,
+  localizedCitizenName,
   categoryLabel,
   complaintCategory,
   getCategoryCounts,

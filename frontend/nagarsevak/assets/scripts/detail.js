@@ -3,6 +3,9 @@ import { applyTranslations, t } from "./i18n/index.js";
 import {
   state,
   complaintId,
+  localizedComplaintTitle,
+  localizedComplaintDescription,
+  localizedCitizenName,
   normalizeStatus,
   statusLabel,
   wardLabel,
@@ -44,12 +47,12 @@ export function render(container = _container) {
     : `<span>No photo uploaded</span>`;
 
   container.querySelector("#detailPanel").innerHTML = `
-    <h3>${complaint.title || "Complaint"}</h3>
-    <p>${complaint.description || ""}</p>
+    <h3>${localizedComplaintTitle(complaint)}</h3>
+    <p>${localizedComplaintDescription(complaint)}</p>
     <div class="detail-photo">${imageMarkup}</div>
     <div class="meta-row">
       <span>#${complaintId(complaint)}</span>
-      <span><i class="fa-regular fa-user"></i> ${complaint.citizen_name || "Citizen"}</span>
+      <span><i class="fa-regular fa-user"></i> ${localizedCitizenName(complaint)}</span>
       <span><i class="fa-solid fa-location-dot"></i> ${wardLabel()}</span>
       <span class="badge ${normalizeStatus(complaint.status)}">${statusLabel(complaint.status)}</span>
     </div>

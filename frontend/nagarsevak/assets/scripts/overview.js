@@ -7,6 +7,9 @@ import {
   normalizeStatus,
   complaintCategory,
   complaintId,
+  localizedComplaintTitle,
+  localizedComplaintDescription,
+  localizedCitizenName,
   categoryLabel,
   statusLabel,
   wardLabel,
@@ -80,9 +83,9 @@ function complaintCardCompact(complaint) {
   const categoryKey = complaintCategory(complaint);
   const category = categories.find((c) => c.key === categoryKey) || categories[categories.length - 1];
   const id = complaintId(complaint);
-  const title = complaint.title || "Complaint";
-  const citizen = complaint.citizen_name || complaint.citizenName || "Citizen";
-  const description = complaint.description || "";
+  const title = localizedComplaintTitle(complaint);
+  const citizen = localizedCitizenName(complaint);
+  const description = localizedComplaintDescription(complaint);
 
   return `
     <article class="complaint-item">

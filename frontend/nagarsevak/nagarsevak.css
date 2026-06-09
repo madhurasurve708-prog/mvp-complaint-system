@@ -256,6 +256,31 @@ button {
   font-weight: 900;
 }
 
+.primary-btn,
+.secondary-btn,
+.refresh-btn,
+.text-btn,
+.menu-toggle,
+.side-nav button,
+.logout-btn,
+.category-tile,
+.complaint-item,
+.open-complaint,
+.profile-chip {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+
+.primary-btn:hover,
+.secondary-btn:hover,
+.refresh-btn:hover,
+.text-btn:hover,
+.menu-toggle:hover,
+.open-complaint:hover,
+.profile-chip:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(21, 87, 255, 0.14);
+}
+
 .primary-btn {
   width: 100%;
   color: var(--white);
@@ -352,6 +377,12 @@ button {
   background: var(--blue);
   color: var(--white);
   box-shadow: 0 16px 30px rgba(21, 87, 255, 0.22);
+}
+
+.side-nav button:hover,
+.logout-btn:hover {
+  transform: translateY(-1px);
+  background: #edf4ff;
 }
 
 .side-nav b {
@@ -527,6 +558,11 @@ button {
   background: var(--white);
   color: var(--blue);
   padding: 0 18px;
+}
+
+.back-icon-btn {
+  width: 52px;
+  padding: 0;
 }
 
 .stats-grid {
@@ -717,6 +753,8 @@ button {
 
 .complaint-item:hover {
   border-color: var(--blue);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(21, 87, 255, 0.1);
 }
 
 .complaint-icon {

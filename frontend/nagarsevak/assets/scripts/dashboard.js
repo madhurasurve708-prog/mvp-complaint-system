@@ -110,7 +110,7 @@ function renderChrome() {
   const profileName = document.getElementById("profileName");
   if (profileName) profileName.textContent = name;
   const profileRole = document.getElementById("profileRole");
-  if (profileRole) profileRole.textContent = `${wardLabel()} Nagarsevak`;
+  if (profileRole) profileRole.textContent = getLanguage() === "mr" ? `${wardLabel()} नगरसेवक` : `${wardLabel()} Nagarsevak`;
   const avatarLetter = document.getElementById("avatarLetter");
   if (avatarLetter) avatarLetter.textContent = firstLetter;
   const bigAvatar = document.getElementById("bigAvatar");

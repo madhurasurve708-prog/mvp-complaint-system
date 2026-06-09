@@ -24,7 +24,7 @@ const feedbackCount = document.getElementById("feedbackCount");
 const feedbackStars = document.getElementById("feedbackStars");
 const submitFeedback = document.getElementById("submitFeedback");
 
-const OFFICIAL_LOGIN_URL = "nagarsevak/nagarsevak.html";
+const OFFICIAL_LOGIN_URL = "nagarsevak.html";
 const initialSettingsContent = settingsContent?.innerHTML ?? "";
 
 const authCopy = {
@@ -316,13 +316,13 @@ document.querySelectorAll(".side-nav a").forEach((link) => {
 
 document.querySelectorAll('[data-action="new-complaint"], .blue-card button').forEach((button) => {
   button.addEventListener("click", () => {
-    window.location.href = "report-complaint.html";
+    window.location.href = "citizen/report-complaint.html";
   });
 });
 
 document.querySelectorAll('[data-action="track-complaint"], .green-card button').forEach((button) => {
   button.addEventListener("click", () => {
-    window.location.href = "my-complaints.html";
+    window.location.href = "citizen/my-complaints.html";
   });
 });
 
@@ -395,7 +395,7 @@ document.querySelectorAll('.help-card button, .help-search button, .previous-fee
 });
 
 if (window.location.hash === "#complaints") {
-  window.location.replace("my-complaints.html");
+  window.location.replace("citizen/my-complaints.html");
 }
 
 if (window.location.hash === "#dashboard" || window.location.hash === "#home") {
