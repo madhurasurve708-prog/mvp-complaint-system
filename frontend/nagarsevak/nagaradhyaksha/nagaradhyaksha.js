@@ -11,6 +11,8 @@ const state = {
   previousPage: "overview",
   selectedWard: "all",
   selectedCategory: "all",
+  selectedStatus: "all",
+  searchQuery: "",
   announcementAudience: "citizen",
   allComplaints: [],
   announcements: []
@@ -97,6 +99,31 @@ function statusLabel(status) {
   return "प्रलंबित";
 }
 
+function statusTone(status) {
+  const key = normalizeStatus(status);
+  if (key === "resolved") return { icon: "fa-circle-check", label: "पूर्ण", className: "status-resolved" };
+  if (key === "progress") return { icon: "fa-arrows-rotate", label: "कारवाई सुरू", className: "status-progress" };
+  return { icon: "fa-clock", label: "प्रलंबित", className: "status-pending" };
+}
+
+function statusClass(status) {
+  return statusTone(status).className;
+}
+
+function formatDate(value) {
+  const date = value ? new Date(value) : new Date();
+  if (Number.isNaN(date.getTime())) return "आज";
+  return date.toLocaleDateString("mr-IN", { day: "2-digit", month: "short", year: "numeric" });
+}
+
+function complaintDate(complaint) {
+  return formatDate(complaint.created_at || complaint.updated_at);
+}
+
+function announcementDate(item) {
+  return formatDate(item.created_at || item.createdAt);
+}
+
 function complaintId(complaint) {
   return String(complaint.id || complaint._id || "NA");
 }
@@ -135,9 +162,9 @@ function applyLocalActions(complaints) {
 
 function getAnnouncements() {
   return [
-    { type: "citizen", ward: "1", subject: "बाजारपेठ स्वच्छता मोहीम", message: "शनिवारी सकाळी ७ ते १० बाजारपेठ स्वच्छता मोहीम राबवली जाईल." },
-    { type: "citizen", ward: "all", subject: "पाणीपुरवठा सूचना", message: "उद्या सकाळच्या पाणीपुरवठ्याच्या वेळेत बदल असेल." },
-    { type: "nagarsevak", ward: "all", subject: "मासिक आढावा बैठक", message: "सर्व नगरसेवकांनी सोमवार सकाळी ११ वाजता आढावा बैठकीला उपस्थित राहावे." },
+    { type: "citizen", ward: "1", priority: "high", created_at: new Date().toISOString(), subject: "बाजारपेठ स्वच्छता मोहीम", message: "शनिवारी सकाळी ७ ते १० बाजारपेठ स्वच्छता मोहीम राबवली जाईल." },
+    { type: "citizen", ward: "all", priority: "medium", created_at: new Date(Date.now() - 86400000).toISOString(), subject: "पाणीपुरवठा सूचना", message: "उद्या सकाळच्या पाणीपुरवठ्याच्या वेळेत बदल असेल." },
+    { type: "nagarsevak", ward: "all", priority: "high", created_at: new Date(Date.now() - 172800000).toISOString(), subject: "मासिक आढावा बैठक", message: "सर्व नगरसेवकांनी सोमवार सकाळी ११ वाजता आढावा बैठकीला उपस्थित राहावे." },
     ...state.announcements
   ];
 }
@@ -179,7 +206,10 @@ function filteredComplaints() {
   return state.allComplaints.filter((complaint) => {
     const wardMatch = state.selectedWard === "all" || normalizeWard(complaint.ward) === state.selectedWard;
     const categoryMatch = state.selectedCategory === "all" || complaintCategory(complaint) === state.selectedCategory;
-    return wardMatch && categoryMatch;
+    const statusMatch = state.selectedStatus === "all" || normalizeStatus(complaint.status) === state.selectedStatus;
+    const searchable = `${complaint.title || ""} ${complaint.description || ""} ${complaint.citizen_name || ""} ${complaintId(complaint)} ${wardLabel(complaint.ward)}`.toLowerCase();
+    const searchMatch = !state.searchQuery || searchable.includes(state.searchQuery.toLowerCase());
+    return wardMatch && categoryMatch && statusMatch && searchMatch;
   });
 }
 
@@ -232,18 +262,22 @@ function statCard(icon, color, label, value, subtext) {
 function complaintCard(complaint) {
   const category = categoryInfo(complaintCategory(complaint));
   const statusKey = normalizeStatus(complaint.status);
+  const tone = statusTone(complaint.status);
   return `
-    <article class="complaint-card">
+    <article class="complaint-card ${statusClass(statusKey)}">
       <div class="tile-icon ${category.className}"><i class="fa-solid ${category.icon}"></i></div>
       <div>
-        <h3>${complaint.title || "Complaint"}</h3>
+        <div class="complaint-title-row">
+          <h3>${complaint.title || "Complaint"}</h3>
+          <span class="badge ${tone.className}"><i class="fa-solid ${tone.icon}"></i>${statusLabel(complaint.status)}</span>
+        </div>
         <p>${complaint.description || ""}</p>
         <div class="meta-row">
           <span>#${complaintId(complaint)}</span>
           <span><i class="fa-regular fa-user"></i> ${complaint.citizen_name || "Citizen"}</span>
           <span><i class="fa-solid fa-location-dot"></i> ${wardLabel(complaint.ward)}</span>
           <span>${category.label}</span>
-          <span class="badge ${statusKey}">${statusLabel(complaint.status)}</span>
+          <span><i class="fa-regular fa-calendar"></i> ${complaintDate(complaint)}</span>
         </div>
       </div>
       <button class="icon-btn" type="button" data-page="categories" aria-label="तक्रार पहा">
@@ -260,7 +294,7 @@ function wardCard(ward) {
       <div>
         <strong>${wardLabel(ward.id)}</strong>
         <span>नगरसेवक: ${ward.nagarsevak}</span>
-        <small>${ward.focus} | ${stats.total} तक्रारी</small>
+        <small>${ward.focus} | ${stats.total} तक्रारी | ${stats.pending} प्रलंबित</small>
       </div>
       <b>${stats.score}%</b>
       <div class="progress"><span style="width:${stats.score}%"></span></div>
@@ -301,10 +335,10 @@ function renderOverview() {
     <section class="content-grid">
       <div class="panel">
         <div class="panel-head">
-          <div><h2>सर्व वॉर्डची झटपट स्थिती</h2><p>क्लिक केल्यावर त्या वॉर्डचे पेज उघडेल.</p></div>
+          <div><h2>सर्व वॉर्डची झटपट स्थिती</h2><p>क्लिक केल्यावर त्या वॉर्डच्या तक्रारी थेट दिसतील.</p></div>
           <button class="small-btn" type="button" data-page="wards">सर्व पहा</button>
         </div>
-        <div class="ward-list">${wards.slice(0, 5).map(wardCard).join("")}</div>
+        <div class="ward-list">${wards.map(wardCard).join("")}</div>
       </div>
       <div class="panel">
         <div class="panel-head">
@@ -333,28 +367,55 @@ function renderWards() {
     <section class="panel">
       <div class="ward-list">${wards.map(wardCard).join("")}</div>
     </section>
-    <section class="panel">
-      <div class="panel-head"><div><h2 id="wardDetailTitle">${state.selectedWard === "all" ? "वॉर्ड निवडा" : wardLabel(state.selectedWard)}</h2><p>वॉर्ड कार्ड क्लिक केल्यावर येथे माहिती बदलेल.</p></div></div>
-      <div id="wardDetail">${renderWardDetail()}</div>
-    </section>
     <!-- # WARDS PAGE END -->
   `;
 }
 
-function renderWardDetail() {
+function renderWardComplaints() {
   const selected = state.selectedWard === "all" ? wards[0].id : state.selectedWard;
   const ward = wardInfo(selected);
   const stats = wardStats(selected);
-  const complaints = state.allComplaints.filter((item) => normalizeWard(item.ward) === selected);
+  const complaints = filteredComplaints();
   return `
+    <section class="page-heading ward-detail-heading">
+      <div>
+        <p class="eyebrow">थेट वॉर्ड तक्रारी</p>
+        <h1>${wardLabel(selected)}</h1>
+        <p>${ward.nagarsevak} | ${ward.focus}</p>
+      </div>
+      <button class="small-btn" type="button" data-page="wards"><i class="fa-solid fa-map-location-dot"></i>सर्व वॉर्ड</button>
+    </section>
     <section class="stats-grid">
       ${statCard("fa-file-lines", "blue", "तक्रारी", stats.total, ward.focus)}
       ${statCard("fa-hourglass-half", "orange", "प्रलंबित", stats.pending, "नगरसेवक फॉलोअप")}
       ${statCard("fa-spinner", "purple", "कारवाई सुरू", stats.progress, "काम सुरू")}
       ${statCard("fa-check", "green", "पूर्ण", stats.resolved, `${stats.score}% दर`)}
     </section>
-    <div class="complaints-list">
-      ${complaints.length ? complaints.map(complaintCard).join("") : `<div class="empty-state">या वॉर्डमध्ये तक्रारी नाहीत.</div>`}
+    <section class="panel">
+      <div class="panel-head">
+        <div><h2>तक्रारी</h2><p>स्थिती, नागरिक किंवा तक्रार क्रमांकाने शोधा.</p></div>
+        ${renderComplaintFilters("ward")}
+      </div>
+      <div class="complaints-list">
+        ${complaints.length ? complaints.map(complaintCard).join("") : `<div class="empty-state">या फिल्टरमध्ये तक्रारी नाहीत.</div>`}
+      </div>
+    </section>
+  `;
+}
+
+function renderComplaintFilters(scope) {
+  return `
+    <div class="filters complaint-filters">
+      <label class="search-field">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="${scope}SearchFilter" type="search" value="${state.searchQuery}" placeholder="तक्रार शोधा" autocomplete="off">
+      </label>
+      <select id="${scope}StatusFilter" aria-label="स्थिती फिल्टर">
+        <option value="all" ${state.selectedStatus === "all" ? "selected" : ""}>सर्व स्थिती</option>
+        <option value="pending" ${state.selectedStatus === "pending" ? "selected" : ""}>प्रलंबित</option>
+        <option value="progress" ${state.selectedStatus === "progress" ? "selected" : ""}>कारवाई सुरू</option>
+        <option value="resolved" ${state.selectedStatus === "resolved" ? "selected" : ""}>पूर्ण</option>
+      </select>
     </div>
   `;
 }
@@ -382,10 +443,13 @@ function renderCategories() {
     <section class="panel">
       <div class="panel-head">
         <div><h2>${categoryInfo(state.selectedCategory).label} तक्रारी</h2><p>सर्व वॉर्डमधील निवडलेल्या विभागाच्या तक्रारी.</p></div>
-        <select id="categoryWardFilter" aria-label="वॉर्ड फिल्टर">
-          <option value="all">सर्व वॉर्ड</option>
-          ${wards.map((ward) => `<option value="${ward.id}" ${state.selectedWard === ward.id ? "selected" : ""}>${wardLabel(ward.id)}</option>`).join("")}
-        </select>
+        <div class="filters">
+          ${renderComplaintFilters("category")}
+          <select id="categoryWardFilter" aria-label="वॉर्ड फिल्टर">
+            <option value="all">सर्व वॉर्ड</option>
+            ${wards.map((ward) => `<option value="${ward.id}" ${state.selectedWard === ward.id ? "selected" : ""}>${wardLabel(ward.id)}</option>`).join("")}
+          </select>
+        </div>
       </div>
       <div class="complaints-list">
         ${complaints.length ? complaints.map(complaintCard).join("") : `<div class="empty-state">या फिल्टरमध्ये तक्रारी नाहीत.</div>`}
@@ -397,6 +461,7 @@ function renderCategories() {
 
 function renderAnnouncements() {
   const announcements = getAnnouncements().filter((item) => (item.type || item.audience) === state.announcementAudience);
+  const latest = announcements[0];
   return `
     <!-- # ANNOUNCEMENT PAGE START -->
     <section class="page-heading">
@@ -436,8 +501,16 @@ function renderAnnouncements() {
       <div class="panel">
         <div class="panel-head"><div><h2>अलीकडील घोषणा</h2><p>${state.announcementAudience === "citizen" ? "नागरिकांसाठी" : "नगरसेवकांसाठी"}</p></div></div>
         <div class="announcement-list">
-          ${announcements.map((item) => `
+          ${latest ? `
+            <article class="announcement-card featured ${latest.type || latest.audience}">
+              <div class="announcement-meta"><span class="badge status-resolved">नवीन</span><span>${announcementDate(latest)}</span></div>
+              <strong>${latest.subject}</strong>
+              <span>${latest.ward === "all" ? "सर्व वॉर्ड" : wardLabel(latest.ward)} | ${latest.message}</span>
+            </article>
+          ` : ""}
+          ${announcements.slice(latest ? 1 : 0).map((item) => `
             <article class="announcement-card ${item.type || item.audience}">
+              <div class="announcement-meta"><span>${item.ward === "all" ? "सर्व वॉर्ड" : wardLabel(item.ward)}</span><span>${announcementDate(item)}</span></div>
               <strong>${item.subject}</strong>
               <span>${item.ward === "all" ? "सर्व वॉर्ड" : wardLabel(item.ward)} | ${item.message}</span>
             </article>
@@ -461,7 +534,7 @@ function renderBestWard() {
       <div class="best-list">
         ${ranked.map((ward, index) => `
           <article class="best-card">
-            <div class="meta-row"><span class="badge ${index === 0 ? "resolved" : "progress"}">क्रमांक ${index + 1}</span><span>${ward.nagarsevak}</span></div>
+            <div class="meta-row"><span class="badge ${index === 0 ? "status-resolved" : "status-progress"}">क्रमांक ${index + 1}</span><span>${ward.nagarsevak}</span></div>
             <h2>${wardLabel(ward.id)}</h2>
             <p>${ward.stats.score}% निवारण दर | ${ward.stats.resolved} पूर्ण | ${ward.stats.pending} प्रलंबित</p>
             <div class="progress"><span style="width:${ward.stats.score}%"></span></div>
@@ -537,6 +610,7 @@ function renderProfile() {
 const pageTitles = {
   overview: "नगराध्यक्ष डॅशबोर्ड",
   wards: "वॉर्ड विभाग",
+  wardComplaints: "वॉर्ड तक्रारी",
   categories: "विभागनिहाय तक्रारी",
   announcements: "घोषणा",
   best: "सर्वोत्तम वॉर्ड",
@@ -547,6 +621,7 @@ const pageTitles = {
 const pageRenderers = {
   overview: renderOverview,
   wards: renderWards,
+  wardComplaints: renderWardComplaints,
   categories: renderCategories,
   announcements: renderAnnouncements,
   best: renderBestWard,
@@ -561,7 +636,8 @@ function openPage(page, options = {}) {
   pageTitle.textContent = pageTitles[page];
   viewContainer.innerHTML = pageRenderers[page]();
   document.querySelectorAll("[data-page]").forEach((node) => {
-    if (node.closest(".side-nav")) node.classList.toggle("active", node.dataset.page === page);
+    const activePage = page === "wardComplaints" ? "wards" : page;
+    if (node.closest(".side-nav")) node.classList.toggle("active", node.dataset.page === activePage);
   });
   sidebar.classList.remove("open");
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -609,7 +685,9 @@ document.addEventListener("click", (event) => {
   if (wardButton) {
     state.selectedWard = wardButton.dataset.ward;
     state.selectedCategory = "all";
-    openPage("wards");
+    state.selectedStatus = "all";
+    state.searchQuery = "";
+    openPage("wardComplaints");
     return;
   }
 
@@ -632,6 +710,40 @@ document.addEventListener("change", (event) => {
     state.selectedWard = event.target.value;
     openPage("categories", { skipPrevious: true });
   }
+
+  if (event.target.id === "wardStatusFilter") {
+    state.selectedStatus = event.target.value;
+    openPage("wardComplaints", { skipPrevious: true });
+  }
+
+  if (event.target.id === "categoryStatusFilter") {
+    state.selectedStatus = event.target.value;
+    openPage("categories", { skipPrevious: true });
+  }
+});
+
+document.addEventListener("input", (event) => {
+  if (event.target.id === "wardSearchFilter") {
+    state.searchQuery = event.target.value.trim();
+    window.clearTimeout(document.searchTimer);
+    document.searchTimer = window.setTimeout(() => {
+      openPage("wardComplaints", { skipPrevious: true });
+      const input = document.getElementById("wardSearchFilter");
+      input?.focus();
+      input?.setSelectionRange(input.value.length, input.value.length);
+    }, 180);
+  }
+
+  if (event.target.id === "categorySearchFilter") {
+    state.searchQuery = event.target.value.trim();
+    window.clearTimeout(document.searchTimer);
+    document.searchTimer = window.setTimeout(() => {
+      openPage("categories", { skipPrevious: true });
+      const input = document.getElementById("categorySearchFilter");
+      input?.focus();
+      input?.setSelectionRange(input.value.length, input.value.length);
+    }, 180);
+  }
 });
 
 document.addEventListener("submit", async (event) => {
@@ -643,7 +755,9 @@ document.addEventListener("submit", async (event) => {
     ward: document.getElementById("announcementWard").value,
     subject: document.getElementById("announcementSubject").value.trim(),
     message: document.getElementById("announcementMessage").value.trim(),
-    created_by: "nagaradhyaksha"
+    created_by: "nagaradhyaksha",
+    created_at: new Date().toISOString(),
+    priority: "medium"
   };
 
   try {
