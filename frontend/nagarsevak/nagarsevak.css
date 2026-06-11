@@ -749,6 +749,14 @@ body.sidebar-open {
   margin-bottom: 18px;
 }
 
+/* The topbar h1 already shows the current view's title (synced from the
+   page-heading h2's data-i18n key). Hide the in-page h2 so the user
+   doesn't see the same heading twice. The small green label (e.g. "Ward 1")
+   stays as a subtitle. */
+.page-heading h2 {
+  display: none;
+}
+
 .panel h3,
 .panel-head h3 {
   margin: 0;
@@ -1449,26 +1457,91 @@ body.sidebar-open {
 @media (max-width: 720px) {
   .login-panel,
   .dashboard-main {
-    padding: 16px 14px 28px;
+    padding: 14px 14px 24px;
   }
 
+  /* Mobile login: keep the hero photo as a low-key banner with compact
+     copy on top, so the page still feels branded without eating the
+     viewport. The overlay is darker so the small text reads well. */
   .login-visual {
-    padding: 26px;
-    min-height: 360px;
+    padding: 14px 18px 18px;
+    min-height: 168px;
+    display: block;
+    place-items: stretch;
+    background: var(--blue-dark);
+  }
+  .login-visual img,
+  .login-overlay,
+  .login-copy {
+    display: block;
+  }
+  .login-visual img {
+    opacity: 0.5;
+    object-fit: cover;
+  }
+  .login-overlay {
+    background: linear-gradient(180deg, rgba(5, 18, 68, 0.3), rgba(5, 18, 68, 0.55));
   }
 
   .brand-card {
-    top: 24px;
-    width: 118px;
-    min-height: 118px;
+    position: static;
+    transform: none;
+    width: 78px;
+    min-height: 78px;
+    padding: 4px;
+    margin: 0 auto 6px;
+    box-shadow: var(--shadow);
   }
+  .brand-card .brand-icon {
+    width: 36px;
+    height: 36px;
+    border-width: 3px;
+    font-size: 16px;
+  }
+  .brand-card strong { font-size: 14px; }
 
   .login-copy {
-    margin-top: 140px;
+    margin: 0;
+    text-align: center;
+  }
+  .login-copy p { margin: 0 0 4px; font-size: 13px; }
+  .login-copy h1 { font-size: 20px; line-height: 1.15; }
+  .login-copy span { margin-top: 6px; font-size: 12px; }
+
+  .login-panel {
+    gap: 10px;
+    padding: 14px 14px 24px;
   }
 
-  .login-copy h1 {
-    font-size: 34px;
+  .language-switch {
+    width: 100%;
+  }
+  .language-switch button { height: 38px; font-size: 14px; }
+
+  .login-card {
+    width: 100%;
+    padding: 18px 16px;
+  }
+
+  .login-heading {
+    margin-bottom: 14px;
+  }
+  .login-heading h2 { font-size: 24px; }
+  .login-heading p, .login-heading span { font-size: 13px; }
+
+  .field,
+  .search-field {
+    min-height: 48px;
+    margin-bottom: 10px;
+    padding: 0 14px;
+  }
+
+  .primary-btn,
+  .secondary-btn,
+  .refresh-btn,
+  .text-btn {
+    min-height: 48px;
+    font-size: 15px;
   }
 
   .dashboard-page {
@@ -1511,18 +1584,20 @@ body.sidebar-open {
     padding: 0 16px;
   }
 
-  /* Topbar: shrink profile, keep menu + profile side by side at the top. */
+  /* Topbar: shrink profile, keep menu + title left-aligned and push the
+     profile to the right edge so the heading sits next to the hamburger. */
   .topbar {
     min-height: 60px;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 10px;
     margin-bottom: 14px;
   }
+  .top-title { margin-right: auto; }
   .top-title p { font-size: 12px; }
   .top-title h1 { font-size: 20px; }
-  .top-actions { flex-direction: row; gap: 8px; }
+  .top-actions { flex-direction: row; gap: 8px; margin-left: 0; }
   .top-actions .refresh-btn { display: none; }
 
   /* Profile chip: avatar-only on mobile, with text shown as a sr-only label. */

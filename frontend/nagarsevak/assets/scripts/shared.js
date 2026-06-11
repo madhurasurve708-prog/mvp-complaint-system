@@ -13,7 +13,7 @@
 //   9. NAVIGATION      - openView() that loads a page template + script
 // =====================================================================
 
-import { getLanguage } from "./i18n/index.js";
+import { getLanguage, t } from "./i18n/index.js";
 import * as overviewPage from "./overview.js";
 import * as complaintsPage from "./complaints.js";
 import * as detailPage from "./detail.js";
@@ -256,8 +256,32 @@ async function openView(viewName, options = {}) {
   }
   window.scrollTo({ top: 0, behavior: "smooth" });
 
+  // Make the topbar h1 reflect the current view's page heading so users
+  // always see the page they're on (Ward Complaints, Monthly Analytics,
+  // Profile, etc.) instead of the generic "Nagarsevak Dashboard".
+  syncTopbarTitle();
+
   emit("view:changed", viewName);
   emit("view:rendered", viewName);
+}
+
+// Copy the data-i18n key + translated text from the current view's
+// page-heading h2 into the persistent topbar h1. Falls back to the
+// default "Nagarsevak Dashboard" key when the view has no heading
+// (e.g. the overview hero card).
+function syncTopbarTitle() {
+  const topbarTitle = document.getElementById("topbarTitle");
+  if (!topbarTitle) return;
+  const container = document.getElementById("viewContainer");
+  const viewHeading = container && container.querySelector(".page-heading h2[data-i18n]");
+  if (viewHeading) {
+    const key = viewHeading.getAttribute("data-i18n");
+    topbarTitle.setAttribute("data-i18n", key);
+    topbarTitle.textContent = t(key);
+  } else {
+    topbarTitle.setAttribute("data-i18n", "dashboardTitle");
+    topbarTitle.textContent = t("dashboardTitle");
+  }
 }
 
 // React to browser Back/Forward (and history.back()/forward() calls).
