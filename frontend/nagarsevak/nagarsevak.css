@@ -472,6 +472,21 @@ button {
   align-items: center;
   gap: 12px;
   font-weight: 900;
+  background: transparent;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  text-align: left;
+}
+
+.profile-chip .profile-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.profile-chip .profile-meta strong {
+  font-size: 15px;
 }
 
 .profile-chip span {
@@ -480,16 +495,60 @@ button {
   font-size: 13px;
 }
 
+/* Sidebar close button (X) - only visible on mobile. */
+.sidebar-close {
+  display: none;
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 50%;
+  background: #edf4ff;
+  color: var(--blue-dark);
+  font-size: 18px;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-close:hover {
+  background: var(--blue);
+  color: var(--white);
+}
+
+/* Dark overlay shown behind the open sidebar on mobile. Tap to close. */
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 20, 95, 0.45);
+  z-index: 9;
+  animation: fadeIn 0.18s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+body.sidebar-open {
+  overflow: hidden;
+}
+
 .avatar,
 .big-avatar {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: #ffbd72;
   color: #7a3500;
   font-weight: 900;
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
 }
 /* # DASHBOARD LAYOUT END */
 
@@ -722,6 +781,48 @@ button {
 
 .search-field {
   margin: 0;
+}
+
+/* The select wrappers inside the filters panel: match the look of
+   .search-field (icon + input). Here we use a chevron-only wrapper so the
+   native <select> arrow is hidden and a consistent chevron is shown. */
+.filters-panel .select-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 58px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+  padding: 0 14px;
+  margin: 0;
+  color: var(--ink);
+}
+
+.filters-panel .select-field select {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+  font-weight: 900;
+  /* Hide the native dropdown arrow so only our chevron is visible. */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 0 32px 0 0;
+}
+
+.filters-panel .select-field .chevron {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 14px;
+  pointer-events: none;
 }
 
 .filters-panel select {
@@ -1149,8 +1250,8 @@ button {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  align-items: stretch;
-  min-width: 180px;
+  align-items: flex-start;
+  min-width: 200px;
 }
 
 .profile-btn {
@@ -1158,7 +1259,9 @@ button {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 16px;
+  padding: 0 18px;
+  height: 44px;
+  min-height: 44px;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 800;
@@ -1167,6 +1270,7 @@ button {
   transition: transform 0.2s ease, box-shadow 0.2s ease,
     background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   white-space: nowrap;
+  width: auto;
 }
 
 .profile-btn i {
@@ -1255,12 +1359,15 @@ button {
   }
 
   .profile-actions {
-    flex-direction: column;
-    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: auto;
+    align-items: center;
   }
 
   .profile-btn {
-    width: 100%;
+    flex: 0 0 auto;
+    width: auto;
   }
 }
 /* # PROFILE PAGE END */
@@ -1342,7 +1449,7 @@ button {
 @media (max-width: 720px) {
   .login-panel,
   .dashboard-main {
-    padding: 18px;
+    padding: 16px 14px 28px;
   }
 
   .login-visual {
@@ -1373,15 +1480,22 @@ button {
     left: 0;
     top: 0;
     bottom: 0;
-    width: 276px;
-    z-index: 10;
-    transform: translateX(-100%);
-    transition: 0.2s ease;
+    width: 286px;
+    max-width: 84vw;
+    z-index: 50;
+    transform: translateX(-105%);
+    transition: transform 0.22s ease;
+    padding: 22px 18px;
+    box-shadow: 6px 0 24px rgba(8, 20, 95, 0.18);
   }
 
   .sidebar.open {
     transform: translateX(0);
   }
+
+  /* On mobile the hamburger hides and the close (X) shows. */
+  .sidebar .menu-toggle { display: none; }
+  .sidebar-close { display: inline-flex; }
 
   .side-brand h2,
   .side-brand p,
@@ -1397,20 +1511,89 @@ button {
     padding: 0 16px;
   }
 
-  .topbar,
-  .top-actions,
-  .page-heading,
-  .panel-head {
-    align-items: stretch;
-    flex-direction: column;
+  /* Topbar: shrink profile, keep menu + profile side by side at the top. */
+  .topbar {
+    min-height: 60px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .top-title p { font-size: 12px; }
+  .top-title h1 { font-size: 20px; }
+  .top-actions { flex-direction: row; gap: 8px; }
+  .top-actions .refresh-btn { display: none; }
+
+  /* Profile chip: avatar-only on mobile, with text shown as a sr-only label. */
+  .profile-chip {
+    background: transparent;
+    border-radius: 50%;
+    padding: 0;
+    width: 44px;
+    height: 44px;
+    justify-content: center;
+    gap: 0;
+    overflow: hidden;
+  }
+  .profile-chip .avatar {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+  .profile-chip .profile-meta {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
-  .stats-grid,
-  .category-grid,
+  /* Hero card: tighter padding so the page is shorter on small screens. */
+  .hero-card { padding: 24px 18px; min-height: 220px; }
+  .hero-card h2 { font-size: 26px; }
+  .hero-card p { font-size: 15px; }
+
+  /* Stats: 2 columns on phone so they don't take too much vertical space. */
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin: 14px 0;
+  }
+  .stats-grid article { padding: 14px; }
+  .stats-grid strong { font-size: 26px; }
+
+  /* Categories: horizontal scroll so they're visible above the fold. */
+  .category-grid {
+    display: flex;
+    grid-template-columns: none;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 4px 2px 12px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  .category-tile {
+    flex: 0 0 110px;
+    min-height: 110px;
+    scroll-snap-align: start;
+  }
+
+  /* Panels and headings: tighter on phones. */
+  .panel { padding: 18px 16px; }
+  .panel-head { margin-bottom: 12px; }
+  .panel h3, .panel-head h3 { font-size: 18px; }
+  .panel p, .panel-head p { font-size: 13px; }
+
   .filters-panel {
     grid-template-columns: 1fr;
   }
-
   .complaint-item {
     grid-template-columns: 46px minmax(0, 1fr);
   }

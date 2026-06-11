@@ -248,7 +248,12 @@ async function openView(viewName, options = {}) {
     button.classList.toggle("active", button.dataset.view === viewName);
   });
   const sidebar = document.getElementById("sidebar");
-  if (sidebar) sidebar.classList.remove("open");
+  if (sidebar) {
+    sidebar.classList.remove("open");
+    const backdrop = document.getElementById("sidebarBackdrop");
+    if (backdrop) backdrop.hidden = true;
+    document.body.classList.remove("sidebar-open");
+  }
   window.scrollTo({ top: 0, behavior: "smooth" });
 
   emit("view:changed", viewName);

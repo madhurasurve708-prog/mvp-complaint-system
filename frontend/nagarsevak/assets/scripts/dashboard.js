@@ -43,17 +43,33 @@ export async function init() {
   const toggleSidebar = () => {
     const sidebar = document.getElementById("sidebar");
     const dashboard = document.getElementById("dashboardContainer");
+    const backdrop = document.getElementById("sidebarBackdrop");
     if (window.matchMedia("(min-width: 1081px)").matches) {
       sidebar.classList.toggle("collapsed");
       dashboard.classList.toggle("collapsed");
     } else {
-      sidebar.classList.toggle("open");
+      const willOpen = !sidebar.classList.contains("open");
+      sidebar.classList.toggle("open", willOpen);
+      if (backdrop) backdrop.hidden = !willOpen;
+      document.body.classList.toggle("sidebar-open", willOpen);
     }
+  };
+  const closeSidebar = () => {
+    const sidebar = document.getElementById("sidebar");
+    const backdrop = document.getElementById("sidebarBackdrop");
+    if (!sidebar) return;
+    sidebar.classList.remove("open");
+    if (backdrop) backdrop.hidden = true;
+    document.body.classList.remove("sidebar-open");
   };
   document.querySelectorAll(".menu-toggle").forEach((button) => {
     button.addEventListener("click", toggleSidebar);
   });
-  document.getElementById("refreshButton").addEventListener("click", loadComplaints);
+  const closeBtn = document.getElementById("sidebarClose");
+  if (closeBtn) closeBtn.addEventListener("click", closeSidebar);
+  const backdropEl = document.getElementById("sidebarBackdrop");
+  if (backdropEl) backdropEl.addEventListener("click", closeSidebar);
+  // document.getElementById("refreshButton").addEventListener("click", loadComplaints);
 
   // Bus listeners are registered only once even if init() runs again
   // (e.g. user logs out and logs back in).
