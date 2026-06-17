@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ward Details | Seva Setu | Nagaradhyaksha Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="nagaradhyaksha.css">
+</head>
+<body>
+  <!-- # LOGIN START -->
+  <main class="president-login-page" id="presidentLogin">
+    <section class="president-login-visual">
+      <div class="brand-icon"><i class="fa-solid fa-building-columns"></i></div>
+      <h1>Seva Setu</h1>
+      <p>Nagaradhyaksha Panel</p>
+    </section>
+    <section class="president-login-panel">
+      <form class="president-login-card" id="presidentLoginForm">
+        <div>
+          <p class="eyebrow">Malvan Nagar Parishad</p>
+          <h2>Nagaradhyaksha Login</h2>
+          <span>Enter username and password to open the city dashboard.</span>
+        </div>
+        <label>
+          <span>Username</span>
+          <input id="presidentUsername" type="text" value="nagaradhyaksha" autocomplete="username" required>
+        </label>
+        <label>
+          <span>Password</span>
+          <input id="presidentPassword" type="password" value="123456" autocomplete="current-password" required>
+        </label>
+        <button class="primary-btn" type="submit"><i class="fa-solid fa-lock-open"></i>Login</button>
+        <small>Demo login: nagaradhyaksha / 123456</small>
+      </form>
+    </section>
+  </main>
+  <!-- # LOGIN END -->
+
+  <!-- # APP SHELL START -->
+  <main class="president-page" id="presidentPage" hidden>
+    <!-- # SIDEBAR START -->
+    <aside class="sidebar" id="sidebar">
+      <a class="side-brand" href="index.html">
+        <div class="brand-icon"><i class="fa-solid fa-building-columns"></i></div>
+        <h1>Seva <span>Setu</span></h1>
+        <p>नगराध्यक्ष पॅनेल</p>
+      </a>
+
+      <nav class="side-nav" aria-label="मुख्य मेनू">
+        <a href="index.html" data-page="overview"><i class="fa-solid fa-chart-pie"></i><span>आढावा</span></a>
+        <a href="index.html" data-page="wards"><i class="fa-solid fa-map-location-dot"></i><span>वॉर्ड विभाग</span></a>
+        <a href="index.html" data-page="categories"><i class="fa-solid fa-table-cells-large"></i><span>विभागनिहाय तक्रारी</span></a>
+        <a href="index.html" data-page="announcements"><i class="fa-solid fa-bullhorn"></i><span>घोषणा</span></a>
+        <a href="index.html" data-page="best"><i class="fa-solid fa-trophy"></i><span>सर्वोत्तम वॉर्ड</span></a>
+        <a href="index.html" data-page="monthly"><i class="fa-solid fa-chart-simple"></i><span>मासिक विश्लेषण</span></a>
+        <a href="index.html" data-page="profile"><i class="fa-regular fa-user"></i><span>प्रोफाइल सेटिंग्ज</span></a>
+        <a href="nagarsevak.html"><i class="fa-solid fa-people-roof"></i><span>नगरसेवक</span></a>
+        <a href="index.html"><i class="fa-solid fa-house"></i><span>होम</span></a>
+      </nav>
+    </aside>
+    <!-- # SIDEBAR END -->
+
+    <!-- # MAIN AREA START -->
+    <section class="main-area">
+      <!-- # TOP BAR START -->
+      <header class="topbar">
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="मेनू उघडा">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <button class="back-btn" id="backButton" type="button" aria-label="Back">
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <div class="top-title">
+          <p class="eyebrow">मालवण नगरपरिषद</p>
+          <h2 id="pageTitle">वॉर्ड तपशील</h2>
+          <span class="town-slogan">स्वच्छ किनारा, सक्षम नागरिक, सुंदर मालवण.</span>
+        </div>
+        <div class="profile-chip" onclick="window.location.href='index.html?page=profile'">
+          <img src="../../../uploads/WhatsApp Image 2026-04-24 at 5.11.03 PM.jpeg" alt="नगराध्यक्ष प्रोफाइल फोटो">
+          <div>
+            <strong>सौ. माधुरा मॅडम</strong>
+            <span>नगराध्यक्ष</span>
+          </div>
+        </div>
+      </header>
+      <!-- # TOP BAR END -->
+
+      <!-- # VIEW CONTAINER START -->
+      <section id="viewContainer" class="view-container" aria-live="polite"></section>
+      <!-- # VIEW CONTAINER END -->
+    </section>
+    <!-- # MAIN AREA END -->
+  </main>
+  <!-- # APP SHELL END -->
+
+  <!-- # TOAST START -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <!-- # TOAST END -->
+
+  <!-- # WARD PAGE SCRIPT: This loads ward details dynamically -->
+  <script src="nagaradhyaksha.js"></script>
+  <script src="ward-page.js"></script>
+</body>
+</html>
