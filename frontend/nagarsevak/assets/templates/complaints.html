@@ -13,13 +13,19 @@
       <i class="fa-solid fa-magnifying-glass"></i>
       <input id="searchInput" type="search" data-i18n-placeholder="searchPlaceholder" placeholder="नाव, तक्रार किंवा क्रमांक शोधा">
     </label>
-    <select id="categoryFilter" aria-label="Category filter"></select>
-    <select id="statusFilter">
-      <option value="all" data-i18n="filterAll">सर्व स्थिती</option>
-      <option value="pending" data-i18n="filterPending">प्रलंबित</option>
-      <option value="progress" data-i18n="filterProgress">कारवाई सुरू</option>
-      <option value="resolved" data-i18n="filterResolved">पूर्ण</option>
-    </select>
+    <label class="select-field">
+      <select id="categoryFilter" aria-label="Category filter"></select>
+      <i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i>
+    </label>
+    <label class="select-field">
+      <select id="statusFilter" aria-label="Status filter">
+        <option value="all" data-i18n="filterAll">सर्व स्थिती</option>
+        <option value="pending" data-i18n="filterPending">प्रलंबित</option>
+        <option value="progress" data-i18n="filterProgress">कारवाई सुरू</option>
+        <option value="resolved" data-i18n="filterResolved">पूर्ण</option>
+      </select>
+      <i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i>
+    </label>
   </section>
 
   <section class="complaints-list" id="complaintsList" aria-label="वॉर्ड तक्रारी"></section>
