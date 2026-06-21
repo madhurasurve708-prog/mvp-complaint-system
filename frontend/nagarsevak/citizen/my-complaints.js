@@ -1,6 +1,6 @@
 const filterButtons = document.querySelectorAll(".status-tabs button");
 const complaintsList = document.getElementById("complaintsList");
-const STORAGE_KEY = "sevaSetuComplaints";
+
 
 const categoryView = {
   water: { icon: "fa-droplet", className: "water", title: "पाणी" },
@@ -21,9 +21,41 @@ const statusView = {
   resolved: { label: "निकाली", className: "resolved" }
 };
 
-function getComplaints() {
-  return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+const API = "http://127.0.0.1:8000";
+
+
+async function getComplaints() {
+
+  const ward_id = 1; // demo user ka ward
+
+  const response = await fetch(
+    `${API}/complaints/${ward_id}`
+  );
+
+  const data = await response.json();
+
+  return data.map(c => ({
+    id: c.id,
+    category: c.category,
+    description: c.description,
+    status: convertStatus(c.status),
+    ward: "वॉर्ड " + c.ward_id,
+    createdAt: new Date()
+  }));
 }
+
+
+function convertStatus(status){
+
+  if(status === "Pending")
+    return "pending";
+
+  if(status === "Resolved")
+    return "resolved";
+
+  return "progress";
+}
+
 
 function formatDate(value) {
   const date = new Date(value);
@@ -75,7 +107,9 @@ function complaintMarkup(complaint) {
   `;
 }
 
-function renderComplaints(filter = "all") {
+async function renderComplaints(filter = "all") {
+
+  const complaints = await getComplaints();
   const complaints = getComplaints();
   const visibleComplaints = filter === "all"
     ? complaints
@@ -100,4 +134,4 @@ complaintsList.addEventListener("click", (event) => {
   openButton.closest(".complaint-item").classList.toggle("is-open");
 });
 
-renderComplaints();
+renderComplaints("all");

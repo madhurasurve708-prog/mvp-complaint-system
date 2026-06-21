@@ -27,7 +27,7 @@ function getWardIdFromURL() {
  */
 function getWardInfo(wardId) {
   const wards = [
-    { id: "1", name: "बाजारपेठ", nagarsevak: "सुरेश पाटील", focus: "कचरा व पाणीपुरवठा" },
+    { id: "1", name: "", nagarsevak: "सुरेश पाटील", focus: "कचरा व पाणीपुरवठा" },
     { id: "2", name: "किनारपट्टी", nagarsevak: "माधुरी सावंत", focus: "स्वच्छता व रस्ते" },
     { id: "3", name: "मालवण मध्य", nagarsevak: "अमित नाईक", focus: "ड्रेनेज व वाहतूक" },
     { id: "4", name: "देऊळवाडा", nagarsevak: "प्रिया परब", focus: "स्ट्रीट लाईट" },

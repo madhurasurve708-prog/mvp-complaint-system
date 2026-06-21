@@ -73,13 +73,19 @@ photoInput.addEventListener("change", () => {
   uploadBox.classList.add("has-preview");
 });
 
-complaintForm.addEventListener("submit", (event) => {
+const API = "http://127.0.0.1:8000";
+
+
+complaintForm.addEventListener("submit", async (event) => {
+
   event.preventDefault();
+
 
   if (!selectedCategory.value) {
     showToast("कृपया तक्रार विभाग निवडा.");
     return;
   }
+
 
   if (issueDescription.value.trim().length < 10) {
     showToast("कृपया समस्येचे थोडक्यात स्पष्ट वर्णन लिहा.");
@@ -87,31 +93,76 @@ complaintForm.addEventListener("submit", (event) => {
     return;
   }
 
-  const complaintPayload = {
-    id: `MC${Date.now().toString().slice(-6)}`,
-    category: selectedCategory.value,
-    categoryLabel: categoryLabels[selectedCategory.value] || "इतर",
-    description: issueDescription.value.trim(),
-    status: "pending",
-    ward: "वॉर्ड 3",
-    hasPhoto: Boolean(photoInput.files[0]),
-    createdAt: new Date().toISOString()
-  };
 
-  console.log("Complaint payload:", complaintPayload);
-  const savedComplaints = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-  savedComplaints.unshift(complaintPayload);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(savedComplaints));
+  const complaintPayload = {
+
+    category: selectedCategory.value,
+
+    description: issueDescription.value.trim(),
+
+    photo: photoInput.files[0] 
+      ? photoInput.files[0].name 
+      : null,
+
+    citizen_id: 1,
+
+    ward_id: Number(localStorage.getItem("citizenWard"))
+};
+ 
+
 
   submitButton.classList.add("is-loading");
-  submitButton.querySelector("span").textContent = "सबमिट होत आहे...";
+  submitButton.querySelector("span").textContent =
+    "सबमिट होत आहे...";
 
-  window.setTimeout(() => {
-    submitButton.classList.remove("is-loading");
-    submitButton.querySelector("span").textContent = "तक्रार सबमिट करा";
-    showToast("तक्रार यशस्वीपणे नोंदवली गेली.");
-    window.setTimeout(() => {
-      window.location.href = "my-complaints.html";
-    }, 450);
-  }, 900);
+
+  try {
+
+
+    const response = await fetch(
+      `${API}/complaints`,
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify(complaintPayload)
+      }
+    );
+
+
+    const data = await response.json();
+
+
+    if(response.ok){
+
+      showToast("तक्रार यशस्वीपणे नोंदवली गेली.");
+
+      setTimeout(()=>{
+        window.location.href="my-complaints.html";
+      },800);
+
+    }
+    else {
+
+      showToast("तक्रार नोंदवता आली नाही.");
+
+    }
+
+
+  } catch(error){
+
+    console.log(error);
+
+    showToast("Server connect होत नाही.");
+
+  }
+
+
+  submitButton.classList.remove("is-loading");
+  submitButton.querySelector("span").textContent =
+    "तक्रार सबमिट करा";
+
 });

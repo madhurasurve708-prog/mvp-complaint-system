@@ -1,3 +1,4 @@
+
 const authView = document.getElementById("authView");
 const dashboardView = document.getElementById("dashboardView");
 const registerForm = document.getElementById("registerForm");
@@ -185,7 +186,6 @@ const settingsViews = {
         <button type="button"><i class="fa-solid fa-language"></i><strong>English</strong><span>Use app in English</span></button>
         <button type="button"><i class="fa-solid fa-language"></i><strong>हिंदी</strong><span>ऐप हिंदी में इस्तेमाल करें</span></button>
       </div>
-    </article>
   `,
   password: () => `
     <article class="settings-card password-card">
@@ -287,6 +287,23 @@ loginForm.addEventListener("submit", (event) => {
     rememberMe: formData.get("rememberMe") === "on",
     ward: formData.get("ward")
   };
+  localStorage.setItem(
+  "citizenWard",
+  formData.get("ward")
+);
+localStorage.setItem(
+  "citizenWard",
+  formData.get("ward")
+);
+localStorage.setItem(
+  "citizenLocality",
+  formData.get("locality")
+);
+
+localStorage.setItem(
+  "citizenName",
+  formData.get("fullName")
+);
 
   console.log("Citizen login payload:", citizenLoginPayload);
   showToast("लॉगिन यशस्वी. मुख्यपृष्ठ उघडत आहे...");
