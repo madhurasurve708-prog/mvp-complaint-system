@@ -29,54 +29,103 @@ const toast          = document.getElementById("toast");
 const presidentLogin = document.getElementById("presidentLogin");
 const presidentPage  = document.getElementById("presidentPage");
 const presidentLoginForm = document.getElementById("presidentLoginForm");
+const mobileBottomNav = document.getElementById("mobileBottomNav");
 // # DOM REFERENCES END
 
 // # WARD DATA START
 const wards = [
-  { id: "1",  name: "बाजारपेठ",      nagarsevak: "सुरेश पाटील",       focus: "कचरा व पाणीपुरवठा"  },
-  { id: "2",  name: "किनारपट्टी",     nagarsevak: "माधुरी सावंत",      focus: "स्वच्छता व रस्ते"   },
-  { id: "3",  name: "मालवण मध्य",     nagarsevak: "अमित नाईक",         focus: "ड्रेनेज व वाहतूक"  },
-  { id: "4",  name: "देऊळवाडा",       nagarsevak: "प्रिया परब",         focus: "स्ट्रीट लाईट"      },
-  { id: "5",  name: "दांडी",          nagarsevak: "विकास कदम",          focus: "रस्ते व आरोग्य"    },
-  { id: "6",  name: "चिवला",          nagarsevak: "निलेश चव्हाण",      focus: "पाणीगळती"           },
-  { id: "7",  name: "मेढा",           nagarsevak: "स्नेहा रेडकर",      focus: "नागरिक सुरक्षा"     },
-  { id: "8",  name: "भरड",            nagarsevak: "रोहित गावडे",        focus: "वाहतूक"             },
-  { id: "9",  name: "तारकर्ली मार्ग", nagarsevak: "किरण साळगावकर",    focus: "गटार"               },
-  { id: "10", name: "मुख्य रस्ता",    nagarsevak: "मेघा मोरे",         focus: "दिवे व रस्ते"       }
+  {
+    id: "1",
+    name: "बाजारपेठ",
+    nagarsevak: "केणी मंदार, कोसवणकर दर्शना",
+    phone: "9637778901, 9405497503",
+    focus: "कचरा व पाणीपुरवठा"
+  },
+  {
+    id: "2",
+    name: "किनारपट्टी",
+    nagarsevak: "चव्हाण ललित, गिरकर अनिता",
+    phone: "9096728048, 9168206294",
+    focus: "स्वच्छता व रस्ते"
+  },
+  {
+    id: "3",
+    name: "मालवण मध्य",
+    nagarsevak: "पाटकर दिपक, मुंबरकर नीना",
+    phone: "9422584073, 9422584790",
+    focus: "ड्रेनेज व वाहतूक"
+  },
+  {
+    id: "4",
+    name: "देऊळवाडा",
+    nagarsevak: "जाधव सिद्धार्थ, चव्हाण पूनम",
+    phone: "9373616290, 9404689316",
+    focus: "रस्त्यावरील दिवे"
+  },
+  {
+    id: "5",
+    name: "दांडी",
+    nagarsevak: "म्हाडगुत महेंद्र, खानोलकर महानंदा",
+    phone: "9404944446, 9423806158",
+    focus: "रस्ते व आरोग्य"
+  },
+  {
+    id: "6",
+    name: "चिवला",
+    nagarsevak: "बापडेकर सहदेव, कांदळकर अश्विनी",
+    phone: "9422434962, 9405926438",
+    focus: "पाणीगळती"
+  },
+  {
+    id: "7",
+    name: "मेढा",
+    nagarsevak: "आचरेकर सुदेश, गावकर मेधा",
+    phone: "9422394185, 9422379771",
+    focus: "नागरिक सुरक्षा"
+  },
+  {
+    id: "8",
+    name: "भरड",
+    nagarsevak: "औरसकर मंदार, पाटकर शर्वरी",
+    phone: "9545807300, 9422584866",
+    focus: "वाहतूक व स्वच्छता"
+  }
 ];
+// # WARD DATA END
+
 // # WARD DATA END
 
 // # CATEGORY DATA START
 const categories = [
-  { key: "all",          label: "सर्व",            icon: "fa-table-cells-large", className: "blue",   keywords: [] },
-  { key: "water",        label: "पाणी",            icon: "fa-droplet",           className: "blue",   keywords: ["water", "paani", "पाणी"] },
-  { key: "garbage",      label: "कचरा",            icon: "fa-trash-can",         className: "green",  keywords: ["garbage", "waste", "trash", "कचरा"] },
-  { key: "street-lights",label: "रस्त्यावरील दिवे",icon: "fa-lightbulb",         className: "orange", keywords: ["light", "street light", "दिवे"] },
-  { key: "road",         label: "रस्ता",           icon: "fa-road",              className: "teal",   keywords: ["road", "pothole", "रस्ता", "खड्ड"] },
-  { key: "gutter",       label: "गटार",            icon: "fa-water",             className: "teal",   keywords: ["gutter", "drain", "गटार"] },
-  { key: "animals",      label: "भटकी जनावरे",    icon: "fa-shield-heart",      className: "orange", keywords: ["dog", "animal", "जनावरे"] },
-  { key: "traffic",      label: "वाहतूक समस्या",  icon: "fa-traffic-light",     className: "red",    keywords: ["traffic", "वाहतूक"] },
-  { key: "drainage",     label: "नाले / पाणी साचणे",icon: "fa-person-digging",  className: "green",  keywords: ["drainage", "overflow", "नाले"] },
-  { key: "tree",         label: "झाड समस्या",      icon: "fa-tree",              className: "green",  keywords: ["tree", "branch", "झाड"] },
-  { key: "other",        label: "इतर",             icon: "fa-circle-plus",       className: "purple", keywords: ["other", "इतर"] }
+  { key: "all",           label: "सर्व",                icon: "fa-table-cells-large", className: "blue",   keywords: [] },
+  { key: "water",         label: "पाणी",                icon: "fa-droplet",           className: "blue",   keywords: ["water", "paani", "पाणी", "गळती", "leakage"] },
+  { key: "garbage",       label: "कचरा",                icon: "fa-trash-can",         className: "green",  keywords: ["garbage", "waste", "trash", "कचरा"] },
+  { key: "street-lights", label: "रस्त्यावरील दिवे",    icon: "fa-lightbulb",         className: "orange", keywords: ["light", "street light", "दिवे", "बंद"] },
+  { key: "road",          label: "रस्ता",               icon: "fa-road",              className: "teal",   keywords: ["road", "pothole", "रस्ता", "खड्डा", "साफ"] },
+  { key: "gutter",        label: "गटार",                icon: "fa-water",             className: "teal",   keywords: ["gutter", "drain", "गटार", "झाकण", "तुंबले"] },
+  { key: "animals",       label: "भटकी जनावरे",        icon: "fa-shield-heart",      className: "orange", keywords: ["dog", "animal", "जनावरे", "कुत्रे"] },
+  { key: "traffic",       label: "वाहतूक कोंडी",       icon: "fa-traffic-light",     className: "red",    keywords: ["traffic", "वाहतूक", "कोंडी", "जंक्शन"] },
+  { key: "drainage",      label: "नाले / पाणी साचणे",  icon: "fa-person-digging",    className: "green",  keywords: ["drainage", "overflow", "नाले", "साचणे"] },
+  { key: "tree",          label: "झाड समस्या",         icon: "fa-tree",              className: "green",  keywords: ["tree", "branch", "झाड", "फांदी"] },
+  { key: "other",         label: "इतर",                icon: "fa-circle-plus",       className: "purple", keywords: ["other", "इतर"] }
 ];
 // # CATEGORY DATA END
 
 // # DEMO COMPLAINTS START
 const demoComplaints = [
-  { id: "D101",  citizen_name: "Aarav Naik",       ward: "1",  category: "garbage",       title: "Garbage not collected",  description: "Bazaar Peth road has garbage near the shop line.",   image: "", status: "Pending" },
-  { id: "D102",  citizen_name: "Meera Sawant",     ward: "1",  category: "street-lights", title: "Street light off",       description: "Street light near fish market is not working.",     image: "", status: "In Progress" },
-  { id: "D103",  citizen_name: "Rohan Parab",      ward: "1",  category: "road",          title: "Road pothole",           description: "Large pothole near main chowk.",                    image: "", status: "Resolved" },
-  { id: "D201",  citizen_name: "Madhura Patil",    ward: "2",  category: "garbage",       title: "Garbage not cleared",    description: "Garbage not collected for 2 days.",                 image: "", status: "Pending" },
-  { id: "D202",  citizen_name: "Sagar Kadam",      ward: "2",  category: "water",         title: "Water pressure low",     description: "Water pressure is low in the morning.",             image: "", status: "Pending" },
-  { id: "D301",  citizen_name: "Priya Gavade",     ward: "3",  category: "drainage",      title: "Drainage blocked",       description: "Drainage water is overflowing near school.",        image: "", status: "In Progress" },
-  { id: "D401",  citizen_name: "Nilesh Chavan",    ward: "4",  category: "tree",          title: "Tree branch issue",      description: "Tree branch is touching electric line.",            image: "", status: "Pending" },
-  { id: "D501",  citizen_name: "Anaya More",       ward: "5",  category: "road",          title: "Road cleaning needed",   description: "Road cleaning required near Dandi area.",           image: "", status: "Resolved" },
-  { id: "D601",  citizen_name: "Omkar Khot",       ward: "6",  category: "water",         title: "Water leakage",          description: "Pipeline leakage near Chivla beach road.",          image: "", status: "Pending" },
-  { id: "D701",  citizen_name: "Sneha Redkar",     ward: "7",  category: "animals",       title: "Street dog issue",       description: "Street dogs creating problem at night.",            image: "", status: "Pending" },
-  { id: "D801",  citizen_name: "Vikram Pednekar",  ward: "8",  category: "traffic",       title: "Traffic problem",        description: "Traffic jam near Medha junction.",                  image: "", status: "In Progress" },
-  { id: "D901",  citizen_name: "Neha Salgaonkar",  ward: "9",  category: "gutter",        title: "Gutter cover broken",    description: "Gutter cover is broken near temple.",              image: "", status: "Pending" },
-  { id: "D1001", citizen_name: "Kiran Naik",       ward: "10", category: "street-lights", title: "Street light repair",    description: "Two street lights off on Tarkarli road.",           image: "", status: "Resolved" }
+  { id: "D101",  citizen_name: "आराव नाईक",          ward: "1",  category: "garbage",        title: "कचरा उचलला नाही",              description: "बाजारपेठ रस्त्यावर दुकानांजवळ मोठ्या प्रमाणात कचरा पडला आहे.",       image: "", status: "Pending"     },
+  { id: "D102",  citizen_name: "मीरा सावंत",          ward: "1",  category: "street-lights",  title: "रस्त्यावरील दिवे बंद",          description: "माशाच्या बाजाराजवळील तीन रस्त्यावरील दिवे काम करत नाहीत.",           image: "", status: "In Progress" },
+  { id: "D103",  citizen_name: "रोहन परब",            ward: "1",  category: "road",           title: "रस्त्यावर मोठा खड्डा",          description: "मुख्य चौकाजवळ रस्त्यावर मोठा खड्डा पडला असून वाहने अडकत आहेत.",    image: "", status: "Resolved"    },
+  { id: "D201",  citizen_name: "माधुरा पाटील",        ward: "2",  category: "garbage",        title: "कचरा साफ झाला नाही",            description: "गेल्या दोन दिवसांपासून कचरा उचललेला नाही, दुर्गंधी येत आहे.",        image: "", status: "Pending"     },
+  { id: "D202",  citizen_name: "सागर कदम",            ward: "2",  category: "water",          title: "पाण्याचा दाब कमी",              description: "सकाळी नळाचा पाण्याचा दाब खूप कमी येतो, अनेक घरांना त्रास होतो.",   image: "", status: "Pending"     },
+  { id: "D301",  citizen_name: "प्रिया गावडे",        ward: "3",  category: "drainage",       title: "गटार तुंबले आहे",               description: "शाळेजवळ गटाराचे पाणी ओसंडून रस्त्यावर वाहत आहे.",                   image: "", status: "In Progress" },
+  { id: "D401",  citizen_name: "निलेश चव्हाण",        ward: "4",  category: "tree",           title: "झाडाची फांदी धोकादायक",         description: "झाडाची मोठी फांदी विजेच्या तारांना स्पर्श करत असून धोका आहे.",     image: "", status: "Pending"     },
+  { id: "D501",  citizen_name: "अनया मोरे",            ward: "5",  category: "road",           title: "रस्ता साफसफाई आवश्यक",          description: "दांडी परिसरात रस्त्यावर माती व दगड साचले आहेत.",                     image: "", status: "Resolved"    },
+  { id: "D601",  citizen_name: "ओंकार खोत",            ward: "6",  category: "water",          title: "पाईपलाईनमधून गळती",             description: "चिवला बीच रस्त्यावर पाण्याच्या पाईपमधून गळती होत असून पाणी वाया जात आहे.", image: "", status: "Pending" },
+  { id: "D701",  citizen_name: "स्नेहा रेडकर",        ward: "7",  category: "animals",        title: "भटक्या कुत्र्यांचा त्रास",     description: "रात्री भटके कुत्रे नागरिकांना त्रास देत असून लहान मुलांना भीती वाटते.", image: "", status: "Pending" },
+  { id: "D801",  citizen_name: "विक्रम पेडणेकर",      ward: "8",  category: "traffic",        title: "वाहतूक कोंडी",                  description: "मेढा चौकाजवळ मोठ्या प्रमाणात वाहतूक कोंडी होत असून रस्ता अडतो.",    image: "", status: "In Progress" },
+  { id: "D901",  citizen_name: "नेहा साळगावकर",       ward: "9",  category: "gutter",         title: "गटाराचे झाकण तुटले",            description: "देवळाजवळील गटाराचे झाकण तुटल्यामुळे अपघाताचा मोठा धोका निर्माण झाला आहे.", image: "", status: "Pending" },
+  { id: "D1001", citizen_name: "किरण नाईक",           ward: "10", category: "street-lights",  title: "दिव्यांची दुरुस्ती हवी",        description: "तारकर्ली रस्त्यावरील दोन दिवे बंद पडले असून रात्री अंधार असतो.",     image: "", status: "Resolved"    }
 ];
 // # DEMO COMPLAINTS END
 
@@ -126,9 +175,8 @@ function wardInfo(wardId) {
 
 function wardLabel(wardId) {
   const w = wardInfo(wardId);
-  return `वॉर्ड ${w.id} - ${w.name}`;
+  return `वॉर्ड ${w.id}`;
 }
-
 function complaintCategory(complaint) {
   if (complaint.category && categories.some((c) => c.key === complaint.category)) return complaint.category;
   const text = `${complaint.title || ""} ${complaint.description || ""}`.toLowerCase();
@@ -268,24 +316,66 @@ function statCard(icon, colorClass, label, value, subtext) {
     </article>
   `;
 }
+function complaintCard(complaint) {
+  const cat       = categoryInfo(complaintCategory(complaint));
+  const tone      = statusTone(complaint.status);
+  const statusKey = normalizeStatus(complaint.status);
+
+  return `
+    <article class="complaint-card ${statusKey}">
+
+      <div class="tile-icon ${cat.className}">
+        <i class="fa-solid ${cat.icon}"></i>
+      </div>
+
+      <div class="cc-body">
+        <div class="cc-top">
+          <h3>${complaint.title || "तक्रार"}</h3>
+          <span class="badge ${tone.className}">
+            <i class="fa-solid ${tone.icon}"></i>${tone.label}
+          </span>
+        </div>
+        <p class="cc-desc">${complaint.description || ""}</p>
+        <div class="meta-row">
+          <span><i class="fa-solid fa-hashtag"></i>${complaintId(complaint)}</span>
+          <span><i class="fa-regular fa-user"></i>${complaint.citizen_name || "नागरिक"}</span>
+          <span><i class="fa-solid fa-location-dot"></i>${wardLabel(complaint.ward)}</span>
+          <span><i class="fa-solid fa-tag"></i>${cat.label}</span>
+          <span><i class="fa-regular fa-calendar"></i>${complaintDate(complaint)}</span>
+        </div>
+      </div>
+
+      <button class="icon-btn" type="button" data-page="categories" aria-label="तक्रार उघडा">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+
+    </article>
+  `;
+}
 
 function complaintCard(complaint) {
-  const cat      = categoryInfo(complaintCategory(complaint));
-  const tone     = statusTone(complaint.status);
+  const cat       = categoryInfo(complaintCategory(complaint));
+  const tone      = statusTone(complaint.status);
   const statusKey = normalizeStatus(complaint.status);
+
   return `
     <article class="complaint-card ${statusKey}">
       <div class="tile-icon ${cat.className}">
         <i class="fa-solid ${cat.icon}"></i>
       </div>
-      <div style="min-width:0">
-        <div class="complaint-title-row">
-          <h3>${complaint.title || "Complaint"}</h3>
+
+      <div class="complaint-content" style="min-width:0">
+        <div class="complaint-head">
+          <div class="complaint-title-wrap">
+            <h3>${complaint.title || "तक्रार"}</h3>
+            <p>${complaint.description || ""}</p>
+          </div>
+
           <span class="badge ${tone.className}">
             <i class="fa-solid ${tone.icon}"></i>${tone.label}
           </span>
         </div>
-        <p>${complaint.description || ""}</p>
+
         <div class="meta-row">
           <span title="तक्रार क्रमांक"><i class="fa-solid fa-hashtag"></i>${complaintId(complaint)}</span>
           <span><i class="fa-regular fa-user"></i>${complaint.citizen_name || "नागरिक"}</span>
@@ -294,12 +384,14 @@ function complaintCard(complaint) {
           <span><i class="fa-regular fa-calendar"></i>${complaintDate(complaint)}</span>
         </div>
       </div>
+
       <button class="icon-btn" type="button" data-page="categories" aria-label="तक्रार उघडा" title="तक्रार उघडा">
         <i class="fa-solid fa-chevron-right"></i>
       </button>
     </article>
   `;
 }
+
 
 function wardCard(ward) {
   const stats = wardStats(ward.id);
@@ -521,21 +613,23 @@ function renderCategories() {
       </button>
     </section>
 
-    <div class="panel">
-      <div class="category-grid">
-        ${categories.map((cat) => `
-          <button
-            class="category-tile ${state.selectedCategory === cat.key ? "active" : ""}"
-            type="button"
-            data-category="${cat.key}"
-          >
-            <i class="fa-solid ${cat.icon} cat-icon ${cat.className}"
-               style="width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:20px"
-            ></i>
-            <strong>${cat.label}</strong>
-            <small>${counts[cat.key] || 0}</small>
-          </button>
-        `).join("")}
+    <div class="panel cat-panel">
+      <div class="cat-scroll-outer">
+        <div class="category-grid">
+          ${categories.map((cat) => `
+            <button
+              class="category-tile ${state.selectedCategory === cat.key ? "active" : ""}"
+              type="button"
+              data-category="${cat.key}"
+            >
+              <i class="fa-solid ${cat.icon} cat-icon ${cat.className}"
+                 style="width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:20px"
+              ></i>
+              <strong>${cat.label}</strong>
+              <small>${counts[cat.key] || 0}</small>
+            </button>
+          `).join("")}
+        </div>
       </div>
     </div>
 
@@ -566,6 +660,7 @@ function renderCategories() {
     </div>
   `;
 }
+
 
 // ── ANNOUNCEMENTS ──────────────────────────────────────────
 function renderAnnouncements() {
@@ -771,12 +866,13 @@ function renderProfile() {
           alt="नगराध्यक्ष प्रोफाइल फोटो"
           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
         >
-        <div style="width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--teal));display:none;align-items:center;justify-content:center;color:white;font-size:36px;font-weight:900;margin:0 auto 14px">SM</div>
-        <h2>सौ. माधुरा मॅडम</h2>
+        <div style="width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--teal));display:none;align-items:center;justify-content:center;color:white;font-size:36px;font-weight:900;margin:0 auto 14px">मव</div>
+        <h2>सौ. ममता वराडकर</h2>
         <p>नगराध्यक्ष &nbsp;|&nbsp; मालवण नगरपरिषद</p>
+        <p style="font-size:13px;color:var(--muted);margin-top:4px">संपर्क: 8208454975</p>
         <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--line)">
           <div class="meta-row" style="justify-content:center">
-            <span class="badge status-resolved"><i class="fa-solid fa-shield-check"></i>Verified</span>
+            <span class="badge status-resolved"><i class="fa-solid fa-shield-check"></i>अधिकृत</span>
           </div>
         </div>
       </article>
@@ -791,13 +887,17 @@ function renderProfile() {
         <div class="settings-list">
           <article class="setting-row">
             <div class="tile-icon blue"><i class="fa-regular fa-user"></i></div>
-            <div><strong>पूर्ण नाव</strong><span>सौ. माधुरा मॅडम</span></div>
+            <div><strong>पूर्ण नाव</strong><span>सौ. ममता वराडकर</span></div>
             <button class="small-btn" type="button">बदला</button>
           </article>
           <article class="setting-row">
             <div class="tile-icon green"><i class="fa-solid fa-phone"></i></div>
-            <div><strong>मोबाईल क्रमांक</strong><span>9876543210</span></div>
+            <div><strong>मोबाईल क्रमांक</strong><span>8208454975</span></div>
             <button class="small-btn" type="button">बदला</button>
+          </article>
+          <article class="setting-row">
+            <div class="tile-icon teal"><i class="fa-solid fa-building-columns"></i></div>
+            <div><strong>नगरपरिषद</strong><span>मालवण नगरपरिषद</span></div>
           </article>
           <article class="setting-row">
             <div class="tile-icon orange"><i class="fa-regular fa-bell"></i></div>
@@ -809,7 +909,7 @@ function renderProfile() {
           </article>
           <article class="setting-row">
             <div class="tile-icon purple"><i class="fa-solid fa-lock"></i></div>
-            <div><strong>पासवर्ड</strong><span>शेवटचा बदल: ६ महिन्यांपूर्वी</span></div>
+            <div><strong>संकेतशब्द</strong><span>शेवटचा बदल: ६ महिन्यांपूर्वी</span></div>
             <button class="small-btn" type="button">बदला</button>
           </article>
           <article class="setting-row">
@@ -822,6 +922,7 @@ function renderProfile() {
     </section>
   `;
 }
+
 // # PAGE RENDERERS END
 
 // # NAVIGATION START
@@ -860,6 +961,12 @@ function openPage(page, options = {}) {
     node.classList.toggle("active", node.dataset.page === activePage);
   });
 
+  // Update mobile bottom nav active state
+  const activeMbnPage = page === "wardComplaints" ? "wards" : page;
+  document.querySelectorAll(".mbn-btn[data-page]").forEach((node) => {
+    node.classList.toggle("active", node.dataset.page === activeMbnPage);
+  });
+
   sidebar.classList.remove("open");
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -878,6 +985,7 @@ presidentLoginForm.addEventListener("submit", (e) => {
   }
   presidentLogin.hidden = true;
   presidentPage.hidden  = false;
+  if (mobileBottomNav) mobileBottomNav.hidden = false;
   showToast("स्वागत आहे, मॅडम! डॅशबोर्ड उघडत आहे…");
 });
 
