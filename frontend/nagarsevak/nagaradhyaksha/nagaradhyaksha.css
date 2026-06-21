@@ -428,8 +428,8 @@ textarea:focus-visible {
   background: var(--yellow);
 }
 
-/* Sidebar divider before external links */
-.side-nav a:nth-last-child(2) {
+/* Sidebar divider before last nav item */
+.side-nav > *:last-child {
   margin-top: auto;
   padding-top: 14px;
   border-top: 1px solid rgba(255,255,255,0.10);
@@ -451,7 +451,7 @@ textarea:focus-visible {
   display: flex;
   align-items: center;
   gap: 14px;
-  min-height: 72px;
+  min-height: 82px;
   padding: 12px 18px;
   margin-bottom: 24px;
   border-radius: var(--radius-lg);
@@ -1019,7 +1019,6 @@ textarea:focus-visible {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--blue), var(--teal));
   transition: width 0.5s var(--ease);
 }
 /* # WARD CARDS END */
@@ -1604,8 +1603,80 @@ select {
 /* # TOAST END */
 
 /* ============================================================
-   # ANIMATIONS START
+   # MOBILE BOTTOM NAV START
    ============================================================ */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  height: 64px;
+  background: var(--white);
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -4px 16px rgba(13, 27, 62, 0.10);
+  padding: 0 4px env(safe-area-inset-bottom, 0);
+  align-items: stretch;
+  justify-content: space-around;
+}
+
+.mbn-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 6px 4px;
+  border-radius: 0;
+  transition: color var(--duration);
+  cursor: pointer;
+}
+
+.mbn-btn i {
+  font-size: 18px;
+  transition: transform var(--duration) var(--ease), color var(--duration);
+}
+
+.mbn-btn span {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.mbn-btn.active {
+  color: var(--blue);
+}
+
+.mbn-btn.active i {
+  transform: translateY(-2px);
+  color: var(--blue);
+}
+
+.mbn-btn:active i {
+  transform: scale(0.88);
+}
+/* # MOBILE BOTTOM NAV END */
+
+/* ============================================================
+   # COMPLAINT CARD TITLE ROW FIX
+   ============================================================ */
+/* Ensure status badge wraps properly and never forces title to compress */
+.complaint-title-row {
+  align-items: flex-start;
+}
+
+.complaint-title-row .badge {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+/* # COMPLAINT CARD TITLE ROW FIX END */
 @keyframes riseIn {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -1709,9 +1780,13 @@ select {
     z-index: -1;
   }
 
+  /* Show hamburger toggle (hidden on desktop) */
   .menu-toggle { display: grid; place-items: center; }
 
-  .main-area { padding: 14px 14px 48px; }
+  /* Show mobile bottom nav */
+  .mobile-bottom-nav { display: flex; }
+
+  .main-area { padding: 14px 14px 80px; }
 
   .topbar {
     flex-wrap: wrap;
@@ -1723,9 +1798,32 @@ select {
     top: 0;
   }
 
+  /* Topbar: row1 = [burger] [back] [spacer] [chip], row2 = [title] */
+  .topbar { align-items: center; }
   .top-title { order: 3; width: 100%; }
   .top-title h2 { font-size: 20px; white-space: normal; }
-  .profile-chip { order: 4; width: 100%; }
+
+  /* Profile chip — compact avatar-only on mobile */
+  .profile-chip {
+    order: 2;
+    padding: 4px;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+  .profile-chip strong,
+  .profile-chip span { display: none; }
+  .profile-chip img {
+    width: 34px;
+    height: 34px;
+  }
+  .profile-chip.image-missing::before {
+    width: 34px;
+    height: 34px;
+    font-size: 12px;
+  }
 
   .hero-panel {
     flex-direction: column;
@@ -1753,11 +1851,17 @@ select {
     grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
     gap: 10px;
   }
+  .category-tile strong { font-size: 11px; word-break: break-word; hyphens: auto; }
 
+  /* Complaint card — better mobile layout */
   .complaint-card {
     grid-template-columns: 44px minmax(0, 1fr);
     gap: 12px;
     padding: 14px;
+  }
+  .complaint-card .complaint-title-row {
+    flex-direction: column;
+    gap: 6px;
   }
   .complaint-card .icon-btn {
     grid-column: 1 / -1;
@@ -1793,7 +1897,862 @@ select {
   .category-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .category-tile { min-height: 100px; padding: 12px 6px; }
   .category-tile .cat-icon, .category-tile > i { width: 40px; height: 40px; font-size: 16px; }
+  .category-tile strong { font-size: 10px; word-break: break-word; hyphens: auto; text-align: center; }
   .primary-btn, .secondary-btn { font-size: 13px; }
   .hero-panel h1 { font-size: 22px; }
 }
 /* # RESPONSIVE — SMALL MOBILE END */
+
+/* ============================================================
+   # MOBILE UX REDESIGN — v2.0 PATCH
+   Seva Setu | Malvan Nagar Parishad
+   ADD THESE STYLES AT THE BOTTOM OF nagaradhyaksha.css
+   ============================================================ */
+
+/* ── MOB-LOGO: Hidden on desktop, shown only on mobile ────── */
+.mob-logo {
+  display: none; /* Default: hidden everywhere */
+}
+
+/* ── BOTTOM NAV: 6-item layout optimization (global tweak) ── */
+/* Reducing icon + text slightly so all 6 items fit comfortably */
+.mbn-btn {
+  gap: 2px;
+  padding: 5px 2px;
+}
+
+.mbn-btn i {
+  font-size: 16px;
+}
+
+.mbn-btn span {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+
+/* ============================================================
+   # MOBILE (≤ 768px) — PREMIUM HEADER + LAYOUT OVERRIDES
+   ============================================================ */
+@media (max-width: 768px) {
+
+  /* ── 1. HAMBURGER MENU: Completely removed from mobile ──── */
+  .menu-toggle {
+    display: none !important;
+  }
+
+  /* ── 2. BACK BUTTON: Completely removed from mobile ─────── */
+  .back-btn {
+    display: none !important;
+  }
+
+  /* ── 3. MOBILE LOGO: Shown on mobile (left anchor) ──────── */
+  .mob-logo {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue-dark), var(--teal));
+    color: var(--white);
+    font-size: 13px;
+    box-shadow: 0 2px 8px rgba(13, 27, 62, 0.20);
+    order: 1; /* Leftmost item */
+  }
+
+  /* ── 4. TOPBAR: Single clean row, compact height ─────────── */
+  .topbar {
+    flex-wrap: nowrap !important; /* Override existing flex-wrap:wrap */
+    align-items: center !important;
+    min-height: 54px !important;  /* Down from 72px */
+    padding: 8px 14px !important;
+    margin-bottom: 10px !important;
+    gap: 10px !important;
+    border-radius: var(--radius) !important;
+  }
+
+  /* ── 5. TITLE BLOCK: Centered in the single row ─────────── */
+  .top-title {
+    order: 2 !important;      /* Center slot */
+    width: auto !important;   /* Override width:100% that caused 2nd row */
+    flex: 1 !important;
+    min-width: 0;
+    text-align: center;
+  }
+
+  .top-title .eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    margin: 0;
+  }
+
+  .top-title h2 {
+    font-size: 15px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 1px 0 0;
+    line-height: 1.25;
+  }
+
+  /* Hide the slogan in header to save vertical space */
+  .topbar .town-slogan {
+    display: none !important;
+  }
+
+  /* ── 6. PROFILE CHIP: Compact circular avatar on right ───── */
+  .profile-chip {
+    order: 3 !important;       /* Rightmost item */
+    margin-left: 0 !important; /* Override margin-left:auto */
+    width: 36px !important;
+    height: 36px !important;
+    padding: 2px !important;
+    border-radius: 50% !important;
+    flex-shrink: 0;
+    border: 2px solid rgba(26, 86, 219, 0.20);
+    background: var(--soft);
+    cursor: pointer;
+  }
+
+  .profile-chip strong,
+  .profile-chip span {
+    display: none !important;
+  }
+
+  .profile-chip img {
+    width: 28px !important;
+    height: 28px !important;
+    border: none;
+  }
+
+  .profile-chip.image-missing::before {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 10px !important;
+    border: none;
+  }
+
+  /* ── 7. MAIN AREA: Tighter side + bottom padding ─────────── */
+  .main-area {
+    padding: 10px 12px 86px !important;
+  }
+
+  /* ── 8. HERO PANEL: Reduced height and font ─────────────── */
+  .hero-panel {
+    padding: 18px 16px !important;
+    gap: 10px !important;
+    margin-bottom: 10px !important;
+    min-height: auto !important;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero-panel h1 {
+    font-size: 20px !important;
+    margin: 4px 0 !important;
+    line-height: 1.25;
+  }
+
+  .hero-panel > div > span {
+    font-size: 12px;
+  }
+
+  .hero-actions {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .hero-actions .primary-btn,
+  .hero-actions .secondary-btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  /* ── 9. STATS GRID: Compact 2-column, reduced spacing ────── */
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 9px !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* ── 10. STAT CARD: Compact padding, smaller numbers ──────── */
+  .stat-card {
+    padding: 13px 12px !important;
+  }
+
+  /* New-style stat icon (using .stat-icon class) */
+  .stat-card .stat-icon {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 14px !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* Legacy stat icon (using > i) */
+  .stat-card > i {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 14px !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* Stat value — large number */
+  .stat-card .stat-value {
+    font-size: 26px !important;
+    line-height: 1;
+  }
+
+  .stat-card > strong {
+    font-size: 26px !important;
+    margin: 4px 0 2px !important;
+  }
+
+  .stat-card .stat-sub,
+  .stat-card > small {
+    font-size: 11px;
+    padding-top: 4px;
+  }
+
+  /* ── 11. PANEL: Tighter padding + margins ─────────────────── */
+  .panel {
+    padding: 14px 14px !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* ── 12. WARD CARD: More compact rows ─────────────────────── */
+  .ward-card {
+    grid-template-columns: minmax(0, 1fr) !important;
+    padding: 12px 14px !important;
+    min-height: auto !important;
+    gap: 6px !important;
+  }
+
+  .ward-card b {
+    font-size: 16px !important;
+  }
+
+  /* ── 13. PANEL HEAD / PAGE HEADING: Tighter gap ──────────── */
+  .panel-head,
+  .page-heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .panel-head h2,
+  .page-heading h1 {
+    font-size: 17px !important;
+  }
+
+  .panel-head > .filters { width: 100%; }
+  .filters, .complaint-filters { width: 100%; }
+  .search-field { min-width: 100%; }
+  .filters select { flex: 1; }
+
+  /* ── 14. COMPLAINT CARD: Better mobile layout ─────────────── */
+  .complaint-card {
+    grid-template-columns: 40px minmax(0, 1fr) !important;
+    gap: 10px !important;
+    padding: 12px 14px !important;
+  }
+
+  .complaint-card .complaint-title-row {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .complaint-card .icon-btn {
+    grid-column: 1 / -1;
+    width: 100%;
+    height: 34px;
+    justify-content: center;
+  }
+
+  /* ── 15. CATEGORY GRID ────────────────────────────────────── */
+  .category-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .category-tile strong {
+    font-size: 11px;
+    word-break: break-word;
+    hyphens: auto;
+  }
+
+  /* ── 16. CONTENT / FIELD / PROFILE GRIDS ─────────────────── */
+  .content-grid    { grid-template-columns: 1fr !important; }
+  .field-grid      { grid-template-columns: 1fr !important; }
+  .profile-layout  { grid-template-columns: 1fr !important; }
+
+  /* ── 17. SETTING ROW ──────────────────────────────────────── */
+  .setting-row { grid-template-columns: 44px minmax(0, 1fr) !important; }
+  .setting-row .small-btn,
+  .setting-row .switch { grid-column: 2; justify-self: start; }
+
+  /* ── 18. TOAST: Above bottom nav ─────────────────────────── */
+  .toast {
+    bottom: 78px;
+    right: 14px;
+  }
+
+}
+/* # MOBILE (≤ 768px) OVERRIDE END */
+
+
+/* ============================================================
+   # SMALL MOBILE (≤ 420px) — FINE-TUNED OVERRIDES
+   ============================================================ */
+@media (max-width: 420px) {
+
+  /* Topbar even more compact on small phones */
+  .topbar {
+    padding: 7px 12px !important;
+    min-height: 50px !important;
+    gap: 8px !important;
+  }
+
+  .mob-logo {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 12px !important;
+  }
+
+  .top-title h2 {
+    font-size: 14px !important;
+  }
+
+  .profile-chip {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .profile-chip img {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  .profile-chip.image-missing::before {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 9px !important;
+  }
+
+  /* Stats grid on tiny screens */
+  .stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  .stat-card {
+    padding: 11px 10px !important;
+  }
+
+  .stat-card .stat-value,
+  .stat-card > strong {
+    font-size: 22px !important;
+  }
+
+  /* Hero panel on tiny screens */
+  .hero-panel {
+    padding: 14px 14px !important;
+  }
+
+  .hero-panel h1 {
+    font-size: 18px !important;
+  }
+
+  /* Main area on tiny screens */
+  .main-area {
+    padding: 8px 10px 86px !important;
+  }
+
+  /* Bottom nav on very small screens */
+  .mbn-btn i    { font-size: 15px; }
+  .mbn-btn span { font-size: 8px; }
+
+  /* Category grid — 3 columns on small screens */
+  .category-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 7px !important;
+  }
+
+  .category-tile {
+    min-height: 90px;
+    padding: 10px 6px;
+  }
+
+  .primary-btn, .secondary-btn {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+}
+/* # SMALL MOBILE (≤ 420px) OVERRIDE END */
+
+/* ============================================================
+   # MOBILE UX REDESIGN — v2.0 PATCH END
+   ============================================================ */
+/* ============================================================
+   # CATEGORY CAROUSEL MOBILE PATCH — v2.1
+   विभागनिहाय तक्रारी | Horizontal Scroll Carousel
+   Seva Setu | Malvan Nagar Parishad
+   APPEND THIS AFTER THE EXISTING v2.0 PATCH
+   ============================================================ */
+
+/*
+   DESKTOP: .cat-scroll-outer and .cat-panel have no special styles.
+   They are transparent passthroughs — the existing .category-grid
+   grid layout takes over exactly as before.
+*/
+
+/* ============================================================
+   # MOBILE (≤ 768px) — HORIZONTAL CATEGORY CAROUSEL
+   ============================================================ */
+@media (max-width: 768px) {
+
+  /* ── 1. Panel: Right padding removed, relative positioned ─── */
+  /*       This allows the carousel to bleed to the right edge   */
+  /*       and positions the ::after fade correctly.             */
+  .cat-panel {
+    padding-right:  0    !important;
+    padding-bottom: 10px !important;
+    position:       relative;
+  }
+
+  /* ── 2. Right-edge fade gradient: "swipe more" visual cue ─── */
+  /*       Positioned inside panel, covers last visible tile.    */
+  .cat-panel::after {
+    content:        "";
+    position:       absolute;
+    top:            0;
+    right:          0;
+    bottom:         0;
+    width:          42px;
+    background:     linear-gradient(to right, transparent, var(--white) 80%);
+    pointer-events: none;
+    z-index:        4;
+    border-radius:  0 var(--radius-lg) var(--radius-lg) 0;
+  }
+
+  /* ── 3. Scroll container: horizontal overflow with snap ────── */
+  .cat-scroll-outer {
+    overflow-x:                 auto;
+    overflow-y:                 visible;
+    -webkit-overflow-scrolling: touch;   /* Momentum scrolling on iOS */
+    scroll-snap-type:           x mandatory;
+    scroll-behavior:            smooth;
+    scrollbar-width:            none;    /* Firefox: hide scrollbar */
+    padding-bottom:             6px;     /* Prevent clipping of tile shadow */
+  }
+
+  /* Chrome, Safari: hide scrollbar */
+  .cat-scroll-outer::-webkit-scrollbar { display: none; }
+
+  /* ── 4. Category grid → horizontal flex row ─────────────────  */
+  /*       Override the CSS grid with flexbox for scrolling.      */
+  .cat-scroll-outer .category-grid {
+    display:         flex        !important;
+    flex-direction:  row         !important;
+    flex-wrap:       nowrap      !important;
+    gap:             10px        !important;
+    width:           max-content !important;  /* Expand to fit all tiles */
+    align-items:     stretch     !important;
+    padding-right:   44px        !important;  /* Breathing room after last tile */
+  }
+
+  /* ── 5. Each tile: fixed-width, scroll-snap, full text ──────── */
+  .cat-scroll-outer .category-tile {
+    flex:           0 0 88px         !important; /* Fixed 88px — never shrink */
+    width:          88px             !important;
+    min-height:     120px            !important; /* Enough for 3-line Marathi labels */
+    padding:        12px 8px         !important;
+    gap:            5px              !important;
+    scroll-snap-align:  start;
+    border-radius:  var(--radius)    !important;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ── 6. Tile icon: slightly smaller for carousel ────────────── */
+  .cat-scroll-outer .category-tile i {
+    width:       42px  !important;
+    height:      42px  !important;
+    font-size:   17px  !important;
+    flex-shrink: 0;
+  }
+
+  /* ── 7. Category label: FULLY VISIBLE — zero truncation ─────── */
+  /*       word-break: break-word → even long Marathi text wraps   */
+  /*       No overflow:hidden, no text-overflow:ellipsis           */
+  .cat-scroll-outer .category-tile strong {
+    font-size:     10.5px    !important;
+    font-weight:   700       !important;
+    line-height:   1.32      !important;
+    color:         var(--ink) !important;
+    text-align:    center    !important;
+    word-break:    break-word !important;
+    overflow-wrap: break-word !important;
+    white-space:   normal    !important;
+    hyphens:       auto      !important;
+    display:       block     !important;
+    width:         100%      !important;
+    overflow:      visible   !important;  /* ← MUST be visible, not hidden */
+    text-overflow: clip      !important;  /* ← NO ellipsis */
+  }
+
+  /* ── 8. Count badge: large and bottom-aligned ───────────────── */
+  .cat-scroll-outer .category-tile small {
+    font-size:   16px  !important;
+    font-weight: 900   !important;
+    line-height: 1     !important;
+    margin-top:  auto  !important;   /* Push count to bottom of tile */
+  }
+
+  /* ── 9. Active tile: stronger gradient highlight ────────────── */
+  .cat-scroll-outer .category-tile.active {
+    border-color: var(--blue) !important;
+    background:   linear-gradient(135deg, #eff6ff, #f0fdfa) !important;
+    box-shadow:   0 2px 12px rgba(26, 86, 219, 0.16) !important;
+  }
+
+  /* ── 10. Touch: disable hover lift-up on mobile ─────────────── */
+  .cat-scroll-outer .category-tile:hover {
+    transform: none !important;
+    box-shadow: var(--shadow-xs) !important;
+  }
+
+  .cat-scroll-outer .category-tile.active:hover {
+    box-shadow: 0 2px 12px rgba(26, 86, 219, 0.16) !important;
+  }
+
+}
+/* # MOBILE CATEGORY CAROUSEL END */
+
+/* ============================================================
+   # SMALL MOBILE (≤ 420px) — CAROUSEL FINE-TUNE
+   ============================================================ */
+@media (max-width: 420px) {
+
+  /* Narrower tiles for very small phones */
+  .cat-scroll-outer .category-tile {
+    flex:       0 0 80px  !important;
+    width:      80px      !important;
+    min-height: 114px     !important;
+    padding:    10px 6px  !important;
+    gap:        4px       !important;
+  }
+
+  .cat-scroll-outer .category-tile i {
+    width:     36px !important;
+    height:    36px !important;
+    font-size: 15px !important;
+  }
+
+  .cat-scroll-outer .category-tile strong {
+    font-size: 10px !important;
+    line-height: 1.3 !important;
+  }
+
+  .cat-scroll-outer .category-tile small {
+    font-size: 14px !important;
+  }
+
+  .cat-panel::after {
+    width: 36px;
+  }
+
+}
+/* # SMALL MOBILE FINE-TUNE END */
+
+/* ============================================================
+   # CATEGORY CAROUSEL MOBILE PATCH v2.1 END
+   ============================================================ */
+/* ============================================================
+   # FIX: COMPLAINT CARD CLIPPING & SPACING (v2.2)
+   कार्ड्स अर्धी दिसणे किंवा कट होणे थांबवण्यासाठी ही दुरुस्ती.
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+  /* 1. View Container ला थोडी वरून जागा द्या जेणेकरून पहिले कार्ड हेडरमध्ये घुसणार नाही */
+  #viewContainer {
+    padding-top: 4px !important;
+    display: block !important;
+    overflow: visible !important; /* कार्ड्सचे शाडो दिसण्यासाठी */
+  }
+
+  /* 2. कार्ड्समधील अ‍ॅनिमेशन नीट करा - 'riseIn' मुळे कार्ड्स वरून खाली सरकताना कट होतात */
+  .complaint-card, .ward-card, .stat-card, .hero-panel {
+    margin-top: 0 !important;
+    /* अ‍ॅनिमेशन थोडं स्मूथ केलं आहे */
+    animation: fadeInSlide 0.4s ease-out both !important;
+  }
+
+  /* नवीन सुरक्षित अ‍ॅनिमेशन */
+  @keyframes fadeInSlide {
+    from { 
+      opacity: 0; 
+      transform: translateY(8px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+
+  /* 3. कार्डच्या आतली रचना (Layout) अधिक स्पष्ट केली */
+  .complaint-card {
+    margin-bottom: 12px !important;
+    overflow: visible !important; /* आतलं कंटेंट कट होऊ नये म्हणून */
+    align-items: center !important; /* आयकॉन आणि मजकूर एका रेषेत */
+    min-height: auto !important;
+    border-radius: 12px !important;
+  }
+
+  /* 4. जर कार्डमध्ये खूप जास्त मजकूर असेल तर तो नीट रॅप होईल */
+  .complaint-card h3 {
+    white-space: normal !important;
+    word-break: break-word !important;
+    display: block !important;
+    margin-bottom: 4px !important;
+  }
+
+  /* 5. मोबाईलवर हेडरची उंची स्थिर (Fixed height) ठेवली */
+  .topbar {
+    height: auto !important;
+    min-height: 60px !important;
+    margin-bottom: 12px !important;
+  }
+}
+
+/* # FIX END */
+/* ============================================================
+   COMPLAINT CARD MOBILE FIX
+   तक्रार कार्ड्स नीट, full visible, balanced दिसण्यासाठी
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .complaint-card {
+    display: grid !important;
+    grid-template-columns: 42px minmax(0, 1fr) 34px !important;
+    gap: 12px !important;
+    align-items: start !important;
+    padding: 12px 14px !important;
+    border-radius: 14px !important;
+    min-height: auto !important;
+  }
+
+  .complaint-card .tile-icon {
+    width: 42px !important;
+    height: 42px !important;
+    font-size: 16px !important;
+    align-self: start;
+  }
+
+  .complaint-content {
+    min-width: 0 !important;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .complaint-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .complaint-title-wrap {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .complaint-card h3 {
+    font-size: 15px !important;
+    line-height: 1.35 !important;
+    margin: 0 !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+
+  .complaint-card p {
+    margin: 4px 0 0 !important;
+    font-size: 12.5px !important;
+    line-height: 1.45 !important;
+    color: var(--muted);
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+
+  .complaint-card .badge {
+    flex-shrink: 0;
+    white-space: nowrap;
+    font-size: 10px !important;
+    padding: 4px 8px !important;
+    margin-top: 2px;
+  }
+
+  .complaint-card .meta-row {
+    margin-top: 0 !important;
+    gap: 6px 8px !important;
+  }
+
+  .complaint-card .meta-row span {
+    font-size: 11px !important;
+    line-height: 1.2;
+  }
+
+  .complaint-card .icon-btn {
+    width: 34px !important;
+    height: 34px !important;
+    align-self: center;
+  }
+}
+
+@media (max-width: 420px) {
+  .complaint-card {
+    grid-template-columns: 40px minmax(0, 1fr) 32px !important;
+    gap: 10px !important;
+    padding: 11px 12px !important;
+  }
+
+  .complaint-card h3 {
+    font-size: 14px !important;
+  }
+
+  .complaint-card p {
+    font-size: 12px !important;
+  }
+
+  .complaint-card .badge {
+    font-size: 9px !important;
+  }
+}
+/* ============================================================
+   # COMPLAINT CARD — FINAL PERMANENT FIX v4.0
+   cc-body, cc-top, cc-desc — नवीन structured layout
+   रस्त्यावरील दिवे बंद / गटार तुंबले / वाहतूक कोंडी
+   — सर्व titles आता perfect दिसतील
+   ============================================================ */
+
+/* Desktop + Mobile दोन्हींसाठी base structure */
+.complaint-card {
+  height: auto;
+  display: grid !important;
+  grid-template-columns: 46px minmax(0, 1fr) 38px !important;
+  gap: 14px !important;
+  align-items: start !important;
+  padding: 16px 18px !important;
+}
+
+.cc-body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cc-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+.cc-top h3 {
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  color: var(--ink) !important;
+  line-height: 1.35 !important;
+  margin: 0 !important;
+  /* KEY FIX: पूर्ण दिसण्यासाठी */
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+  overflow: visible !important;
+  flex: 1;
+  min-width: 0;
+}
+
+.cc-top .badge {
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+  font-size: 10px !important;
+  padding: 3px 8px !important;
+  margin-top: 1px;
+  align-self: flex-start;
+}
+
+.cc-desc {
+  font-size: 13px !important;
+  color: var(--muted) !important;
+  font-weight: 500 !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+}
+
+/* Mobile override */
+@media (max-width: 768px) {
+  .complaint-card {
+    height: auto;
+    grid-template-columns: 40px minmax(0, 1fr) 32px !important;
+    gap: 10px !important;
+    padding: 14px !important;
+    border-radius: 14px !important;
+  }
+
+  .complaint-card .tile-icon {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 15px !important;
+  }
+
+  .cc-top h3 {
+    font-size: 14.5px !important;
+  }
+
+  .cc-desc {
+    font-size: 12.5px !important;
+  }
+
+  .complaint-card .icon-btn {
+    width: 32px !important;
+    height: 32px !important;
+    align-self: center;
+  }
+
+  .complaint-card .meta-row {
+    margin-top: 0 !important;
+    gap: 4px 8px !important;
+  }
+
+  .complaint-card .meta-row span {
+    font-size: 11px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .complaint-card {
+    height: auto;
+    grid-template-columns: 36px minmax(0, 1fr) 28px !important;
+    gap: 9px !important;
+    padding: 12px !important;
+  }
+
+  .cc-top h3 {
+    font-size: 14px !important;
+  }
+}
+/* # COMPLAINT CARD FINAL FIX END */
