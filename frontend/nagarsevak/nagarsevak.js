@@ -1,6 +1,6 @@
 // # CONFIG AND STATE START
-const API_URL = "https://seva-setu-complaint-app.onrender.com/api/v1/complaints";
-const NAGARSEVAK_LOGIN_API = "https://seva-setu-complaint-app.onrender.com/api/v1/nagarsevaks/login";
+const API_URL = "https://seva-setu-complaint-app.onrender.com";
+const NAGARSEVAK_LOGIN_API = "https://seva-setu-complaint-app.onrender.com/nagarsevaks/login";
 const UPLOAD_URL = "../uploads/";
 const LOCAL_ACTION_KEY = "nagarsevakComplaintActions";
 
@@ -330,7 +330,7 @@ async function loadComplaints() {
   try {
     const response = await fetch(
       loggedInNagarsevakId
-        ? `http://127.0.0.1:8000/nagarsevaks/${loggedInNagarsevakId}/complaints`
+        ? `https://seva-setu-complaint-app.onrender.com/nagarsevaks/${loggedInNagarsevakId}/complaints`
         : `${API_URL}/ward/${selectedWard}`
     );
     if (!response.ok) throw new Error("API not available");
@@ -355,7 +355,10 @@ function applyLocalActions() {
 }
 
 function filterWardComplaints() {
-  wardComplaints = allComplaints.filter((complaint) => normalizeWard(complaint.ward) === selectedWard);
+  wardComplaints = allComplaints.filter(
+    (complaint) =>
+      normalizeWard(complaint.ward || complaint.ward_id) === selectedWard
+  );
   if (!selectedComplaintId && wardComplaints.length) {
     selectedComplaintId = complaintId(wardComplaints[0]);
   }
@@ -662,7 +665,7 @@ saveActionButton.addEventListener("click", async () => {
   if (!selectedComplaintId) return;
   try {
     const endpoint = loggedInNagarsevakId
-      ? `http://127.0.0.1:8000/nagarsevaks/${loggedInNagarsevakId}/complaints/${selectedComplaintId}`
+      ? `https://seva-setu-complaint-app.onrender.com/nagarsevaks/${loggedInNagarsevakId}/complaints/${selectedComplaintId}`
       : `${API_URL}/${selectedComplaintId}`;
     const response = await fetch(endpoint, {
       method: "PUT",
