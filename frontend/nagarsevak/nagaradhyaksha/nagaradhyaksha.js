@@ -1,8 +1,8 @@
 // # CONFIG START
-const API_URL = "http://127.0.0.1:8000/complaints";
-const ADMIN_DATA_API = "http://127.0.0.1:8000/admin/data";
-const ADMIN_LOGIN_API = "http://127.0.0.1:8000/admins/login";
-const ANNOUNCEMENTS_API = "http://127.0.0.1:8000/announcements";
+const API_URL = "https://seva-setu-complaint-app.onrender.com/api/v1";
+const ADMIN_DATA_API = "https://seva-setu-complaint-app.onrender.com/api/v1/admin/data";
+const ADMIN_LOGIN_API = "https://seva-setu-complaint-app.onrender.com/api/v1/admins/login";
+const ANNOUNCEMENTS_API = "https://seva-setu-complaint-app.onrender.com/api/v1/announcements";
 const ANNOUNCEMENT_KEY = "nagaradhyakshaAnnouncements";
 // # CONFIG END
 

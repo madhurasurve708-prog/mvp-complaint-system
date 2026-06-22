@@ -26,7 +26,7 @@ const feedbackStars = document.getElementById("feedbackStars");
 const submitFeedback = document.getElementById("submitFeedback");
 
 const OFFICIAL_LOGIN_URL = "nagarsevak.html";
-const API = "http://127.0.0.1:8000";
+const API = "https://seva-setu-complaint-app.onrender.com/api/v1";
 const initialSettingsContent = settingsContent?.innerHTML ?? "";
 
 const authCopy = {

@@ -1,6 +1,6 @@
 // # CONFIG AND STATE START
-const API_URL = "http://127.0.0.1:8000/complaints";
-const NAGARSEVAK_LOGIN_API = "http://127.0.0.1:8000/nagarsevaks/login";
+const API_URL = "https://seva-setu-complaint-app.onrender.com/api/v1/complaints";
+const NAGARSEVAK_LOGIN_API = "https://seva-setu-complaint-app.onrender.com/api/v1/nagarsevaks/login";
 const UPLOAD_URL = "../uploads/";
 const LOCAL_ACTION_KEY = "nagarsevakComplaintActions";
 

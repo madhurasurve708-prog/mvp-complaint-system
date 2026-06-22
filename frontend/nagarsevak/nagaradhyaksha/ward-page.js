@@ -343,7 +343,7 @@ presidentLoginForm?.addEventListener("submit", async (event) => {
   const password = document.getElementById("presidentPassword").value.trim();
 
   try {
-    const response = await fetch("http://127.0.0.1:8000/admins/login", {
+    const response = await fetch("https://seva-setu-complaint-app.onrender.com/api/v1/admins/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password })
