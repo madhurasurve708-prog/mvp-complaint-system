@@ -22,7 +22,7 @@ import * as monthlyPage from "./monthly.js";
 import * as profilePage from "./profile.js";
 
 // # 1. CONFIG START
-const API_BASE = "http://127.0.0.1:8000";
+const API_BASE = "https://seva-setu-complaint-app.onrender.com/";
 const API_URL = `${API_BASE}/complaints`;
 const UPLOAD_URL = "../uploads/";
 const TEMPLATE_BASE = "./assets/templates/";
@@ -176,6 +176,8 @@ async function loadComplaints() {
 }
 
 function filterWardComplaints() {
+  console.log("Selected Ward:", state.selectedWard);
+console.log("All Complaints:", state.allComplaints);
   state.wardComplaints = state.allComplaints.filter(
     (complaint) => normalizeWard(complaint.ward) === state.selectedWard
   );

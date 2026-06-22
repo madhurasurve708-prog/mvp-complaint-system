@@ -49,11 +49,29 @@ export function render(container = _container) {
   const greeting = container.querySelector("#heroGreeting");
   if (greeting) greeting.textContent = getLanguage() === "mr" ? `नमस्कार, ${name}!` : `Hello, ${name}!`;
 
+  console.log("totalCount", container.querySelector("#totalCount"));
+console.log("pendingCount", container.querySelector("#pendingCount"));
+console.log("progressCount", container.querySelector("#progressCount"));
+console.log("resolvedCount", container.querySelector("#resolvedCount"));
   // Stats
   const total = state.wardComplaints.length;
   const pending = state.wardComplaints.filter((c) => normalizeStatus(c.status) === "pending").length;
   const progress = state.wardComplaints.filter((c) => normalizeStatus(c.status) === "progress").length;
   const resolved = state.wardComplaints.filter((c) => normalizeStatus(c.status) === "resolved").length;
+  const totalEl = container.querySelector("#totalCount");
+const pendingEl = container.querySelector("#pendingCount");
+const progressEl = container.querySelector("#progressCount");
+const resolvedEl = container.querySelector("#resolvedCount");
+
+if (!totalEl || !pendingEl || !progressEl || !resolvedEl) {
+  console.warn("Overview stats elements not ready yet");
+  return;
+}
+
+totalEl.textContent = total;
+pendingEl.textContent = pending;
+progressEl.textContent = progress;
+resolvedEl.textContent = resolved;
   container.querySelector("#totalCount").textContent = total;
   container.querySelector("#pendingCount").textContent = pending;
   container.querySelector("#progressCount").textContent = progress;
