@@ -4,7 +4,7 @@ import { injectTemplate, state, emit } from "./shared.js";
 import { showToast } from "./toast.js";
 
 let _container = null;
-const API = "https://seva-setu-complaint-app.onrender.com/";
+const API = "https://seva-setu-complaint-app.onrender.com";
 
 export async function init() {
   _container = document.getElementById("loginContainer");
