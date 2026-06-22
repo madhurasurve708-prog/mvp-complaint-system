@@ -336,23 +336,28 @@ const presidentLoginForm = document.getElementById("presidentLoginForm");
 const sidebar = document.getElementById("sidebar");
 const menuToggle = document.getElementById("menuToggle");
 const backButton = document.getElementById("backButton");
-
 // Login form handler
-presidentLoginForm?.addEventListener("submit", (event) => {
+presidentLoginForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
-  const username = document.getElementById("presidentUsername").value.trim().toLowerCase();
+  const username = document.getElementById("presidentUsername").value.trim();
   const password = document.getElementById("presidentPassword").value.trim();
-  
-  if (username !== "nagaradhyaksha" || password !== "123456") {
-    showToastWard("कृपया योग्य लॉगिन तपशील प्रविष्ट करा.");
+
+  try {
+    const response = await fetch("http://127.0.0.1:8000/admins/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password })
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.detail || "Invalid login");
+  } catch (error) {
+    showToastWard(error.message || "Invalid login");
     return;
   }
-  
+
   presidentLogin.hidden = true;
   presidentPage.hidden = false;
-  showToastWard("नगराध्यक्ष डॅशबोर्ड उघडले.");
-  
-  // Load ward page after login
+  showToastWard("Admin dashboard opened.");
   setTimeout(loadWardPage, 300);
 });
 

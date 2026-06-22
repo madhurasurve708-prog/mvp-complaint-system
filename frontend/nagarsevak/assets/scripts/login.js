@@ -1,8 +1,10 @@
 // Login page: language switch + login form.
 import { applyTranslations, setLanguage, getLanguage } from "./i18n/index.js";
 import { injectTemplate, state, emit } from "./shared.js";
+import { showToast } from "./toast.js";
 
 let _container = null;
+const API = "http://127.0.0.1:8000";
 
 export async function init() {
   _container = document.getElementById("loginContainer");
@@ -24,15 +26,38 @@ function wireLanguageSwitch() {
 
 function wireForm() {
   const form = document.getElementById("loginForm");
-  const wardSelect = document.getElementById("wardSelect");
   const nameInput = document.getElementById("representativeName");
   const mobileInput = document.getElementById("representativeMobile");
+  const wardSelect = document.getElementById("wardSelect");
+  const passwordInput = document.getElementById("password");
 
-  form.addEventListener("submit", (event) => {
+  mobileInput.addEventListener("input", (event) => {
+    event.target.value = event.target.value.replace(/\D/g, "").slice(0, 10);
+  });
+
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    state.selectedWard = wardSelect.value;
-    state.repName = nameInput.value.trim();
-    state.repMobile = mobileInput.value.trim();
-    emit("login:success");
+    try {
+      const identifier = mobileInput.value.trim() || nameInput.value.trim();
+      const response = await fetch(`${API}/nagarsevaks/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          identifier,
+          password: passwordInput.value,
+          ward_id: wardSelect.value
+        })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.detail || "Login failed");
+
+      state.repId = data.nagarsevak.id;
+      state.selectedWard = String(data.nagarsevak.ward_id);
+      state.repName = data.nagarsevak.name;
+      state.repMobile = data.nagarsevak.mobile_number || "";
+      emit("login:success");
+    } catch (error) {
+      showToast(error.message || "Login failed");
+    }
   });
 }

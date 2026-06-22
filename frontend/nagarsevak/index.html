@@ -49,8 +49,8 @@
       <div class="auth-card">
         <div class="auth-heading">
           <p id="welcomeText">आपले स्वागत आहे!</p>
-          <h2 id="formTitle">नागरिक नोंदणी</h2>
-          <span id="formSubtitle">पुढे जाण्यासाठी कृपया लॉगिन करा</span>
+          <h2 id="formTitle">नागरिक लॉगिन</h2>
+          <span id="formSubtitle">मोबाईल नवीन असल्यास खाते आपोआप तयार होईल</span>
         </div>
 
         <form id="registerForm" class="portal-form is-active" data-form="register">
@@ -68,10 +68,16 @@
             <i class="fa-regular fa-building"></i>
             <select id="registerWard" name="ward" required>
               <option value="" selected disabled>आपला वॉर्ड निवडा</option>
-              <option value="ward-1">वॉर्ड क्र. १ - बाजारपेठ</option>
-              <option value="ward-2">वॉर्ड क्र. २ - किनारपट्टी</option>
-              <option value="ward-3">वॉर्ड क्र. ३ - मालवण मध्य</option>
-              <option value="ward-4">वॉर्ड क्र. ४ - देऊळवाडा</option>
+              <option value="1">Ward 1</option>
+              <option value="2">Ward 2</option>
+              <option value="3">Ward 3</option>
+              <option value="4">Ward 4</option>
+              <option value="5">Ward 5</option>
+              <option value="6">Ward 6</option>
+              <option value="7">Ward 7</option>
+              <option value="8">Ward 8</option>
+              <option value="9">Ward 9</option>
+              <option value="10">Ward 10</option>
             </select>
             <i class="fa-solid fa-chevron-down chevron"></i>
           </label>
@@ -81,8 +87,13 @@
             <input id="locality" name="locality" type="text" placeholder="क्षेत्राचे नाव / स्थानिकता" autocomplete="address-level3" required>
           </label>
 
+          <label class="field" for="citizenOtp">
+            <i class="fa-solid fa-lock"></i>
+            <input id="citizenOtp" name="otp" type="password" placeholder="OTP 123456" autocomplete="one-time-code" maxlength="6" required>
+          </label>
+
           <button class="gradient-btn" type="submit">
-            <span>OTP पाठवा</span>
+            <span>लॉगिन करा</span>
             <i class="fa-solid fa-arrow-right"></i>
           </button>
 
@@ -97,53 +108,6 @@
             <i class="fa-solid fa-building-columns"></i>
             <span>नगराध्यक्ष पॅनेल</span>
           </a>
-        </form>
-
-        <form id="loginForm" class="portal-form" data-form="login">
-          <label class="field" for="username">
-            <i class="fa-regular fa-user"></i>
-            <input id="username" name="username" type="text" placeholder="वापरकर्त्याचे नाव" autocomplete="username" required>
-          </label>
-
-          <label class="field password-field" for="password">
-            <i class="fa-solid fa-lock"></i>
-            <input id="password" name="password" type="password" placeholder="पासवर्ड" autocomplete="current-password" required>
-            <button class="ghost-icon" type="button" id="togglePassword" aria-label="पासवर्ड दाखवा">
-              <i class="fa-regular fa-eye-slash"></i>
-            </button>
-          </label>
-
-          <div class="form-options">
-            <label for="rememberMe">
-              <input id="rememberMe" name="rememberMe" type="checkbox">
-              <span>मला लक्षात ठेवा</span>
-            </label>
-            <a href="#" id="forgotPassword">पासवर्ड विसरलात?</a>
-          </div>
-
-          <label class="field select-field" for="loginWard">
-            <i class="fa-regular fa-building"></i>
-            <select id="loginWard" name="ward" required>
-              <option value="" selected disabled>आपला वॉर्ड निवडा</option>
-              <option value="ward-1">वॉर्ड क्र. १ - बाजारपेठ</option>
-              <option value="ward-2">वॉर्ड क्र. २ - किनारपट्टी</option>
-              <option value="ward-3">वॉर्ड क्र. ३ - मालवण मध्य</option>
-              <option value="ward-4">वॉर्ड क्र. ४ - देऊळवाडा</option>
-            </select>
-            <i class="fa-solid fa-chevron-down chevron"></i>
-          </label>
-
-          <button class="gradient-btn login-gradient" type="submit">
-            <span>लॉगिन करा</span>
-            <i class="fa-solid fa-arrow-right"></i>
-          </button>
-
-          <div class="form-divider"><span>किंवा</span></div>
-
-          <button class="outline-action blue" type="button" id="showRegister">
-            <i class="fa-solid fa-lock"></i>
-            <span>नवीन खाते तयार करा</span>
-          </button>
         </form>
 
         <p class="secure-note">

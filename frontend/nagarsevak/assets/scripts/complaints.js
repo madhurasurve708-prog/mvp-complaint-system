@@ -78,6 +78,7 @@ function complaintCard(complaint) {
   const title = localizedComplaintTitle(complaint);
   const citizen = localizedCitizenName(complaint);
   const description = localizedComplaintDescription(complaint);
+  const locality = complaint.locality || "";
 
   return `
     <article class="complaint-item">
@@ -89,6 +90,7 @@ function complaintCard(complaint) {
           <span>#${id}</span>
           <span><i class="fa-regular fa-user"></i> ${citizen}</span>
           <span><i class="fa-solid fa-location-dot"></i> ${wardLabel()}</span>
+          ${locality ? `<span><i class="fa-solid fa-map-pin"></i> ${locality}</span>` : ""}
           <span>${categoryLabel(categoryKey)}</span>
           <span class="badge ${statusKey}">${statusLabel(complaint.status)}</span>
         </div>

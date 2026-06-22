@@ -26,13 +26,14 @@ const feedbackStars = document.getElementById("feedbackStars");
 const submitFeedback = document.getElementById("submitFeedback");
 
 const OFFICIAL_LOGIN_URL = "nagarsevak.html";
+const API = "http://127.0.0.1:8000";
 const initialSettingsContent = settingsContent?.innerHTML ?? "";
 
 const authCopy = {
   register: {
-    title: "नागरिक नोंदणी",
+    title: "नागरिक लॉगिन",
     welcome: "आपले स्वागत आहे!",
-    subtitle: "पुढे जाण्यासाठी कृपया लॉगिन करा",
+    subtitle: "मोबाईल नवीन असल्यास खाते आपोआप तयार होईल",
     tagline: "आपला आवाज, चांगल्या मालवणासाठी आपली कृती."
   },
   login: {
@@ -48,7 +49,7 @@ function switchAuthMode(mode) {
   const copy = authCopy[mode];
 
   registerForm.classList.toggle("is-active", !isLogin);
-  loginForm.classList.toggle("is-active", isLogin);
+  loginForm?.classList.toggle("is-active", isLogin);
   welcomeText.textContent = copy.welcome;
   formTitle.textContent = copy.title;
   formSubtitle.textContent = copy.subtitle;
@@ -66,7 +67,10 @@ function showToast(message) {
 
 function showDashboard() {
   authView.hidden = true;
+  authView.style.display = "none";
   dashboardView.hidden = false;
+  dashboardView.removeAttribute("hidden");
+  dashboardView.style.display = window.matchMedia("(max-width: 860px)").matches ? "block" : "grid";
   showDashboardPanel("home");
   document.title = "सेवा सेतू | मुख्यपृष्ठ";
   window.location.hash = "dashboard";
@@ -112,6 +116,33 @@ function openDashboardPanel(panelName) {
 
 function onlyDigits(value) {
   return value.replace(/\D/g, "");
+}
+
+function normalizeWardId(value) {
+  return Number(String(value || "").replace(/\D/g, ""));
+}
+
+function saveCitizenSession(citizen) {
+  const session = {
+    citizenId: citizen.id,
+    citizenName: citizen.full_name,
+    citizenMobile: citizen.mobile_number,
+    citizenWard: citizen.ward_id,
+    citizenLocality: citizen.locality
+  };
+  Object.entries(session).forEach(([key, value]) => {
+    localStorage.setItem(key, value);
+    sessionStorage.setItem(key, value);
+  });
+}
+
+function citizenQuery() {
+  const citizenId = localStorage.getItem("citizenId") || sessionStorage.getItem("citizenId");
+  return citizenId ? `?citizen_id=${encodeURIComponent(citizenId)}` : "";
+}
+
+function hasCitizenSession() {
+  return Boolean(localStorage.getItem("citizenId") || sessionStorage.getItem("citizenId"));
 }
 
 function settingRow(icon, color, title, value, description = "") {
@@ -242,13 +273,17 @@ function renderSettings(tabName) {
 showLoginButton.addEventListener("click", () => {
   window.location.href = OFFICIAL_LOGIN_URL;
 });
-showRegisterButton.addEventListener("click", () => switchAuthMode("register"));
+showRegisterButton?.addEventListener("click", () => switchAuthMode("register"));
 
 mobileNumber.addEventListener("input", (event) => {
   event.target.value = onlyDigits(event.target.value).slice(0, 10);
 });
 
-togglePasswordButton.addEventListener("click", () => {
+document.getElementById("username")?.addEventListener("input", (event) => {
+  event.target.value = onlyDigits(event.target.value).slice(0, 10);
+});
+
+togglePasswordButton?.addEventListener("click", () => {
   const shouldShow = passwordInput.type === "password";
   passwordInput.type = shouldShow ? "text" : "password";
   togglePasswordButton.innerHTML = shouldShow
@@ -256,61 +291,72 @@ togglePasswordButton.addEventListener("click", () => {
     : '<i class="fa-regular fa-eye-slash"></i>';
 });
 
-registerForm.addEventListener("submit", (event) => {
+registerForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const formData = new FormData(registerForm);
   const citizenRegistrationPayload = {
-    fullName: formData.get("fullName"),
-    mobileNumber: formData.get("mobileNumber"),
-    ward: formData.get("ward"),
-    locality: formData.get("locality")
+    full_name: formData.get("fullName"),
+    mobile_number: formData.get("mobileNumber"),
+    ward_id: normalizeWardId(formData.get("ward")),
+    locality: formData.get("locality"),
+    otp: formData.get("otp")
   };
 
-  if (citizenRegistrationPayload.mobileNumber.length !== 10) {
+  if (citizenRegistrationPayload.mobile_number.length !== 10) {
     showToast("कृपया १० अंकी मोबाईल क्रमांक प्रविष्ट करा.");
     return;
   }
 
-  console.log("Citizen registration payload:", citizenRegistrationPayload);
-  showToast("नोंदणी यशस्वी. मुख्यपृष्ठ उघडत आहे...");
-  window.setTimeout(showDashboard, 650);
+  try {
+    const response = await fetch(`${API}/citizens/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(citizenRegistrationPayload)
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.detail || "Registration failed");
+
+    saveCitizenSession(data.citizen);
+    showToast("लॉगिन यशस्वी. मुख्यपृष्ठ उघडत आहे...");
+    window.setTimeout(showDashboard, 650);
+  } catch (error) {
+    showToast(error.message || "Server connect होत नाही.");
+  }
 });
 
-loginForm.addEventListener("submit", (event) => {
+loginForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const formData = new FormData(loginForm);
   const citizenLoginPayload = {
-    username: formData.get("username"),
-    password: formData.get("password"),
-    rememberMe: formData.get("rememberMe") === "on",
-    ward: formData.get("ward")
+    mobile_number: formData.get("username"),
+    otp: formData.get("password")
   };
-  localStorage.setItem(
-  "citizenWard",
-  formData.get("ward")
-);
-localStorage.setItem(
-  "citizenWard",
-  formData.get("ward")
-);
-localStorage.setItem(
-  "citizenLocality",
-  formData.get("locality")
-);
 
-localStorage.setItem(
-  "citizenName",
-  formData.get("fullName")
-);
+  if (citizenLoginPayload.mobile_number.length !== 10) {
+    showToast("कृपया १० अंकी मोबाईल क्रमांक प्रविष्ट करा.");
+    return;
+  }
 
-  console.log("Citizen login payload:", citizenLoginPayload);
-  showToast("लॉगिन यशस्वी. मुख्यपृष्ठ उघडत आहे...");
-  window.setTimeout(showDashboard, 650);
+  try {
+    const response = await fetch(`${API}/citizens/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(citizenLoginPayload)
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.detail || "Login failed");
+
+    saveCitizenSession(data.citizen);
+    showToast("लॉगिन यशस्वी. मुख्यपृष्ठ उघडत आहे...");
+    window.setTimeout(showDashboard, 650);
+  } catch (error) {
+    showToast(error.message || "Server connect होत नाही.");
+  }
 });
 
-forgotPassword.addEventListener("click", (event) => {
+forgotPassword?.addEventListener("click", (event) => {
   event.preventDefault();
   showToast("पासवर्ड रीसेट सुविधा backend जोडल्यावर सक्रिय होईल.");
 });
@@ -333,13 +379,13 @@ document.querySelectorAll(".side-nav a").forEach((link) => {
 
 document.querySelectorAll('[data-action="new-complaint"], .blue-card button').forEach((button) => {
   button.addEventListener("click", () => {
-    window.location.href = "citizen/report-complaint.html";
+    window.location.href = `citizen/report-complaint.html${citizenQuery()}`;
   });
 });
 
 document.querySelectorAll('[data-action="track-complaint"], .green-card button').forEach((button) => {
   button.addEventListener("click", () => {
-    window.location.href = "citizen/my-complaints.html";
+    window.location.href = `citizen/my-complaints.html${citizenQuery()}`;
   });
 });
 
@@ -415,7 +461,7 @@ if (window.location.hash === "#complaints") {
   window.location.replace("citizen/my-complaints.html");
 }
 
-if (window.location.hash === "#dashboard" || window.location.hash === "#home") {
+if ((window.location.hash === "#dashboard" || window.location.hash === "#home") && hasCitizenSession()) {
   openDashboardPanel("home");
 }
 

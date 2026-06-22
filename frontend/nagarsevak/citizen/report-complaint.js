@@ -75,6 +75,15 @@ photoInput.addEventListener("change", () => {
 
 const API = "http://127.0.0.1:8000";
 
+function getCitizenId() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("citizen_id") || localStorage.getItem("citizenId") || sessionStorage.getItem("citizenId");
+  if (id) {
+    localStorage.setItem("citizenId", id);
+    sessionStorage.setItem("citizenId", id);
+  }
+  return Number(id);
+}
 
 complaintForm.addEventListener("submit", async (event) => {
 
@@ -93,6 +102,14 @@ complaintForm.addEventListener("submit", async (event) => {
     return;
   }
 
+  const citizenId = getCitizenId();
+  if (!citizenId) {
+    showToast("कृपया तक्रार नोंदवण्यापूर्वी नागरिक लॉगिन करा.");
+    window.setTimeout(() => {
+      window.location.href = "../index.html";
+    }, 900);
+    return;
+  }
 
   const complaintPayload = {
 
@@ -104,9 +121,7 @@ complaintForm.addEventListener("submit", async (event) => {
       ? photoInput.files[0].name 
       : null,
 
-    citizen_id: 1,
-
-    ward_id: Number(localStorage.getItem("citizenWard"))
+    citizen_id: citizenId
 };
  
 

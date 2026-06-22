@@ -80,5 +80,5 @@ export default {
   dataLoaded: "Ward complaints loaded.",
   actionSaved: "Action saved.",
   announcementSent: "Announcement sent.",
-  backendOff: "Backend is off, showing demo data."
+  backendOff: "Backend is off, complaints could not be loaded."
 };

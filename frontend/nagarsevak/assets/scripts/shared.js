@@ -7,10 +7,9 @@
 //   3. BUS             - pub/sub for cross-module events
 //   4. TEMPLATE LOADER - fetch + cache HTML fragments
 //   5. CATEGORIES      - complaint category config
-//   6. DEMO DATA       - fallback complaints
-//   7. UTILS           - pure helpers
-//   8. DATA            - loadComplaints / filterWardComplaints
-//   9. NAVIGATION      - openView() that loads a page template + script
+//   6. UTILS           - pure helpers
+//   7. DATA            - loadComplaints / filterWardComplaints
+//   8. NAVIGATION      - openView() that loads a page template + script
 // =====================================================================
 
 import { getLanguage, t } from "./i18n/index.js";
@@ -23,20 +22,21 @@ import * as monthlyPage from "./monthly.js";
 import * as profilePage from "./profile.js";
 
 // # 1. CONFIG START
-const API_URL = "http://127.0.0.1:8000/complaints";
+const API_BASE = "http://127.0.0.1:8000";
+const API_URL = `${API_BASE}/complaints`;
 const UPLOAD_URL = "../uploads/";
-const LOCAL_ACTION_KEY = "nagarsevakComplaintActions";
 const TEMPLATE_BASE = "./assets/templates/";
 // # CONFIG END
 
 // # 2. STATE START
 const state = {
-  selectedWard: "1",
+  selectedWard: "",
   selectedComplaintId: null,
   selectedCategory: "all",
   allComplaints: [],
   wardComplaints: [],
   currentView: "overview",
+  repId: null,
   repName: "",
   repMobile: ""
 };
@@ -90,24 +90,6 @@ const categories = [
   { key: "other", mr: "इतर", en: "Other", icon: "fa-circle-plus", className: "other", keywords: ["other", "इतर"] }
 ];
 // # CATEGORIES END
-
-// # 6. DEMO DATA START
-const demoComplaints = [
-  { id: "D101", citizen_name: "Aarav Naik", mr_citizen_name: "आरव नाईक", ward: "1", category: "garbage", title: "Garbage not collected", mr_title: "कचरा उचललेला नाही", description: "Bazaar Peth road has garbage near the shop line.", mr_description: "बाजारपेठ रस्त्यावर दुकानांच्या ओळीजवळ कचरा साचला आहे.", image: "", status: "Pending" },
-  { id: "D102", citizen_name: "Meera Sawant", mr_citizen_name: "मीरा सावंत", ward: "1", category: "street-lights", title: "Street light off", mr_title: "रस्त्यावरील दिवा बंद", description: "Street light near fish market is not working.", mr_description: "मच्छी मार्केटजवळील रस्त्यावरील दिवा चालू नाही.", image: "", status: "In Progress" },
-  { id: "D103", citizen_name: "Rohan Parab", mr_citizen_name: "रोहन परब", ward: "1", category: "road", title: "Road pothole", mr_title: "रस्त्यावर खड्डा", description: "Large pothole near main chowk.", mr_description: "मुख्य चौकाजवळ मोठा खड्डा पडला आहे.", image: "", status: "Resolved" },
-  { id: "D201", citizen_name: "Madhura Patil", mr_citizen_name: "मधुरा पाटील", ward: "2", category: "garbage", title: "Garbage", mr_title: "कचऱ्याची समस्या", description: "Garbage not collected for 2 days.", mr_description: "दोन दिवसांपासून कचरा उचललेला नाही.", image: "photo 1.jpeg", status: "Pending" },
-  { id: "D202", citizen_name: "Sagar Kadam", mr_citizen_name: "सागर कदम", ward: "2", category: "water", title: "Water pressure low", mr_title: "पाण्याचा दाब कमी", description: "Water pressure is low in the morning.", mr_description: "सकाळी पाण्याचा दाब कमी असतो.", image: "", status: "Pending" },
-  { id: "D301", citizen_name: "Priya Gavade", mr_citizen_name: "प्रिया गावडे", ward: "3", category: "drainage", title: "Drainage blocked", mr_title: "नाला बंद झाला आहे", description: "Drainage water is overflowing near school.", mr_description: "शाळेजवळ नाल्याचे पाणी बाहेर येत आहे.", image: "", status: "In Progress" },
-  { id: "D401", citizen_name: "Nilesh Chavan", mr_citizen_name: "निलेश चव्हाण", ward: "4", category: "tree", title: "Tree branch issue", mr_title: "झाडाच्या फांदीची समस्या", description: "Tree branch is touching electric line.", mr_description: "झाडाची फांदी वीजवाहिनीला स्पर्श करत आहे.", image: "", status: "Pending" },
-  { id: "D501", citizen_name: "Anaya More", mr_citizen_name: "अनया मोरे", ward: "5", category: "road", title: "Road cleaning", mr_title: "रस्ता स्वच्छता", description: "Road cleaning required near Dandi area.", mr_description: "दांडी परिसरात रस्ता स्वच्छता आवश्यक आहे.", image: "", status: "Resolved" },
-  { id: "D601", citizen_name: "Omkar Khot", mr_citizen_name: "ओंकार खोत", ward: "6", category: "water", title: "Water leakage", mr_title: "पाणी गळती", description: "Pipeline leakage near Chivla beach road.", mr_description: "चिवला बीच रस्त्याजवळ पाईपलाईन गळती आहे.", image: "", status: "Pending" },
-  { id: "D701", citizen_name: "Sneha Redkar", mr_citizen_name: "स्नेहा रेडकर", ward: "7", category: "animals", title: "Street dog issue", mr_title: "भटक्या जनावरांची समस्या", description: "Street dogs creating problem at night.", mr_description: "रात्री भटके कुत्रे त्रास देत आहेत.", image: "", status: "Pending" },
-  { id: "D801", citizen_name: "Vikram Pednekar", mr_citizen_name: "विक्रम पेडणेकर", ward: "8", category: "traffic", title: "Traffic problem", mr_title: "वाहतुकीची समस्या", description: "Traffic jam near Medha junction.", mr_description: "मेढा जंक्शनजवळ वाहतूक कोंडी होते.", image: "", status: "In Progress" },
-  { id: "D901", citizen_name: "Neha Salgaonkar", mr_citizen_name: "नेहा साळगावकर", ward: "9", category: "gutter", title: "Gutter cover broken", mr_title: "गटाराचे झाकण तुटले", description: "Gutter cover is broken near temple.", mr_description: "मंदिराजवळ गटाराचे झाकण तुटले आहे.", image: "", status: "Pending" },
-  { id: "D1001", citizen_name: "Kiran Naik", mr_citizen_name: "किरण नाईक", ward: "10", category: "street-lights", title: "Street light repair", mr_title: "रस्त्यावरील दिवे दुरुस्ती", description: "Two street lights off on Tarkarli road.", mr_description: "तारकर्ली रस्त्यावर दोन दिवे बंद आहेत.", image: "", status: "Resolved" }
-];
-// # DEMO DATA END
 
 // # 7. UTILS START
 function normalizeWard(value) {
@@ -171,34 +153,22 @@ function getCategoryCounts() {
   }, { all: state.wardComplaints.length });
 }
 
-function getSavedActions() {
-  return JSON.parse(localStorage.getItem(LOCAL_ACTION_KEY) || "{}");
-}
-
-function saveActions(actions) {
-  localStorage.setItem(LOCAL_ACTION_KEY, JSON.stringify(actions));
-}
-
-function applyLocalActions(complaints) {
-  const actions = getSavedActions();
-  return complaints.map((complaint) => {
-    const saved = actions[complaintId(complaint)];
-    return saved ? { ...complaint, status: saved.status, actionNote: saved.note } : complaint;
-  });
-}
 // # UTILS END
 
-// # 8. DATA START
+// # 7. DATA START
 async function loadComplaints() {
   const { showToast } = await import("./toast.js");
   const { t } = await import("./i18n/index.js");
   try {
-    const response = await fetch(API_URL);
+    const url = state.repId
+      ? `${API_BASE}/nagarsevaks/${state.repId}/complaints`
+      : `${API_BASE}/complaints/ward/${state.selectedWard}`;
+    const response = await fetch(url);
     if (!response.ok) throw new Error("API not available");
-    state.allComplaints = applyLocalActions(await response.json());
+    state.allComplaints = await response.json();
     showToast(t("dataLoaded"));
   } catch (error) {
-    state.allComplaints = applyLocalActions(demoComplaints);
+    state.allComplaints = [];
     showToast(t("backendOff"));
   }
   filterWardComplaints();
@@ -215,7 +185,7 @@ function filterWardComplaints() {
 }
 // # DATA END
 
-// # 9. NAVIGATION START
+// # 8. NAVIGATION START
 // Map of view name -> page module. Each module exports init(container) and render(container).
 const pages = {
   overview: overviewPage,
@@ -314,15 +284,14 @@ window.addEventListener("popstate", (event) => {
 // Exports for use by app.js, dashboard.js, and page scripts.
 export {
   API_URL,
+  API_BASE,
   UPLOAD_URL,
-  LOCAL_ACTION_KEY,
   state,
   on,
   emit,
   loadTemplate,
   injectTemplate,
   categories,
-  demoComplaints,
   normalizeWard,
   normalizeStatus,
   statusLabel,
@@ -334,9 +303,6 @@ export {
   categoryLabel,
   complaintCategory,
   getCategoryCounts,
-  getSavedActions,
-  saveActions,
-  applyLocalActions,
   loadComplaints,
   filterWardComplaints,
   openView,

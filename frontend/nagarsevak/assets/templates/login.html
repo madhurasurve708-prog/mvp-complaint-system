@@ -29,34 +29,35 @@
 
       <label class="field">
         <i class="fa-regular fa-user"></i>
-        <input id="representativeName" type="text" value="मधुरा पाटील" required>
+        <input id="representativeName" type="text" placeholder="Name or mobile number" autocomplete="username" required>
       </label>
 
       <label class="field">
         <i class="fa-solid fa-phone"></i>
-        <input id="representativeMobile" type="tel" value="9876543210" maxlength="10" required>
+        <input id="representativeMobile" type="tel" placeholder="Mobile number" inputmode="numeric" autocomplete="tel">
       </label>
 
       <label class="field select-field">
         <i class="fa-solid fa-building-columns"></i>
         <select id="wardSelect" required>
-          <option value="1">Ward 1 - Bazaar Peth</option>
-          <option value="2">Ward 2 - Kinara Patti</option>
-          <option value="3">Ward 3 - Malvan Madhya</option>
-          <option value="4">Ward 4 - Deulwada</option>
-          <option value="5">Ward 5 - Dandi</option>
-          <option value="6">Ward 6 - Chivla</option>
-          <option value="7">Ward 7 - Revtale</option>
-          <option value="8">Ward 8 - Medha</option>
-          <option value="9">Ward 9 - Kumbharmath</option>
-          <option value="10">Ward 10 - Tarkarli Road</option>
+          <option value="" selected disabled>Select ward</option>
+          <option value="1">Ward 1</option>
+          <option value="2">Ward 2</option>
+          <option value="3">Ward 3</option>
+          <option value="4">Ward 4</option>
+          <option value="5">Ward 5</option>
+          <option value="6">Ward 6</option>
+          <option value="7">Ward 7</option>
+          <option value="8">Ward 8</option>
+          <option value="9">Ward 9</option>
+          <option value="10">Ward 10</option>
         </select>
         <i class="fa-solid fa-chevron-down chevron"></i>
       </label>
 
       <label class="field">
         <i class="fa-solid fa-lock"></i>
-        <input id="password" type="password" value="123456" required>
+        <input id="password" type="password" autocomplete="current-password" required>
       </label>
 
       <button class="primary-btn" type="submit">

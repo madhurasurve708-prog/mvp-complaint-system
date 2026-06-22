@@ -80,5 +80,5 @@ export default {
   dataLoaded: "वॉर्डनुसार तक्रारी लोड झाल्या.",
   actionSaved: "कारवाई सेव्ह झाली.",
   announcementSent: "घोषणा पाठवली गेली.",
-  backendOff: "Backend बंद आहे, demo data दाखवत आहे."
+  backendOff: "Backend बंद आहे, सध्या तक्रारी लोड होत नाहीत."
 };

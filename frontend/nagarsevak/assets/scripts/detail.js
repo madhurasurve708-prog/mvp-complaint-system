@@ -10,10 +10,9 @@ import {
   statusLabel,
   wardLabel,
   UPLOAD_URL,
-  getSavedActions,
-  saveActions,
-  applyLocalActions,
+  API_BASE,
   filterWardComplaints,
+  loadComplaints,
   emit
 } from "./shared.js";
 import { showToast } from "./toast.js";
@@ -54,22 +53,34 @@ export function render(container = _container) {
       <span>#${complaintId(complaint)}</span>
       <span><i class="fa-regular fa-user"></i> ${localizedCitizenName(complaint)}</span>
       <span><i class="fa-solid fa-location-dot"></i> ${wardLabel()}</span>
+      ${complaint.locality ? `<span><i class="fa-solid fa-map-pin"></i> ${complaint.locality}</span>` : ""}
       <span class="badge ${normalizeStatus(complaint.status)}">${statusLabel(complaint.status)}</span>
     </div>
   `;
 }
 
-function saveAction() {
+async function saveAction() {
   if (!state.selectedComplaintId) return;
   const container = _container;
-  const actions = getSavedActions();
-  actions[state.selectedComplaintId] = {
-    status: container.querySelector("#detailStatus").value,
-    note: container.querySelector("#actionNote").value.trim()
-  };
-  saveActions(actions);
-  state.allComplaints = applyLocalActions(state.allComplaints);
-  filterWardComplaints();
-  emit("data:changed");
-  showToast(t("actionSaved"));
+  try {
+    const endpoint = state.repId
+      ? `${API_BASE}/nagarsevaks/${state.repId}/complaints/${state.selectedComplaintId}`
+      : `${API_BASE}/complaints/${state.selectedComplaintId}`;
+    const response = await fetch(endpoint, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        status: container.querySelector("#detailStatus").value,
+        notes: container.querySelector("#actionNote").value.trim()
+      })
+    });
+    if (!response.ok) throw new Error("Save failed");
+
+    await loadComplaints();
+    filterWardComplaints();
+    emit("data:changed");
+    showToast(t("actionSaved"));
+  } catch {
+    showToast("Action save failed.");
+  }
 }

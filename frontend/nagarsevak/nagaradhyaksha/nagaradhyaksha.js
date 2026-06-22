@@ -1,7 +1,8 @@
 // # CONFIG START
 const API_URL = "http://127.0.0.1:8000/complaints";
+const ADMIN_DATA_API = "http://127.0.0.1:8000/admin/data";
+const ADMIN_LOGIN_API = "http://127.0.0.1:8000/admins/login";
 const ANNOUNCEMENTS_API = "http://127.0.0.1:8000/announcements";
-const LOCAL_ACTION_KEY = "nagarsevakComplaintActions";
 const ANNOUNCEMENT_KEY = "nagaradhyakshaAnnouncements";
 // # CONFIG END
 
@@ -15,7 +16,8 @@ const state = {
   searchQuery: "",
   announcementAudience: "citizen",
   allComplaints: [],
-  announcements: []
+  announcements: [],
+  admin: null
 };
 // # STATE END
 
@@ -33,7 +35,7 @@ const mobileBottomNav = document.getElementById("mobileBottomNav");
 // # DOM REFERENCES END
 
 // # WARD DATA START
-const wards = [
+let wards = [
   {
     id: "1",
     name: "बाजारपेठ",
@@ -92,7 +94,6 @@ const wards = [
   }
 ];
 // # WARD DATA END
-
 // # WARD DATA END
 
 // # CATEGORY DATA START
@@ -110,24 +111,6 @@ const categories = [
   { key: "other",         label: "इतर",                icon: "fa-circle-plus",       className: "purple", keywords: ["other", "इतर"] }
 ];
 // # CATEGORY DATA END
-
-// # DEMO COMPLAINTS START
-const demoComplaints = [
-  { id: "D101",  citizen_name: "आराव नाईक",          ward: "1",  category: "garbage",        title: "कचरा उचलला नाही",              description: "बाजारपेठ रस्त्यावर दुकानांजवळ मोठ्या प्रमाणात कचरा पडला आहे.",       image: "", status: "Pending"     },
-  { id: "D102",  citizen_name: "मीरा सावंत",          ward: "1",  category: "street-lights",  title: "रस्त्यावरील दिवे बंद",          description: "माशाच्या बाजाराजवळील तीन रस्त्यावरील दिवे काम करत नाहीत.",           image: "", status: "In Progress" },
-  { id: "D103",  citizen_name: "रोहन परब",            ward: "1",  category: "road",           title: "रस्त्यावर मोठा खड्डा",          description: "मुख्य चौकाजवळ रस्त्यावर मोठा खड्डा पडला असून वाहने अडकत आहेत.",    image: "", status: "Resolved"    },
-  { id: "D201",  citizen_name: "माधुरा पाटील",        ward: "2",  category: "garbage",        title: "कचरा साफ झाला नाही",            description: "गेल्या दोन दिवसांपासून कचरा उचललेला नाही, दुर्गंधी येत आहे.",        image: "", status: "Pending"     },
-  { id: "D202",  citizen_name: "सागर कदम",            ward: "2",  category: "water",          title: "पाण्याचा दाब कमी",              description: "सकाळी नळाचा पाण्याचा दाब खूप कमी येतो, अनेक घरांना त्रास होतो.",   image: "", status: "Pending"     },
-  { id: "D301",  citizen_name: "प्रिया गावडे",        ward: "3",  category: "drainage",       title: "गटार तुंबले आहे",               description: "शाळेजवळ गटाराचे पाणी ओसंडून रस्त्यावर वाहत आहे.",                   image: "", status: "In Progress" },
-  { id: "D401",  citizen_name: "निलेश चव्हाण",        ward: "4",  category: "tree",           title: "झाडाची फांदी धोकादायक",         description: "झाडाची मोठी फांदी विजेच्या तारांना स्पर्श करत असून धोका आहे.",     image: "", status: "Pending"     },
-  { id: "D501",  citizen_name: "अनया मोरे",            ward: "5",  category: "road",           title: "रस्ता साफसफाई आवश्यक",          description: "दांडी परिसरात रस्त्यावर माती व दगड साचले आहेत.",                     image: "", status: "Resolved"    },
-  { id: "D601",  citizen_name: "ओंकार खोत",            ward: "6",  category: "water",          title: "पाईपलाईनमधून गळती",             description: "चिवला बीच रस्त्यावर पाण्याच्या पाईपमधून गळती होत असून पाणी वाया जात आहे.", image: "", status: "Pending" },
-  { id: "D701",  citizen_name: "स्नेहा रेडकर",        ward: "7",  category: "animals",        title: "भटक्या कुत्र्यांचा त्रास",     description: "रात्री भटके कुत्रे नागरिकांना त्रास देत असून लहान मुलांना भीती वाटते.", image: "", status: "Pending" },
-  { id: "D801",  citizen_name: "विक्रम पेडणेकर",      ward: "8",  category: "traffic",        title: "वाहतूक कोंडी",                  description: "मेढा चौकाजवळ मोठ्या प्रमाणात वाहतूक कोंडी होत असून रस्ता अडतो.",    image: "", status: "In Progress" },
-  { id: "D901",  citizen_name: "नेहा साळगावकर",       ward: "9",  category: "gutter",         title: "गटाराचे झाकण तुटले",            description: "देवळाजवळील गटाराचे झाकण तुटल्यामुळे अपघाताचा मोठा धोका निर्माण झाला आहे.", image: "", status: "Pending" },
-  { id: "D1001", citizen_name: "किरण नाईक",           ward: "10", category: "street-lights",  title: "दिव्यांची दुरुस्ती हवी",        description: "तारकर्ली रस्त्यावरील दोन दिवे बंद पडले असून रात्री अंधार असतो.",     image: "", status: "Resolved"    }
-];
-// # DEMO COMPLAINTS END
 
 // # UTILS START
 function normalizeWard(value) {
@@ -191,18 +174,6 @@ function categoryInfo(key) {
   return categories.find((c) => c.key === key) || categories[categories.length - 1];
 }
 
-function getSavedActions() {
-  return JSON.parse(localStorage.getItem(LOCAL_ACTION_KEY) || "{}");
-}
-
-function applyLocalActions(complaints) {
-  const actions = getSavedActions();
-  return complaints.map((c) => {
-    const saved = actions[complaintId(c)];
-    return saved ? { ...c, status: saved.status, actionNote: saved.note } : c;
-  });
-}
-
 function getAnnouncements() {
   return [
     {
@@ -238,13 +209,30 @@ function showToast(message) {
 // # DATA START
 async function loadComplaints() {
   try {
-    const response = await fetch(API_URL);
+    const response = await fetch(ADMIN_DATA_API);
     if (!response.ok) throw new Error("API not available");
-    state.allComplaints = applyLocalActions(await response.json());
+    const data = await response.json();
+    const nagarsevaksByWard = (data.nagarsevaks || []).reduce((acc, item) => {
+      const key = normalizeWard(item.ward_id);
+      if (!acc[key]) acc[key] = [];
+      acc[key].push(item);
+      return acc;
+    }, {});
+    wards = (data.wards || []).map((ward) => {
+      const assigned = nagarsevaksByWard[normalizeWard(ward.id)] || [];
+      return {
+        id: String(ward.id),
+        name: ward.name || `Ward ${ward.id}`,
+        nagarsevak: assigned.length ? assigned.map((item) => item.name).join(", ") : "Not assigned",
+        phone: assigned.map((item) => item.mobile_number).filter(Boolean).join(", "),
+        focus: ""
+      };
+    });
+    state.allComplaints = data.complaints || [];
     showToast("Backend मधून सर्व वॉर्डची माहिती लोड झाली.");
   } catch {
-    state.allComplaints = applyLocalActions(demoComplaints);
-    showToast("Demo डेटा दाखवत आहे — Backend बंद आहे.");
+    state.allComplaints = [];
+    showToast("Backend बंद आहे, सध्या तक्रारी लोड होत नाहीत.");
   }
 }
 
@@ -848,6 +836,9 @@ function renderMonthly() {
 
 // ── PROFILE ────────────────────────────────────────────────
 function renderProfile() {
+  const adminName = state.admin?.name || "Admin";
+  const adminUsername = state.admin?.username || "";
+  const initials = adminName.trim().split(/\s+/).map((part) => part[0]).join("").slice(0, 2).toUpperCase() || "A";
   return `
     <section class="page-heading">
       <div>
@@ -866,10 +857,10 @@ function renderProfile() {
           alt="नगराध्यक्ष प्रोफाइल फोटो"
           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
         >
-        <div style="width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--teal));display:none;align-items:center;justify-content:center;color:white;font-size:36px;font-weight:900;margin:0 auto 14px">मव</div>
-        <h2>सौ. ममता वराडकर</h2>
+        <div style="width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--teal));display:none;align-items:center;justify-content:center;color:white;font-size:36px;font-weight:900;margin:0 auto 14px">${initials}</div>
+        <h2>${adminName}</h2>
         <p>नगराध्यक्ष &nbsp;|&nbsp; मालवण नगरपरिषद</p>
-        <p style="font-size:13px;color:var(--muted);margin-top:4px">संपर्क: 8208454975</p>
+        <p style="font-size:13px;color:var(--muted);margin-top:4px">${adminUsername}</p>
         <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--line)">
           <div class="meta-row" style="justify-content:center">
             <span class="badge status-resolved"><i class="fa-solid fa-shield-check"></i>अधिकृत</span>
@@ -887,12 +878,12 @@ function renderProfile() {
         <div class="settings-list">
           <article class="setting-row">
             <div class="tile-icon blue"><i class="fa-regular fa-user"></i></div>
-            <div><strong>पूर्ण नाव</strong><span>सौ. ममता वराडकर</span></div>
+            <div><strong>पूर्ण नाव</strong><span>${adminName}</span></div>
             <button class="small-btn" type="button">बदला</button>
           </article>
           <article class="setting-row">
             <div class="tile-icon green"><i class="fa-solid fa-phone"></i></div>
-            <div><strong>मोबाईल क्रमांक</strong><span>8208454975</span></div>
+            <div><strong>वापरकर्ता नाव</strong><span>${adminUsername}</span></div>
             <button class="small-btn" type="button">बदला</button>
           </article>
           <article class="setting-row">
@@ -975,19 +966,50 @@ function openPage(page, options = {}) {
 // # EVENTS START
 
 // Login
-presidentLoginForm.addEventListener("submit", (e) => {
+presidentLoginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const username = document.getElementById("presidentUsername").value.trim().toLowerCase();
+  
+  // .toLowerCase() hata diya hai taaki case-sensitive match ho sake
+  const username = document.getElementById("presidentUsername").value.trim(); 
   const password = document.getElementById("presidentPassword").value.trim();
-  if (username !== "nagaradhyaksha" || password !== "123456") {
-    showToast("चुकीचे username किंवा password.");
+  
+  try {
+    const response = await fetch(ADMIN_LOGIN_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: username, password: password })
+    });
+    
+    const data = await response.json();
+    
+    if (!response.ok) {
+        // Yaha server se aa raha real error dikhega
+        throw new Error(data.detail || "Invalid login");
+    }
+    
+    state.admin = data.admin;
+    presidentLogin.hidden = true;
+    presidentPage.hidden  = false;
+    if (mobileBottomNav) mobileBottomNav.hidden = false;
+    const adminChipName = document.getElementById("adminChipName");
+    if (adminChipName) adminChipName.textContent = state.admin?.name || "Admin";
+    showToast(`स्वागत आहे, ${state.admin?.name || "Admin"}! डॅशबोर्ड उघडत आहे...`);
+
+  } catch (error) {
+    // Yaha hum exact error message dikhayenge jo server se aa raha hai
+    console.error("Login Error:", error.message);
+    showToast(error.message); // UI par error message dikha do
     return;
   }
+});
+  
   presidentLogin.hidden = true;
   presidentPage.hidden  = false;
   if (mobileBottomNav) mobileBottomNav.hidden = false;
-  showToast("स्वागत आहे, मॅडम! डॅशबोर्ड उघडत आहे…");
-});
+  const adminChipName = document.getElementById("adminChipName");
+  if (adminChipName) adminChipName.textContent = state.admin?.name || "Admin";
+  showToast(`स्वागत आहे, ${state.admin?.name || "Admin"}! डॅशबोर्ड उघडत आहे...`);
+
 
 // Sidebar toggle
 menuToggle.addEventListener("click", () => sidebar.classList.toggle("open"));
@@ -1087,7 +1109,7 @@ document.addEventListener("submit", async (e) => {
     ward:        document.getElementById("announcementWard").value,
     subject:     document.getElementById("announcementSubject").value.trim(),
     message:     document.getElementById("announcementMessage").value.trim(),
-    created_by:  "nagaradhyaksha",
+    created_by:  state.admin?.username || "admin",
     created_at:  new Date().toISOString(),
     priority:    "medium"
   };

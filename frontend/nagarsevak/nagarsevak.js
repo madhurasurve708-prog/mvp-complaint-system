@@ -1,10 +1,12 @@
 // # CONFIG AND STATE START
 const API_URL = "http://127.0.0.1:8000/complaints";
+const NAGARSEVAK_LOGIN_API = "http://127.0.0.1:8000/nagarsevaks/login";
 const UPLOAD_URL = "../uploads/";
 const LOCAL_ACTION_KEY = "nagarsevakComplaintActions";
 
 let currentLanguage = "mr";
-let selectedWard = "1";
+let selectedWard = "";
+let loggedInNagarsevakId = null;
 let selectedComplaintId = null;
 let selectedCategory = "all";
 let allComplaints = [];
@@ -15,6 +17,8 @@ let wardComplaints = [];
 const loginPage = document.getElementById("loginPage");
 const dashboardPage = document.getElementById("dashboardPage");
 const loginForm = document.getElementById("loginForm");
+const usernameInput = document.getElementById("username");
+const passwordInput = document.getElementById("password");
 const wardSelect = document.getElementById("wardSelect");
 const representativeName = document.getElementById("representativeName");
 const representativeMobile = document.getElementById("representativeMobile");
@@ -115,7 +119,7 @@ const translations = {
     dataLoaded: "वॉर्डनुसार तक्रारी लोड झाल्या.",
     actionSaved: "कारवाई सेव्ह झाली.",
     announcementSent: "घोषणा पाठवली गेली.",
-    backendOff: "Backend बंद आहे, demo data दाखवत आहे."
+    backendOff: "Backend बंद आहे, सध्या तक्रारी लोड होत नाहीत."
   },
   en: {
     portalLabel: "Nagarsevak Portal",
@@ -190,7 +194,7 @@ const translations = {
     dataLoaded: "Ward complaints loaded.",
     actionSaved: "Action saved.",
     announcementSent: "Announcement sent.",
-    backendOff: "Backend is off, showing demo data."
+    backendOff: "Backend is off, complaints could not be loaded."
   }
 };
 // # TRANSLATIONS END
@@ -324,14 +328,17 @@ function applyLanguage(lang) {
 // # DATA FUNCTIONS START
 async function loadComplaints() {
   try {
-    const response = await fetch(API_URL);
+    const response = await fetch(
+      loggedInNagarsevakId
+        ? `http://127.0.0.1:8000/nagarsevaks/${loggedInNagarsevakId}/complaints`
+        : `${API_URL}/ward/${selectedWard}`
+    );
     if (!response.ok) throw new Error("API not available");
     allComplaints = await response.json();
     applyLocalActions();
     showToast(t("dataLoaded"));
   } catch (error) {
-    allComplaints = demoComplaints;
-    applyLocalActions();
+    allComplaints = [];
     showToast(t("backendOff"));
   }
 
@@ -570,11 +577,38 @@ languageButtons.forEach((button) => {
 
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  selectedWard = wardSelect.value;
-  loginPage.hidden = true;
-  dashboardPage.hidden = false;
-  await loadComplaints();
-  openView("overview");
+  try {
+    const response = await fetch(NAGARSEVAK_LOGIN_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: usernameInput.value.trim(),
+        password: passwordInput.value.trim()
+      })
+    });
+
+    let data;
+    try {
+      data = await response.json();
+    } catch (parseError) {
+      throw new Error(`Login failed: ${response.status} ${response.statusText}`);
+    }
+
+    if (!response.ok) {
+      throw new Error(data.detail || data.message || "Login failed");
+    }
+
+    loggedInNagarsevakId = data.nagarsevak.id;
+    selectedWard = String(data.nagarsevak.ward_id);
+    representativeName.value = data.nagarsevak.name;
+    representativeMobile.value = data.nagarsevak.mobile_number || "";
+    loginPage.hidden = true;
+    dashboardPage.hidden = false;
+    await loadComplaints();
+    openView("overview");
+  } catch (error) {
+    showToast(error.message || "Login failed");
+  }
 });
 
 navButtons.forEach((button) => {
@@ -624,18 +658,26 @@ complaintsList.addEventListener("click", (event) => {
   openView("detail");
 });
 
-saveActionButton.addEventListener("click", () => {
+saveActionButton.addEventListener("click", async () => {
   if (!selectedComplaintId) return;
-  const actions = getSavedActions();
-  actions[selectedComplaintId] = {
-    status: detailStatus.value,
-    note: actionNote.value.trim()
-  };
-  saveActions(actions);
-  applyLocalActions();
-  filterWardComplaints();
-  renderAll();
-  showToast(t("actionSaved"));
+  try {
+    const endpoint = loggedInNagarsevakId
+      ? `http://127.0.0.1:8000/nagarsevaks/${loggedInNagarsevakId}/complaints/${selectedComplaintId}`
+      : `${API_URL}/${selectedComplaintId}`;
+    const response = await fetch(endpoint, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        status: detailStatus.value,
+        notes: actionNote.value.trim()
+      })
+    });
+    if (!response.ok) throw new Error("Save failed");
+    await loadComplaints();
+    showToast(t("actionSaved"));
+  } catch {
+    showToast("Action save failed.");
+  }
 });
 
 sendAnnouncementButton.addEventListener("click", () => {
