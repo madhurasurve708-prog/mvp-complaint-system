@@ -355,14 +355,11 @@ function applyLocalActions() {
 }
 
 function filterWardComplaints() {
-  wardComplaints = allComplaints.filter(
-    (complaint) =>
-      normalizeWard(complaint.ward || complaint.ward_id) === selectedWard
-  );
-  if (!selectedComplaintId && wardComplaints.length) {
-    selectedComplaintId = complaintId(wardComplaints[0]);
-  }
+  wardComplaints = allComplaints;   // API already scoped to this ward
+  selectedComplaintId = wardComplaints.length ? complaintId(wardComplaints[0]) : null;
+  // Always reset so refresh picks up new complaints
 }
+  // Always reset so refresh picks up new com
 // # DATA FUNCTIONS END
 
 // # RENDER FUNCTIONS START
@@ -585,9 +582,10 @@ loginForm.addEventListener("submit", async (event) => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        username: usernameInput.value.trim(),
-        password: passwordInput.value.trim()
-      })
+  identifier: usernameInput.value.trim(),
+  password: passwordInput.value.trim(),
+  ward_id: wardSelect.value   // wardSelect must be added to the login form
+})
     });
 
     let data;

@@ -395,8 +395,8 @@ def admin_summary(db: Session = Depends(get_db)):
         "resolved": sum(1 for item in complaints if item.status == "Resolved"),
     }
 
-
 @app.get("/admin/data")
+
 def admin_data(db: Session = Depends(get_db)):
     return {
         "wards": [{"id": w.id, "name": w.name} for w in db.query(models.Ward).order_by(models.Ward.id).all()],
