@@ -1,4 +1,3 @@
-
 const authView = document.getElementById("authView");
 const dashboardView = document.getElementById("dashboardView");
 const registerForm = document.getElementById("registerForm");
@@ -26,7 +25,7 @@ const feedbackStars = document.getElementById("feedbackStars");
 const submitFeedback = document.getElementById("submitFeedback");
 
 const OFFICIAL_LOGIN_URL = "nagarsevak.html";
-const API = "https://seva-setu-complaint-app.onrender.com/api/v1";
+const API = "https://seva-setu-complaint-app.onrender.com";
 const initialSettingsContent = settingsContent?.innerHTML ?? "";
 
 const authCopy = {

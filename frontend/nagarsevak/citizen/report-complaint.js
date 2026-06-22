@@ -73,7 +73,7 @@ photoInput.addEventListener("change", () => {
   uploadBox.classList.add("has-preview");
 });
 
-const API = "https://seva-setu-complaint-app.onrender.com/api/v1";
+const API = "https://seva-setu-complaint-app.onrender.com";
 
 function getCitizenId() {
   const params = new URLSearchParams(window.location.search);

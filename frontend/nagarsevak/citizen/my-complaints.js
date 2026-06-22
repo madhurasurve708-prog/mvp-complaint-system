@@ -20,7 +20,7 @@ const statusView = {
   resolved: { label: "निकाली", className: "resolved" }
 };
 
-const API = "https://seva-setu-complaint-app.onrender.com/api/v1";
+const API = "https://seva-setu-complaint-app.onrender.com";
 
 function getCitizenId() {
   const params = new URLSearchParams(window.location.search);
