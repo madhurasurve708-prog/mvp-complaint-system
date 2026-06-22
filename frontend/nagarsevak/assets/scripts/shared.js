@@ -22,7 +22,7 @@ import * as monthlyPage from "./monthly.js";
 import * as profilePage from "./profile.js";
 
 // # 1. CONFIG START
-const API_BASE = "https://seva-setu-complaint-app.onrender.com/";
+const API_BASE = "https://seva-setu-complaint-app.onrender.com";
 const API_URL = `${API_BASE}/complaints`;
 const UPLOAD_URL = "../uploads/";
 const TEMPLATE_BASE = "./assets/templates/";
