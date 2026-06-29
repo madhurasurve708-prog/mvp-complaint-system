@@ -37,55 +37,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-DATABASE_PATH = "seva_setu.db"
+import os
 
-# # INITIALIZATION END
+# Use environment variable, fall back to persistent volume
+import os
 
-# # DATABASE SCHEMA START
-"""
-CREATE TABLE complaints (
-    id TEXT PRIMARY KEY,
-    citizen_name TEXT NOT NULL,
-    citizen_phone TEXT,
-    ward INTEGER NOT NULL,
-    category TEXT NOT NULL,
-    title TEXT NOT NULL,
-    description TEXT NOT NULL,
-    image TEXT,
-    status TEXT DEFAULT 'Pending',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    assigned_to TEXT,
-    action_note TEXT
-);
+# SQLite file location
+DATABASE_PATH = "complaint.db"
 
-CREATE TABLE wards (
-    id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL,
-    nagarsevak TEXT NOT NULL,
-    focus TEXT NOT NULL
-);
-
-CREATE TABLE announcements (
-    id TEXT PRIMARY KEY,
-    type TEXT NOT NULL,
-    ward TEXT NOT NULL,
-    subject TEXT NOT NULL,
-    message TEXT NOT NULL,
-    created_by TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE action_log (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    complaint_id TEXT NOT NULL,
-    old_status TEXT,
-    new_status TEXT NOT NULL,
-    changed_by TEXT NOT NULL,
-    changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (complaint_id) REFERENCES complaints(id)
-);
-"""
+# Database schema is created by init_db() at startup.
 
 def init_db():
     """Initialize database with tables if they don't exist"""
