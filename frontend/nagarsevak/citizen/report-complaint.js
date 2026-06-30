@@ -85,6 +85,12 @@ function getCitizenId() {
   return Number(id);
 }
 
+function getWardId() {
+  const params = new URLSearchParams(window.location.search);
+  const wardId = params.get("ward_id") || localStorage.getItem("citizenWard") || sessionStorage.getItem("citizenWard");
+  return wardId;
+}
+
 complaintForm.addEventListener("submit", async (event) => {
 
   event.preventDefault();
@@ -111,17 +117,22 @@ complaintForm.addEventListener("submit", async (event) => {
     return;
   }
 
+  const wardId = getWardId();
+  if (!wardId) {
+    showToast("वॉर्ड माहिती सापडली नाही, कृपया पुन्हा लॉगिन करा.");
+    window.setTimeout(() => {
+      window.location.href = "../index.html";
+    }, 900);
+    return;
+  }
+
   const complaintPayload = {
 
     category: selectedCategory.value,
 
     description: issueDescription.value.trim(),
 
-    photo: photoInput.files[0] 
-      ? photoInput.files[0].name 
-      : null,
-
-    citizen_id: citizenId
+    ward_id: wardId
 };
  
 
@@ -162,7 +173,7 @@ complaintForm.addEventListener("submit", async (event) => {
     }
     else {
 
-      showToast("तक्रार नोंदवता आली नाही.");
+      showToast(data.detail || "तक्रार नोंदवता आली नाही.");
 
     }
 
