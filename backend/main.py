@@ -341,30 +341,30 @@ def list_wards(db: Session = Depends(get_db)):
 # ============================================================================
 
 @app.post("/citizens/login")
+
+@app.post("/citizens/login")
 def citizen_login(data: CitizenLoginRequest, db: Session = Depends(get_db)):
     """
-    Citizen login endpoint
-    OTP: 123456 (demo)
+    Citizen login endpoint - ANY CITIZEN CAN LOGIN
+    No validation needed - just provide name, phone, locality, and ward
     """
-    # Validate OTP
-    if data.otp != DEMO_OTP:
-        raise HTTPException(status_code=401, detail="Invalid OTP")
-
-    # Validate ward
+    # Validate and normalize ward
     ward_id = normalize_ward_id(data.ward_id)
     ensure_ward(db, ward_id)
 
-    # Find or create citizen
+    # Find or create citizen (automatic login)
     existing = db.query(models.Citizen).filter(
         models.Citizen.mobile_number == data.mobile_number
     ).first()
     
     if existing:
+        # Update existing citizen
         existing.full_name = data.full_name.strip()
         existing.ward_id = ward_id
         existing.locality = data.locality.strip()
         citizen = existing
     else:
+        # Create new citizen automatically
         citizen = models.Citizen(
             full_name=data.full_name.strip(),
             mobile_number=data.mobile_number,
@@ -390,7 +390,7 @@ def citizen_login(data: CitizenLoginRequest, db: Session = Depends(get_db)):
             "mobile_number": citizen.mobile_number,
             "ward_id": citizen.ward_id,
             "locality": citizen.locality,
-        },
+        }
     }
 
 
